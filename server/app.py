@@ -21,6 +21,23 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 api = Api(app)
+
+@app.route('/')
+def index():
+    return '<h1>Milestone Database</h1>'
+
+@app.route('/timeline/<username>')
+def user(username):
+    return f'<h1>Profile for {username}</h1>'
+
+
+class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+        return jsonify(users)
+
+api.add_resource(Users, '/users', endpoint='users')
+
 #api classes go here 
 
 # class Signup(Resource):
@@ -53,7 +70,6 @@ class Login(Resource):
                 return response
         except:
             abort(401, "Incorrect Username or Password")
-
 api.add_resource(Login, '/login')
 
 class AuthorizedSession(Resource):
@@ -67,9 +83,7 @@ class AuthorizedSession(Resource):
             return response
         except:
             abort(401, "Unauthorized")
-
 api.add_resource(AuthorizedSession, '/authorized')
-
 
 
 class Logout(Resource):
@@ -78,6 +92,7 @@ class Logout(Resource):
         response = make_response('',204)
         return response
 api.add_resource(Logout, '/logout')
+
 
 @app.errorhandler(NotFound)
 def handle_not_found(e):
