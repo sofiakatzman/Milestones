@@ -28,7 +28,7 @@ def seed():
         new_user = User(
             id = int(i + 1),
             birthday = fake.passport_dob(),
-            email = fake.free_email(),
+            username = fake.first_name()+fake.last_name(),
             _password_hash = "temporary",        
             milestones = [Milestone(
                 id = i + 1, 
@@ -36,7 +36,7 @@ def seed():
                 header = fake.text(max_nb_chars=20),
                 subheader = fake.text(max_nb_chars=30),
                 description = fake.text(max_nb_chars=70),
-                is_private = False,
+                is_private = fake.pybool(),
                 user_id = i+1,
                 aspect_id = random.randint(1, 4)
             )]
