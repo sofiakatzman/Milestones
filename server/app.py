@@ -1,16 +1,15 @@
-#!/usr/bin/env python3
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
-# Standard library imports
+from models import db
 
-# Remote library imports
-from flask import request
-from flask_restful import Resource
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
-# Local imports
-from config import app, db, api
+migrate = Migrate(app, db)
 
-
-# Views go here!
+db.init_app(app)
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
