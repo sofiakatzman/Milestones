@@ -3,19 +3,17 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navigation from "./Navigation";
 import Home from "./Home";
 import Friends from "./Friends";
-import Create from "./Create";
-import Settings from "./Settings";
+import Create from "./Create"
+import Settings from "./Settings"
 import './index.css'
-import TimelineComponent from "./Timeline";
-import Milestones from "./Milestones";
-
-
+import Milestones from "./Milestones"
+import Log from './Log'
 
 function App() {
   return (
     <>
-      <h1 className="title">milestones</h1>
       <div>
+        <Log/>
         <Router>
           <Navigation />
           <Switch>
