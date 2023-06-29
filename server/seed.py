@@ -40,7 +40,7 @@ def seed():
                 description = fake.text(max_nb_chars=70),
                 is_private = "No",
                 user_id = i+1,
-                aspect_id = random.randint(1, 5)
+                aspect_id = random.randint(1, 4)
             )]
         )
         db.session.add(new_user)

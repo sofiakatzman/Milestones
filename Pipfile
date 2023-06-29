@@ -20,7 +20,7 @@ flask-bcrypt = "*"
 python-dotenv = "*"
 honcho = "*"
 ipdb = "*"
-
+faker = "*"
 
 [dev-packages]
 
