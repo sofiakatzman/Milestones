@@ -6,6 +6,10 @@ import Friends from "./Friends";
 import Create from "./Create";
 import Settings from "./Settings";
 import './index.css'
+import TimelineComponent from "./Timeline";
+import Milestones from "./Milestones";
+
+
 
 function App() {
   return (
@@ -19,6 +23,7 @@ function App() {
             <Route exact path="/friends" component={Friends} />
             <Route exact path="/create" component={Create} />
             <Route exact path="/settings" component={Settings} />
+            <Route exact path="/timeline" component={Milestones} />
           </Switch>
         </Router>
       </div>
