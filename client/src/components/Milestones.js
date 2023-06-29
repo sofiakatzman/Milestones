@@ -1,10 +1,19 @@
 import React from "react";
+import { VerticalTimeline}  from 'react-vertical-timeline-component';
+import TimelineComponent from "./Timeline";
 
 function Milestones(){
 
     return(
         <>
-        <h1>This is your milestone data...</h1>
+        <VerticalTimeline>
+            <TimelineComponent />
+            <TimelineComponent />
+            <TimelineComponent />
+            <TimelineComponent />
+            <TimelineComponent />
+            <TimelineComponent />
+        </VerticalTimeline>
         </>
     )
 }
