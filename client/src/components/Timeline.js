@@ -1,5 +1,6 @@
 import { VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
+import Icon from './Icon';
 
 
 /*
@@ -26,7 +27,7 @@ function TimelineComponent(){
             contentArrowStyle={{ borderRight: '15px solid white' }} //arrow pointing towards date
             date={milestoneDate}
             iconStyle={iconColor} 
-            icon={iconPicture}
+            icon={<Icon />}
           >
             <h3 className="vertical-timeline-element-title">{mainHeader}</h3>
             <h4 className="vertical-timeline-element-subtitle">{subHeader}</h4>

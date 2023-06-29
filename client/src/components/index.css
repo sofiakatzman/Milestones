@@ -3,7 +3,7 @@
 body {
     margin: 20px;
     font-family: 'Open Sans', sans-serif;
-    background-color: #ffffff;
+    background-color: #dae2c5;
     color: #8a9e9b;
     text-align: left;
   }
@@ -57,7 +57,7 @@ body {
 
 
   button {
-    --c:  #bbdddd;
+    --c:  #e6ebce;
     color: #8a9e9b;
     box-shadow: 0 0 0 .1em inset var(--c); 
     --_g: linear-gradient(var(--c) 0 0) no-repeat;
@@ -69,13 +69,14 @@ body {
     background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
     outline-offset: .1em;
     transition: background-size .4s, background-position 0s .4s;
+    border-radius: 12px;
   }
   button:hover {
     --_p: 100%;
     transition: background-position .4s, background-size 0s;
   }
   button:active {
-    box-shadow: 0 0 9e9q inset #abafaf; 
+    box-shadow: 0 0 9e9q inset #bec9c9; 
     background-color: var(--c);
     color: #fff;
   }
@@ -87,4 +88,13 @@ body {
     padding: .1em .6em;
     font-weight: bold;  
     border: none;
+  }
+
+  .icon {
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    width: 60px;
+    height: 55px;
+    font-size: 2rem; 
   }
