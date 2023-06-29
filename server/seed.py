@@ -14,8 +14,6 @@ from models import db
 
 
 def seed():
-    users = []
-    milestones = []
     aspects = []
 
     # delete current db data
@@ -31,14 +29,14 @@ def seed():
             id = int(i + 1),
             birthday = fake.passport_dob(),
             email = fake.free_email(),
-            password = "temporary",        
+            _password_hash = "temporary",        
             milestones = [Milestone(
                 id = i + 1, 
                 date = fake.date_this_century(),
                 header = fake.text(max_nb_chars=20),
                 subheader = fake.text(max_nb_chars=30),
                 description = fake.text(max_nb_chars=70),
-                is_private = "No",
+                is_private = False,
                 user_id = i+1,
                 aspect_id = random.randint(1, 4)
             )]
