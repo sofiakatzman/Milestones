@@ -1,6 +1,6 @@
 # Standard library imports
 from random import randint, choice as rc
-from models import User, Milestone, Aspect, user_aspects, milestone_aspects
+from models import User, Milestone, Aspect, user_aspects
 
 # Remote library imports
 from faker import Faker
@@ -14,13 +14,13 @@ from models import db
 def seed():
     # delete current db data
     db.session.query(user_aspects).delete()
-    db.session.query(milestone_aspects).delete()
+
     User.query.delete()
     Milestone.query.delete()
     Aspect.query.delete()
 
     # create mock user data & milestone data
-    for i in range(50):
+    for i in range(10):
         new_user = User(
             id=int(i + 1),
             birthday=fake.passport_dob(),
@@ -42,6 +42,23 @@ def seed():
 
         db.session.add(new_milestone)
 
+    # add more milestones to users 
+    for i in range(300):
+        new_milestone = Milestone(
+            id=i + 11, #account for the 11 made above ^ 
+            date=fake.date_this_century(),
+            header=fake.text(max_nb_chars=20),
+            subheader=fake.text(max_nb_chars=30),
+            description=fake.text(max_nb_chars=70),
+            is_private=fake.pybool(),
+            user_id= random.randint(1,10),
+            aspect_id=random.randint(1, 5)
+        )
+
+        db.session.add(new_milestone)
+
+        pass        
+
     # seed aspects
     aspects = [
         ["1", "education", "school and other educational pursuits and accomplishments", "✏️"],
@@ -59,23 +76,7 @@ def seed():
         )
         db.session.add(new_aspect)
 
-    # seed data for user_aspects table based on current data
-    for user_id in range(1, 51):
-        milestones = Milestone.query.filter_by(user_id=user_id).all()
-        for milestone in milestones:
-            aspect = Aspect.query.get(random.randint(1, 4))
-            user = User.query.get(user_id)
-            user.aspects.append(aspect)
-            db.session.add(user)
-            milestone.aspects.append(aspect)
-            db.session.add(milestone)
-
-    # seed data for milestone_aspects table based on current data
-    for user_id in range(1, 51):
-        milestones = Milestone.query.filter_by(user_id=user_id).all()
-        for milestone in milestones:
-            aspect = Aspect.query.get(random.randint(1, 4))
-            milestone.aspects.append(aspect)
+    
 
     # commit to session
     db.session.commit()

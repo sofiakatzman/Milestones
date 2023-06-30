@@ -3,27 +3,14 @@ from flask_migrate import Migrate
 from flask_restful import Api, Resource, MethodView
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import NotFound, Unauthorized
+from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.ext.hybrid import hybrid_property
 
-from models import User, Milestone, Aspect, db
+from config import bcrypt, db, app, api
+from models import User, Milestone, Aspect
 
-app = Flask(__name__)
-CORS(app) 
-bcrypt = Bcrypt(app)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
-
-app.secret_key = b'@~xH\xf2\x10k\x07hp\x85\xa6N\xde\xd4\xcd'
-
-migrate = Migrate(app, db)
-
-db.init_app(app)
-
-api = Api(app)
 
 @app.route('/')
 def index():
