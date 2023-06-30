@@ -1,15 +1,16 @@
-import React from "react";
-import Milestones from "./Milestones";
+import Milestones from "./Milestones"
 
 function Home(){
-
-    return(
+    return (
         <>
         <h5>*This page will only display if logged in.</h5>
-
         <Milestones/>
         </>
     )
 }
 
 export default Home
+
+
+
+

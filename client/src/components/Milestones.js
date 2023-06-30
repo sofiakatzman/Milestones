@@ -1,4 +1,3 @@
-import React from "react";
 import { VerticalTimeline}  from 'react-vertical-timeline-component';
 import TimelineComponent from "./Timeline";
 
@@ -15,6 +14,7 @@ import TimelineComponent from "./Timeline";
 
 
 function Milestones(){
+
 
     return(
         <>

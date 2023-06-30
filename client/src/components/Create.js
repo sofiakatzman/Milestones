@@ -1,7 +1,4 @@
-import React from "react";
-
 function Create(){
-
     return(
         <>
         <h1>Let's create a milestone!</h1>
