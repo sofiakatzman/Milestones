@@ -1,45 +1,30 @@
-import { VerticalTimeline}  from 'react-vertical-timeline-component';
+import { VerticalTimeline } from 'react-vertical-timeline-component';
 import TimelineComponent from "./Timeline";
+import { useEffect, useState } from "react";
 
-{/* Filter Key : this needs to be turned into a component: 
-================> each logo will be in its own circle, that will gray out when not selected and get large when hovered and stays large and with color if clicked - TBD css & react comp.
-💼 - professional : work experience 
-✏️ - education : schooling 
-🌱 - self growth : self improvement 
-🏆 - achievement : personal goal achievments 
-✈️ - big move : relocation or big life changes
+function Milestones() {
+  const [data, setData] = useState(null);
 
-* below is placeholder
-*/}
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/users')
+      .then(response => response.json())
+      .then(data => setData(data));
+  }, []);
 
+  return (
+    <>
+      {/* <div className="filters" >
+        💼  ✏️  🌱  🏆  ✈️
+        <br/><br/>
+      </div> */}
 
-function Milestones(){
-
-
-    return(
-        <>
-        {/* <div className="filters" >
-            💼  ✏️  🌱  🏆  ✈️
-            <br/><br/>
-        </div> */}
-
-        <VerticalTimeline>
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-            <TimelineComponent />
-        </VerticalTimeline>
-        </>
-    )
+      <VerticalTimeline>
+        {data && data.map((item, index) => (
+          <TimelineComponent key={index} data={item} />
+        ))}
+      </VerticalTimeline>
+    </>
+  );
 }
 
-export default Milestones
+export default Milestones;
