@@ -20,7 +20,7 @@ class User(db.Model, SerializerMixin):
     milestones = db.relationship('Milestone', backref=db.backref('user'), cascade='all, delete-orphan')
     aspects = db.relationship('Aspect', secondary=user_aspects, backref=db.backref('users'), cascade='all')
 
-    serialize_rules = ('-_password_hash', '-admin')
+    serialize_rules = ('-_password_hash', '-admin', '-aspects')
     
     @hybrid_property
     def password_hash(self):
@@ -51,7 +51,7 @@ class Milestone(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     aspect_id = db.Column(db.Integer, db.ForeignKey('aspects.id'))
     
-    serialize_rules = ('-user',)
+    serialize_rules = ('-user.milestones',)
 
     def __repr__(self):
         return f'MILESTONE ID: {self.id}, DATE: {self.date}, Header: {self.header}'
@@ -64,6 +64,6 @@ class Aspect(db.Model, SerializerMixin):
     name = db.Column(db.String)
     description = db.Column(db.String)
     icon = db.Column(db.String)
-
+    
     def __repr__(self):
         return f'Aspect: ID: {self.id}, Name: {self.name}'
