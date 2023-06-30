@@ -21,6 +21,7 @@ python-dotenv = "*"
 honcho = "*"
 ipdb = "*"
 faker = "*"
+flask-cors = "*"
 
 [dev-packages]
 
