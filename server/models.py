@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, Table, Column, Integer, ForeignKey
 from flask_bcrypt import Bcrypt
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
@@ -11,6 +11,18 @@ metadata = MetaData(naming_convention={
 bcrypt = Bcrypt()
 db = SQLAlchemy(metadata=metadata)
 
+user_aspects = db.Table(
+    'user_aspects',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('aspect_id', db.Integer, db.ForeignKey('aspects.id'), primary_key=True)
+)
+
+milestone_aspects = db.Table(
+    'milestone_aspects',
+    db.Column('milestone_id', db.Integer, db.ForeignKey('milestones.id'), primary_key=True),
+    db.Column('aspect_id', db.Integer, db.ForeignKey('aspects.id'), primary_key=True)
+)
+
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +31,7 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String)
     admin = db.Column(db.String, default=False)
     milestones = db.relationship('Milestone', backref=db.backref('user'), cascade='all, delete-orphan')
-
+    aspects = db.relationship('Aspect', secondary=user_aspects, backref=db.backref('users'), cascade='all')
     serialize_rules = ('-_password_hash',)
     
     @hybrid_property
@@ -50,6 +62,8 @@ class Milestone(db.Model, SerializerMixin):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     aspect_id = db.Column(db.Integer, db.ForeignKey('aspects.id'))
+    
+    aspects = db.relationship('Aspect', secondary=milestone_aspects, backref=db.backref('milestones'), cascade='all')
 
     serialize_rules = ('-user',)
 
@@ -60,3 +74,6 @@ class Aspect(db.Model, SerializerMixin):
     name = db.Column(db.String)
     description = db.Column(db.String)
     icon = db.Column(db.String)
+
+    def __repr__(self):
+        return f'Aspect: ID: {self.id}, Name: {self.name}'
