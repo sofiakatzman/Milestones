@@ -1,42 +1,27 @@
-import { VerticalTimelineElement }  from 'react-vertical-timeline-component';
+import { VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import Icon from './Icon';
 
-
-/*
-iconColor = color of milestone icon 
-mainHeader = main title header
-subHeader = subheader
-description = milestone discription
-milestoneDate = date of milestone
-iconPicture = display emoji for that milestone
-
-*/
-
-function TimelineComponent({data}){
-  let iconColor = { background: "white", color: "white"}
-
-    return( 
-      <>     
-       {  data && data.milestones.map(milestone => {
-        console.log(milestone)
-        return (
-          <VerticalTimelineElement
-                className={milestone.aspect_id}//type of milestone
-                contentStyle={{ background: "white", color: 'gray' }} //milestone background
-                contentArrowStyle={{ borderRight: '15px solid white' }} //arrow pointing towards date
-                date={milestone.milestoneDate}
-                iconStyle={iconColor} 
-                icon={<Icon type={milestone.aspect_id}/>}
-                
-              >
-                <h3 className="vertical-timeline-element-title">"{milestone.header}"</h3>
-                <h4 className="vertical-timeline-element-subtitle">{milestone.subheader}</h4>
-                <p>{milestone.description}</p> 
-              </VerticalTimelineElement>
-        )
-      })}
-    </>)
+function TimelineComponent({ data }) {
+  return (
+    <>
+      {data &&
+        <VerticalTimelineElement
+          key={data.id}
+          className={data.aspect_id.toString()}
+          contentStyle={{ background: 'white', color: 'gray' }}
+          contentArrowStyle={{ borderRight: '15px solid white' }}
+          date={data.date}
+          iconStyle={{ background: 'white', color: 'white' }}
+          icon={<Icon type={data.aspect_id} />}
+        >
+          <h3 className="vertical-timeline-element-title">{data.header}</h3>
+          <h4 className="vertical-timeline-element-subtitle">{data.subheader}</h4>
+          <p>{data.description}</p>
+        </VerticalTimelineElement>
+      }
+    </>
+  );
 }
 
-export default TimelineComponent
+export default TimelineComponent;
