@@ -46,7 +46,7 @@ def seed():
             description=fake.text(max_nb_chars=70),
             is_private=fake.pybool(),
             user_id=random.randint(1, 10),
-            aspect_id=random.randint(1, 4)
+            aspect_id=random.randint(1, 5)
         )
         db.session.add(new_milestone)
 
@@ -55,7 +55,8 @@ def seed():
         ["1", "education", "school and other educational pursuits and accomplishments", "✏️"],
         ["2", "self growth", "self-improvement pursuits and accomplishments", "🌱"],
         ["3", "achievements", "personal goal completion", "🏆"],
-        ["4", "life change", "relocation or life changes", "✈️"]
+        ["4", "life change", "relocation or life changes", "✈️"],
+        ["5", "professional", "career changes or promotions", "💼"]
     ]
 
     for aspect in aspects:
