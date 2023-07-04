@@ -1,6 +1,6 @@
 {
-  "short_name": "Milestones",
-  "name": "Milestones",
+  "short_name": "milestones",
+  "name": "milestones",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
