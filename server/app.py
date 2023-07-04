@@ -1,14 +1,8 @@
-from flask import Flask, request, make_response, session, jsonify, abort
-from flask_migrate import Migrate
-from flask_restful import Api, Resource, MethodView
-from flask_cors import CORS
-from flask_bcrypt import Bcrypt
+from flask import request, jsonify, make_response
+from flask_restful import Resource, MethodView
 from sqlalchemy.exc import IntegrityError
-from werkzeug.exceptions import NotFound, Unauthorized
-from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy.ext.hybrid import hybrid_property
 
-from config import bcrypt, db, app, api
+from config import db, app, api
 from models import User, Milestone, Aspect
 
 
@@ -98,7 +92,29 @@ class Milestones(Resource):
         return jsonify(milestones)
 
     def post(self):
-        pass
+        request_json = request.get_json()
+        new = Milestone(
+            header=request_json.get('header'),
+            subheader=request_json.get('subheader'),
+            description=request_json.get('description'),
+            date=request_json.get('date'),
+            aspect_id=request_json.get('aspect_id'),
+            is_private=request_json.get('is_private'),
+            user_id=request_json.get('user_id')
+        )
+        try:
+            db.session.add(new)
+            db.session.commit()
+
+            response_dict = new.to_dict()
+            response = make_response(
+                jsonify(response_dict),  # Use jsonify to convert dict to JSON response
+                201
+            )
+            return response
+        except IntegrityError:
+            return {'error': '422 Unprocessable Entity'}, 422
+        
 
 class MilestonesView(MethodView):
     def __init__(self):
@@ -110,10 +126,11 @@ class MilestonesView(MethodView):
     def post(self):
         return self.milestones_resource.post()
 
+api.add_resource(Milestones, '/milestones', endpoint='milestones')
 
 api.add_resource(Users, '/users', endpoint='users')
 app.add_url_rule('/aspects', view_func=AspectView.as_view('aspects'))
-api.add_resource(Milestones, '/milestones', endpoint='milestones')
+
 
 # signup and login / logout resources below - not yet ready for these 
 

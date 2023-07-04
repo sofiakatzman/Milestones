@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { useFormik, Form } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 function Create() {
@@ -21,53 +20,50 @@ function Create() {
       user_id: '',
     },
     validationSchema: formSchema,
-    onSubmit: (values) => 
-    
-    console.log(values)
-    
-    // {
-    //   fetch('/http://127.0.0.1:5000/milestones', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(values, null, 2),
-    //   }).then((res) => {
-    //     if (res.ok) {
-    //       res.json().then((milestone) => {
-    //         console.log(milestone);
-    //       });
-    //     }
-    //   });
-    // },
+    onSubmit: (values) => { 
+      console.log(values);
+      fetch('http://127.0.0.1:5000/milestones', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      }).then((res) => {
+        if (res.ok) {
+          res.json().then((milestone) => {
+            console.log(milestone);
+          });
+        }
+      });
+    },
   });
-
+  
   return (
-    
-      <form onSubmit={console.log(formik.values)}>
-        <label>Header</label>
-        <input type="text" name="header" value={formik.values.header} onChange={formik.handleChange} />
-
-        <label>Subheader</label>
-        <input type="text" name="subheader" value={formik.values.subheader} onChange={formik.handleChange} />
-
-        <label>Description</label>
-        <input type="number" name="description" value={formik.values.description} onChange={formik.handleChange} />
-
-        <label>Date</label>
-        <input type="text" name="date" value={formik.values.date} onChange={formik.handleChange} />
-
-        <label>Aspect</label>
-        <input type="text" name="aspect_id" value={formik.values.aspect_id} onChange={formik.handleChange} />
-
-        <label>Private?</label>
-
-        <label>User ID</label>
-        <textarea type="text" rows="4" cols="50" name="user_id" value={formik.values.user_id} onChange={formik.handleChange} />
-
-        <input type="submit" />
-      </form>
-
+    <form className="create-milestone-form" onSubmit={formik.handleSubmit}>
+      <label>Header</label> <br/>
+      <input type="text" name="header" value={formik.values.header} onChange={formik.handleChange} />
+      <br/>
+      <label>Subheader</label> <br/>
+      <input type="text" name="subheader" value={formik.values.subheader} onChange={formik.handleChange} />
+      <br/>
+      <label>Description</label> <br/>
+      <textarea type="text" name="description" value={formik.values.description} onChange={formik.handleChange} />
+      <br/>
+      <label>Date</label> <br/>
+      <input type="date" name="date" value={formik.values.date} onChange={formik.handleChange} />
+      <br/>
+      <label>Aspect</label> <br/>
+      <input type="text" name="aspect_id" value={formik.values.aspect_id} onChange={formik.handleChange} />
+      <br/>
+      <label>Private?</label> <br/> 
+      <input type="checkbox" name="is_private" value={formik.values.is_private} onChange={formik.handleChange}/> 
+      <br/>
+      <label>User ID</label> <br/>
+      <input type="number" name="user_id" value={formik.values.user_id} onChange={formik.handleChange} />
+      <br/>
+      <p className="errors">{formik.errors.header}</p>
+      <button type="submit">Submit</button>
+    </form>
   );
 }
 
