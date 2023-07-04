@@ -1,15 +1,17 @@
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, session
 from flask_restful import Resource, MethodView
 from sqlalchemy.exc import IntegrityError
-
+from flask_cors import CORS
 from config import db, app, api
 from models import User, Milestone, Aspect
+
 
 
 @app.route('/')
 def index():
     return '<h1>Milestone Database</h1>'
 
+# this is for testing purposes
 @app.route('/timeline/<username>')
 def user(username):
     return f'<h1>Profile for {username}</h1>'
@@ -20,33 +22,21 @@ class Users(Resource):
         return jsonify(users)
     
     def post(self):
-        request_json = request.get_json()
+        form_json = request.get_json()
+        new_user = User(username=form_json['username'], birthday=form_json['birthday'])
+        #Hashes our password and saves it to _password_hash
+        new_user.password_hash = form_json['password']
 
-        id = request_json.get('id')
-        birthday = request_json.get('birthday')
-        username = request_json.get('username')
-        _password_hash = request_json.get('_password_hash')
-        admin = request_json.get('admin')
-        milestones = request_json.get('milestones')
+        db.session.add(new_user)
+        db.session.commit()
+        # session['user_id'] = new_user.id
 
-        new_user = User(
-            id = id,
-            birthday = birthday,
-            username = username,
-            _password_hash = _password_hash,
-            admin = admin,
-            milestones = milestones
+        response = make_response(
+            new_user.to_dict(),
+            201
         )
-      
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-
-            return {'message': 'Your aspect has been saved to the database.'}, 201
-
-        except IntegrityError:
-            return {'error': '422 Unprocessable entity'}, 422
-
+        return response
+ 
 class Aspects(Resource):
     def get(self):
         aspects = [aspect.to_dict() for aspect in Aspect.query.all()]
@@ -105,17 +95,18 @@ class Milestones(Resource):
         try:
             db.session.add(new)
             db.session.commit()
+            session['user_id'] = new.id
+
 
             response_dict = new.to_dict()
             response = make_response(
-                jsonify(response_dict),  # Use jsonify to convert dict to JSON response
+                jsonify(response_dict), 
                 201
             )
             return response
         except IntegrityError:
             return {'error': '422 Unprocessable Entity'}, 422
         
-
 class MilestonesView(MethodView):
     def __init__(self):
         self.milestones_resource = Milestones()
@@ -126,31 +117,14 @@ class MilestonesView(MethodView):
     def post(self):
         return self.milestones_resource.post()
 
-api.add_resource(Milestones, '/milestones', endpoint='milestones')
-
-api.add_resource(Users, '/users', endpoint='users')
-app.add_url_rule('/aspects', view_func=AspectView.as_view('aspects'))
 
 
 # signup and login / logout resources below - not yet ready for these 
 
+api.add_resource(Milestones, '/milestones', endpoint='milestones')
 
-# class Signup(Resource):
-#     def post(self):
-#         form_json = request.get_json()
-#         new_user = User(name=form_json['name'], email=form_json['email'])
-#         #Hashes our password and saves it to _password_hash
-#         new_user.password_hash = form_json['password']
-
-#         db.session.add(new_user)
-#         db.session.commit()
-
-#         response = make_response(
-#             new_user.to_dict(),
-#             201
-#         )
-#         return response
-# api.add_resource(Signup, '/signup')
+api.add_resource(Users, '/users', endpoint='users')
+app.add_url_rule('/aspects', view_func=AspectView.as_view('aspects'))
 
 # class Login(Resource):
 #     def post(self):
