@@ -13,10 +13,11 @@ import { useState } from "react";
 
 function App() {
   const [user, updateUser] = useState(null)
+  console.log(user)
 
   return (
     <div>
-      <Log />
+      <Log updateUser={updateUser}/>
       <Router>
         <Navigation />
         <Routes>

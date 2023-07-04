@@ -33,10 +33,13 @@ function Authentication({ updateUser }) {
       })
       .then(res => res.json())
       .then(user => {
-          console.log(user)
-          updateUser(user)
+        if (user.error) {
+          console.log(user.error) 
+        } else {
+          updateUser(user.username)
+          console.log(user.username)
           navigate('/')
-      })
+        }})
     }
   })
 
@@ -46,19 +49,13 @@ function Authentication({ updateUser }) {
       <h2>{signUp ? 'Already a member?' : 'Not a member?'}</h2>
       <button onClick={handleClick}>{signUp ? 'Log In!' : 'Sign Up!'}</button>
       <form onSubmit={formik.handleSubmit}>
-        <label>
-          Username
-        </label>
+        <label>Username</label>
         <input type='text' name='username' value={formik.values.username} onChange={formik.handleChange} />
-        <label>
-          Password
-        </label>
-        <input type='text' name='password' value={formik.values.password} onChange={formik.handleChange} />
+        <label>Password</label>
+        <input type='password' name='password' value={formik.values.password} onChange={formik.handleChange} />
         {signUp && (
           <>
-            <label>
-              Birthdate
-            </label>
+            <label>Birthdate</label>
             <input type='date' name='birthday' value={formik.values.birthday} onChange={formik.handleChange} />
           </>
         )}

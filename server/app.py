@@ -1,11 +1,11 @@
-from flask import request, jsonify, make_response, session
+from flask import request, jsonify, make_response, session, abort
 from flask_restful import Resource, MethodView
 from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS
 from config import db, app, api
 from models import User, Milestone, Aspect
 
-
+app.secret_key = b'@~xH\xf2\x10k\x07hp\x85\xa6N\xde\xd4\xcd'
 
 @app.route('/')
 def index():
@@ -29,12 +29,12 @@ class Users(Resource):
 
         db.session.add(new_user)
         db.session.commit()
-        # session['user_id'] = new_user.id
-
+        
         response = make_response(
             new_user.to_dict(),
             201
         )
+        session["user_id"] = new_user.username
         return response
  
 class Aspects(Resource):
@@ -95,9 +95,7 @@ class Milestones(Resource):
         try:
             db.session.add(new)
             db.session.commit()
-            session['user_id'] = new.id
-
-
+            
             response_dict = new.to_dict()
             response = make_response(
                 jsonify(response_dict), 
@@ -117,29 +115,33 @@ class MilestonesView(MethodView):
     def post(self):
         return self.milestones_resource.post()
 
+class Logout(Resource):
+    def delete(self):
+        session["user_id"] = None 
+        response = make_response('Logged Out',204)
+        return response
+api.add_resource(Logout, '/logout')    
+class Login(Resource):
+    def post(self):
+        try:
+            user = User.query.filter_by(username=request.get_json()['username']).first()
+            if user.authenticate(request.get_json()['password']):
+                response = make_response(
+                    user.to_dict(),
+                    200
+                )
+                session["user_id"] = user.id
+                return response
+        except:
+            abort(401, "Incorrect Username or Password")
 
 
-# signup and login / logout resources below - not yet ready for these 
 
 api.add_resource(Milestones, '/milestones', endpoint='milestones')
-
 api.add_resource(Users, '/users', endpoint='users')
 app.add_url_rule('/aspects', view_func=AspectView.as_view('aspects'))
 
-# class Login(Resource):
-#     def post(self):
-#         try:
-#             user = User.query.filter_by(name=request.get_json()['name']).first()
-#             if user.authenticate(request.get_json()['password']):
-#                 session['user_id'] = user.id
-#                 response = make_response(
-#                     user.to_dict(),
-#                     200
-#                 )
-#                 return response
-#         except:
-#             abort(401, "Incorrect Username or Password")
-# api.add_resource(Login, '/login')
+api.add_resource(Login, '/login')
 
 # class AuthorizedSession(Resource):
 #     def get(self):
@@ -155,12 +157,6 @@ app.add_url_rule('/aspects', view_func=AspectView.as_view('aspects'))
 # api.add_resource(AuthorizedSession, '/authorized')
 
 
-# class Logout(Resource):
-#     def delete(self):
-#         session['user_id'] = None 
-#         response = make_response('',204)
-#         return response
-# api.add_resource(Logout, '/logout')
 
 
 # @app.errorhandler(NotFound)
