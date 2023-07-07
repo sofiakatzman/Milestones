@@ -10,7 +10,7 @@ app.secret_key = b'@~xH\xf2\x10k\x07hp\x85\xa6N\xde\xd4\xcd'
 def index():
     return '<h1>Milestone Database</h1>'
 
-# this is for testing purposes
+# this is for testing purposes 
 @app.route('/timeline/<username>')
 def user(username):
     return f'<h1>Profile for {username}</h1>'
@@ -34,10 +34,14 @@ class Users(Resource):
             new_user.to_dict(),
             201
         )
-        session["user_id"] = new_user.username
+        session["username"] = new_user.username
         return response
 
 class Friends(Resource):
+    def get(self):
+        friends = [friend.to_dict() for friend in Friend.query.all()]
+        return jsonify(friends)
+    
     def post(self, user_id):
         # Get the user trying to create a friendship
         user = User.query.get(user_id)
@@ -136,6 +140,13 @@ class MilestonesView(Resource):
     def post(self):
         return Milestones().post()
 
+class FriendsView(Resource):
+    def get(self):
+        return Friends().get()
+
+    def post(self):
+        return Friends().post()
+
 class Login(Resource):
     def post(self):
         try:
@@ -184,8 +195,11 @@ class Signup(Resource):
 # Resource endpoints
 api.add_resource(Milestones, '/milestones', endpoint='milestones')
 api.add_resource(Users, '/users', endpoint='users')
+
 api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')
+
 api.add_resource(AspectView, '/aspects')
+api.add_resource(FriendsView, '/friends')
 
 # Functional resource endpoints
 api.add_resource(Login, '/login')

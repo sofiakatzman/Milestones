@@ -7,7 +7,22 @@ user_aspects = db.Table(
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
     db.Column('aspect_id', db.Integer, db.ForeignKey('aspects.id'), primary_key=True)
 )
+    
 
+class Friend(db.Model, SerializerMixin):
+    __tablename__ = 'friends'
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    friend_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+
+
+    friend = db.relationship('User', foreign_keys=[friend_id])
+
+    serialize_rules = ('-friend.milestones', '-friend_id' )
+
+    def __repr__(self):
+        return f'FRIEND: User ID: {self.user_id}, Friend ID: {self.friend_id}'  
+      
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
@@ -66,16 +81,3 @@ class Aspect(db.Model, SerializerMixin):
     
     def __repr__(self):
         return f'Aspect: ID: {self.id}, Name: {self.name}'
-    
-
-class Friend(db.Model, SerializerMixin):
-    __tablename__ = 'friends'
-    
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    friend_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-
-    user = db.relationship('User', foreign_keys=[user_id])
-    friend = db.relationship('User', foreign_keys=[friend_id])
-
-    def __repr__(self):
-        return f'FRIEND: User ID: {self.user_id}, Friend ID: {self.friend_id}'    

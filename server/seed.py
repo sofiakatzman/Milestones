@@ -3,11 +3,11 @@ from faker import Faker
 import random
 
 from app import app
-from models import db, User, Milestone, Aspect, user_aspects, Friend
+from models import db, User, Milestone, Aspect, Friend
 
 def seed():
     # Delete current data from tables
-    db.session.query(user_aspects).delete()
+
     User.query.delete()
     Milestone.query.delete()
     Aspect.query.delete()
@@ -88,10 +88,6 @@ def seed():
         )
         db.session.add(new_aspect)
 
-    # Create instances of UserAspect
-    for i in range(1, 50):
-        new_instance = user_aspects.insert().values(user_id=i, aspect_id=2)
-        db.session.execute(new_instance)
 
     # Commit changes to the session
     db.session.commit()
