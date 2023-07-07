@@ -1,9 +1,8 @@
-from flask import request, jsonify, make_response, session, abort
-from flask_restful import Resource, MethodView
+from flask import request, jsonify, make_response, abort
+from flask_restful import Resource
+from config import db, app, session, api
+from models import User, Friend, Aspect, Milestone
 from sqlalchemy.exc import IntegrityError
-from flask_cors import CORS
-from config import db, app, api
-from models import User, Milestone, Aspect
 
 app.secret_key = b'@~xH\xf2\x10k\x07hp\x85\xa6N\xde\xd4\xcd'
 
@@ -24,7 +23,8 @@ class Users(Resource):
     def post(self):
         form_json = request.get_json()
         new_user = User(username=form_json['username'], birthday=form_json['birthday'])
-        #Hashes our password and saves it to _password_hash
+        
+        # Hashes our password and saves it to _password_hash
         new_user.password_hash = form_json['password']
 
         db.session.add(new_user)
@@ -36,7 +36,34 @@ class Users(Resource):
         )
         session["user_id"] = new_user.username
         return response
- 
+
+class Friends(Resource):
+    def post(self, user_id):
+        # Get the user trying to create a friendship
+        user = User.query.get(user_id)
+        if not user:
+            abort(404, 'User not found')
+
+        # Get the friend user ID from the request data
+        data = request.get_json()
+        friend_id = data.get('friend_id')
+
+        # Get the friend user
+        friend = User.query.get(friend_id)
+        if not friend:
+            abort(404, 'Friend user not found')
+
+        # Check if the friendship already exists
+        if Friend.query.filter_by(user=user, friend=friend).first():
+            abort(400, 'Friendship already exists')
+
+        # Create the friendship
+        friendship = Friend(user=user, friend=friend)
+        db.session.add(friendship)
+        db.session.commit()
+
+        return jsonify({'message': 'Friendship created'}), 201
+
 class Aspects(Resource):
     def get(self):
         aspects = [aspect.to_dict() for aspect in Aspect.query.all()]
@@ -66,16 +93,13 @@ class Aspects(Resource):
         except IntegrityError:
             return {'error': '422 Unprocessable entity'}, 422
 
-class AspectView(MethodView):
-    def __init__(self):
-        self.aspects_resource = Aspects()
-
+class AspectView(Resource):
     def get(self):
-        return self.aspects_resource.get()
+        return Aspects().get()
 
     def post(self):
-        return self.aspects_resource.post()
-    
+        return Aspects().post()
+
 class Milestones(Resource):
     def get(self):
         milestones = [milestone.to_dict() for milestone in Milestone.query.all()]
@@ -83,7 +107,7 @@ class Milestones(Resource):
 
     def post(self):
         request_json = request.get_json()
-        new = Milestone(
+        new_milestone = Milestone(
             header=request_json.get('header'),
             subheader=request_json.get('subheader'),
             description=request_json.get('description'),
@@ -93,10 +117,10 @@ class Milestones(Resource):
             user_id=request_json.get('user_id')
         )
         try:
-            db.session.add(new)
+            db.session.add(new_milestone)
             db.session.commit()
             
-            response_dict = new.to_dict()
+            response_dict = new_milestone.to_dict()
             response = make_response(
                 jsonify(response_dict), 
                 201
@@ -104,71 +128,83 @@ class Milestones(Resource):
             return response
         except IntegrityError:
             return {'error': '422 Unprocessable Entity'}, 422
-        
-class MilestonesView(MethodView):
-    def __init__(self):
-        self.milestones_resource = Milestones()
 
+class MilestonesView(Resource):
     def get(self):
-        return self.milestones_resource.get()
+        return Milestones().get()
 
     def post(self):
-        return self.milestones_resource.post()
+        return Milestones().post()
 
-class Logout(Resource):
-    def delete(self):
-        session["user_id"] = None 
-        response = make_response('Logged Out',204)
-        return response
-api.add_resource(Logout, '/logout')    
 class Login(Resource):
     def post(self):
         try:
-            user = User.query.filter_by(username=request.get_json()['username']).first()
-            if user.authenticate(request.get_json()['password']):
-                response = make_response(
-                    user.to_dict(),
-                    200
-                )
-                session["user_id"] = user.id
+            data = request.get_json()
+            username = data.get('username')
+            password = data.get('password')
+            user = User.query.filter_by(username=username).first()
+            if user and user.authenticate(password):
+                session['user_id'] = user.id
+                response = make_response(user.to_dict(), 200)
                 return response
         except:
             abort(401, "Incorrect Username or Password")
 
+class Logout(Resource):
+    def delete(self):
+        if session.get('user_id'):
+            session.pop('user_id', None)
+            return {}, 204
+        return {'error': '401 Unauthorized'}, 401
 
+class Signup(Resource):
+    def post(self):
+        request_json = request.get_json()
 
+        username = request_json.get('username')
+        password = request_json.get('password')
+        birthday = request_json.get('birthday')
+
+        user = User(
+            username=username,
+            password=password,
+            birthday=birthday
+        )
+
+        user.password_hash = password
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+            session['user_id'] = user.id
+            return user.to_dict(), 201
+        except IntegrityError:
+            return {'error': '422 Unprocessable Entity'}, 422
+
+# Resource endpoints
 api.add_resource(Milestones, '/milestones', endpoint='milestones')
 api.add_resource(Users, '/users', endpoint='users')
-app.add_url_rule('/aspects', view_func=AspectView.as_view('aspects'))
+api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')
+api.add_resource(AspectView, '/aspects')
 
+# Functional resource endpoints
 api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
+api.add_resource(Signup, '/signup')
 
-# class AuthorizedSession(Resource):
-#     def get(self):
-#         try:
-#             user = User.query.filter_by(id=session['user_id']).first()
-#             response = make_response(
-#                 user.to_dict(),
-#                 200
-#             )
-#             return response
-#         except:
-#             abort(401, "Unauthorized")
-# api.add_resource(AuthorizedSession, '/authorized')
+class AuthorizedSession(Resource):
+    def get(self):
+        try:
+            user = User.query.filter_by(id=session['user_id']).first()
+            response = make_response(
+                user.to_dict(),
+                200
+            )
+            return response
+        except:
+            abort(401, "Unauthorized")
 
-
-
-
-# @app.errorhandler(NotFound)
-# def handle_not_found(e):
-#     response = make_response(
-#         "Not Found: Sorry the resource you are looking for does not exist",
-#         404
-#     )
-
-#     return response
-
-
+api.add_resource(AuthorizedSession, '/authorized')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

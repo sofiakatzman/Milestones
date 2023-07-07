@@ -3,7 +3,7 @@ from faker import Faker
 import random
 
 from app import app
-from models import db, User, Milestone, Aspect, user_aspects
+from models import db, User, Milestone, Aspect, user_aspects, Friend
 
 def seed():
     # Delete current data from tables
@@ -11,6 +11,7 @@ def seed():
     User.query.delete()
     Milestone.query.delete()
     Aspect.query.delete()
+
 
     fake = Faker()
 
@@ -35,6 +36,25 @@ def seed():
             aspect_id=random.randint(1, 4)
         )
         db.session.add(new_milestone)
+
+    # Add friends to users 
+    # Retrieve all users from the database
+    users = User.query.all() 
+    for user in users:
+        num_friends = randint(1, 10)  # Randomly determine the number of friends for each user
+        user_friends = []
+
+        # Randomly select friends from all users
+        while len(user_friends) < num_friends:
+            friend = users[randint(0, len(users)-1)]
+            if friend != user and friend not in user_friends:
+                user_friends.append(friend)
+
+        # Create friendship objects and add them to the session
+        for friend in user_friends:
+            friendship = Friend(user=user, friend=friend)
+            db.session.add(friendship)
+
 
     # Add more milestones to users
     for i in range(300):

@@ -57,7 +57,6 @@ class Milestone(db.Model, SerializerMixin):
         return f'MILESTONE ID: {self.id}, DATE: {self.date}, Header: {self.header}'
 
 
-
 class Aspect(db.Model, SerializerMixin):
     __tablename__ = "aspects"
     id = db.Column(db.Integer, primary_key=True)
@@ -67,3 +66,16 @@ class Aspect(db.Model, SerializerMixin):
     
     def __repr__(self):
         return f'Aspect: ID: {self.id}, Name: {self.name}'
+    
+
+class Friend(db.Model, SerializerMixin):
+    __tablename__ = 'friends'
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    friend_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+
+    user = db.relationship('User', foreign_keys=[user_id])
+    friend = db.relationship('User', foreign_keys=[friend_id])
+
+    def __repr__(self):
+        return f'FRIEND: User ID: {self.user_id}, Friend ID: {self.friend_id}'    
