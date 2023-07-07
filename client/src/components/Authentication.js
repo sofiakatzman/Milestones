@@ -5,7 +5,7 @@ import * as yup from 'yup'
 
 function Authentication({ updateUser }) {
   const [signUp, setSignUp] = useState(false)
-  const navigate = useNavigate()
+
 
   const handleClick = () => setSignUp((signUp) => !signUp)
 
@@ -33,20 +33,22 @@ function Authentication({ updateUser }) {
       })
       .then(res => res.json())
       .then(user => {
+        console.log(user)
         if (user.error) {
           console.log(user.error) 
         } else {
           updateUser(user.username)
           console.log(user.username)
-          navigate('/')
+          // navigate('/')
         }})
     }
   })
 
   return (
     <>
-      <h2>Please LOGIN or SIGNUP!</h2>
+
       <h2>{signUp ? 'Already a member?' : 'Not a member?'}</h2>
+      <p>To fully enjoy this application, it is best you create an account. </p>
       <button onClick={handleClick}>{signUp ? 'Log In!' : 'Sign Up!'}</button>
       <form onSubmit={formik.handleSubmit}>
         <label>Username</label>
