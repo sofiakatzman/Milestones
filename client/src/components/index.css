@@ -6,7 +6,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: #f3f7e9;
     color: #8a9e9b;
-    text-align: left;
+    text-align: center;
   }
   
   .title {
@@ -27,17 +27,21 @@ body {
     transition: opacity 0.3s ease;
     align-self: flex-end;
     font-size: 1.5rem; 
+    color: transparent;
+    text-shadow: 0 0 0 rgb(105, 134, 110);
+    margin-right: 0.5rem;
+    font-size: 1.2em;
   }
   
   h1 {
-    text-align: center;
     animation: slideIn 0.5s ease-in-out;
   }
+
+
   .links {
     position: fixed;
-    top: 130px;
+    top: 40px;
     right: 40px;
-    opacity: 0;
     transition: opacity 0.3s ease;
     text-align: right; 
   }
@@ -47,23 +51,30 @@ body {
     transition: font-size 0.3s ease;
     text-align: justify;
     white-space: nowrap;
-    color: #8a9e9b; 
+    color: #cee0dd; 
+    line-height: 3rem;
     text-decoration: none;
   }
   
   .links a:hover {
     font-size: 25px;
   }
-  
-  .links a:visited {
-    color: #5c6b68; 
-  }
+
   
   .icon:hover + .navbar .links,
   .navbar:hover .links {
     opacity: 1;
   }
 
+  input.button {
+    --c:  #6e8f76;
+    color: #8c9e8a;
+    background: #f5f4ef;
+    background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
+    outline-offset: .1em;
+    transition: background-size .4s, background-position 0s .4s;
+    border-radius: 12px;
+  }
 
   button {
     --c:  #6e8f76;
@@ -92,6 +103,14 @@ body {
     border: none;
   }
 
+  button span[role="img"]{
+      color: transparent;
+      text-shadow: 0 0 0 rgb(105, 134, 110);
+      margin-right: 0.5rem;
+      font-size: 1.2em;
+  }
+
+
   div.icon {
     align-items: center;
     justify-content: center;
@@ -99,6 +118,12 @@ body {
     width: 60px;
     height: 55px;
     font-size: 2rem; 
+    /* make emojis solid color 
+    color: transparent;
+    text-shadow: 0 0 0 rgb(105, 134, 110);
+    margin-right: 0.5rem;
+    font-size: 1.2em; */
+
   }
 
   div.filters {
@@ -106,6 +131,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    
   }
 
   div.log {
@@ -115,11 +141,11 @@ body {
   }
   
   .cards {
-    width: 1000px;
+    width: 700px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
+    gap:10px;
     justify-items: center;
     align-items: center;
   }
@@ -140,7 +166,7 @@ body {
   .card .card-border-top {
     width: 60%;
     height: 3%;
-    background: #6b64f3;
+    background: #1e271b;
     margin: auto;
     border-radius: 0px 0px 15px 15px;
   }
@@ -200,3 +226,114 @@ body {
 .card button:hover {
  background: #534bf3;
 } */
+
+
+/* love switch code below for friendship*/
+/* .love-heart:before,
+#switch {
+  display: none;
+}
+
+.love-heart,
+.love-heart::after {
+  border-color: hsl(231deg 28% 86%);
+  border: 1px solid;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+  width: 10px;
+  height: 8px;
+  border-bottom: 0;
+}
+
+.round {
+  position: absolute;
+  z-index: 1;
+  width: 8px;
+  height: 8px;
+  background: hsl(0deg 0% 100%);
+  box-shadow: rgb(0 0 0 / 24%) 0px 0px 4px 0px;
+  border-radius: 100%;
+  left: 0;
+  bottom: -1px;
+  transition: all .5s ease;
+  animation: check-animation2 .5s forwards;
+}
+
+input:checked + label .round {
+  transform: translate(0px, 0px);
+  animation: check-animation .5s forwards;
+  background-color: hsl(0deg 0% 100%);
+}
+
+@keyframes check-animation {
+  0% {
+    transform: translate(0px, 0px);
+  }
+
+  50% {
+    transform: translate(0px, 7px);
+  }
+
+  100% {
+    transform: translate(7px, 7px);
+  }
+}
+
+@keyframes check-animation2 {
+  0% {
+    transform: translate(7px, 7px);
+  }
+
+  50% {
+    transform: translate(0px, 7px);
+  }
+
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+.love-heart {
+  box-sizing: border-box;
+  position: relative;
+  transform: rotate(-45deg) translate(-50%, -33px) scale(4);
+  display: block;
+  border-color: hsl(231deg 28% 86%);
+  cursor: pointer;
+  top: -10;
+  left: 40px; 
+} 
+
+input:checked + .love-heart,
+input:checked + .love-heart::after,
+input:checked + .love-heart .bottom {
+  border-color: hsl(347deg 81% 61%);
+  box-shadow: inset 6px -5px 0px 2px hsl(347deg 99% 72%);
+}
+
+.love-heart::after,
+.love-heart .bottom {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  border-color: hsl(231deg 28% 86%);
+}
+
+.love-heart::after {
+  right: -9px;
+  transform: rotate(90deg);
+  top: 7px;
+}
+
+.love-heart .bottom {
+  width: 11px;
+  height: 11px;
+  border-left: 1px solid;
+  border-bottom: 1px solid;
+  border-color: hsl(231deg 28% 86%);
+  left: -1px;
+  top: 5px;
+  border-radius: 0px 0px 0px 5px;
+}
+*/
