@@ -10,11 +10,6 @@ app.secret_key = b'@~xH\xf2\x10k\x07hp\x85\xa6N\xde\xd4\xcd'
 def index():
     return '<h1>Milestone Database</h1>'
 
-# this is for testing purposes 
-@app.route('/timeline/<username>')
-def user(username):
-    return f'<h1>Profile for {username}</h1>'
-
 class Users(Resource):
     def get(self):
         users = [user.to_dict() for user in User.query.all()]
@@ -146,6 +141,15 @@ class FriendsView(Resource):
 
     def post(self):
         return Friends().post()
+    
+@app.route('/timeline/<user_id>')
+def user(user_id):
+    milestones = Milestone.query.filter_by(user_id=user_id).all()
+    if milestones:
+        milestone_list = [milestone.to_dict() for milestone in milestones]
+        return jsonify(milestone_list)
+    else:
+        return jsonify({'error': 'User not found'})
 
 class Login(Resource):
     def post(self):
