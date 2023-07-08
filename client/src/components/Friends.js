@@ -7,23 +7,23 @@ function Friends(){
     useEffect(()=> {
         fetch("http://127.0.0.1:5000/friends")
         .then(r => r.json()).then(data => setFriends(data))
-    })
-
-
+    }, [])
 
 
     return(
         <>
-        <h1>These are all of your friends!</h1>
-
-        {friends && friends.map(friend => {
+        <h1>FRIENDS</h1>
+        <div className="cards"> 
+        {friends && friends.map(friend => { 
             return(
-                <div>
-                Friend Username: {friend.friend.username} <br/>
-                Friend Birthday: {friend.friend.birthday} <br/> <br/>
+                <div className='card'> 
+                <img src="https://www.nicepng.com/png/full/12-120709_png-file-human-icon-png.png"></img>
+                <span> {friend.friend.username}</span>             
+                <p classname="birthday"> {friend.friend.birthday} </p>
                 </div>
             )
         })}
+        </div>
         </>
     )
 }

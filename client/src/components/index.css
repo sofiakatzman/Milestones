@@ -29,6 +29,10 @@ body {
     font-size: 1.5rem; 
   }
   
+  h1 {
+    text-align: center;
+    animation: slideIn 0.5s ease-in-out;
+  }
   .links {
     position: fixed;
     top: 130px;
@@ -102,9 +106,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
-/* need to go back to this - each icon will be in a circle and when hovered will get larger. if clicked will remain that size. if unclicked will gray out a bit code tbd*/
-
   }
 
   div.log {
@@ -112,3 +113,90 @@ body {
     top: 20px;
     right: 40px;
   }
+  
+  .cards {
+    width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    justify-items: center;
+    align-items: center;
+  }
+  
+  .card {
+    width: 200px;
+    height: 170px;
+    background: #fffeff;
+    border-radius: 15px;
+    box-shadow: 1px 5px 30px 0px #9694be6b;
+    animation: slideIn 0.5s ease-in-out; /* Add animation property */
+  }
+
+  .card:hover {
+    box-shadow: 0 0 0 1px #35613b; /* Add desired outline properties */
+  }
+  
+  .card .card-border-top {
+    width: 60%;
+    height: 3%;
+    background: #6b64f3;
+    margin: auto;
+    border-radius: 0px 0px 15px 15px;
+  }
+  
+  .card span {
+    font-weight: 600;
+    color: rgb(46, 46, 46);
+    text-align: center;
+    display: block;
+    padding-top: 20px;
+    font-size: 16px;
+  }
+  
+  .card p {
+    font-weight: 400;
+    color: rgb(21, 24, 22);
+    display: block;
+    text-align: center;
+    padding-top: 3px;
+    font-size: 12px;
+  }
+  
+  .card img {
+    display: block;
+    margin: 10px auto;
+    width: 25px;
+    height: 25px;
+    padding-top: 17px;
+  }
+  
+  @keyframes slideIn {
+    0% {
+      transform: translateY(50%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+
+/* for card buttons 
+
+.card button {
+ padding: 8px 25px;
+ display: block;
+ margin: auto;
+ border-radius: 8px;
+ border: none;
+ margin-top: 30px;
+ background: #6b64f3;
+ color: white;
+ font-weight: 600;
+}
+
+.card button:hover {
+ background: #534bf3;
+} */
