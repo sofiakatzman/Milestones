@@ -21,7 +21,7 @@ function Friends() {
   
     return (
       <>
-        <h1>My friends</h1>
+        <h1>friends</h1>
         <br />
         <div className="cards">
           {friends.map((friend) => {

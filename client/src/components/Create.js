@@ -44,6 +44,8 @@ function Create() {
   };
   
   return (
+    <>
+    <h1>create a new milestone</h1>
     <form className="create-milestone-form" 
       onSubmit={formik.handleSubmit}>
       <label>Header</label> <br/>
@@ -92,7 +94,7 @@ function Create() {
       <br/>
       <p className="errors">{formik.errors.header}</p>
       <button type="submit">Submit</button>
-    </form>
+    </form></>
   );
 }
 

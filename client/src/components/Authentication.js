@@ -46,22 +46,21 @@ function Authentication({ updateUser }) {
 
   return (
     <>
-
       <h2>{signUp ? 'Already a member?' : 'Not a member?'}</h2>
       <p>To fully enjoy this application, it is best you create an account. </p>
-      <button onClick={handleClick}>{signUp ? 'Log In!' : 'Sign Up!'}</button>
+      <button onClick={handleClick}>{signUp ? 'Log In!' : 'Sign Up!'}</button> <br/><br/>
       <form onSubmit={formik.handleSubmit}>
         <label>Username</label>
-        <input type='text' name='username' value={formik.values.username} onChange={formik.handleChange} />
+        <input type='text' name='username' value={formik.values.username} onChange={formik.handleChange} /> <br/><br/>
         <label>Password</label>
         <input type='password' name='password' value={formik.values.password} onChange={formik.handleChange} />
         {signUp && (
           <>
-            <label>Birthdate</label>
+            <br/><br/><label>Birthdate</label>
             <input type='date' name='birthday' value={formik.values.birthday} onChange={formik.handleChange} />
           </>
         )}
-        <input type='submit' value={signUp ? 'Sign Up!' : 'Log In!'} />
+        <br/><br/><input type='submit' value={signUp ? 'Sign Up!' : 'Log In!'} />
       </form>
     </>
   )
