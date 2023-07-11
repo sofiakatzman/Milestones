@@ -8,12 +8,12 @@ function Settings() {
   const [editable, setEditable] = useState({
     username: false,
     birthday: false,
-    password: false,
+    // password: false,
   })
 
   const formSchema = yup.object().shape({
     username: yup.string().required('Please enter a username'),
-    password: yup.string().required('Please enter a password'),
+    // password: yup.string().required('Please enter a password'),
     birthday: yup.date().required('Please enter your birthdate.'),
   })
 
@@ -21,7 +21,7 @@ function Settings() {
     initialValues: {
       username: '',
       birthday: '',
-      password: '',
+      // password: '',
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
@@ -30,9 +30,9 @@ function Settings() {
       if (editable.username) {
         // fetch request to update username
       }
-      if (editable.password) {
-        // fetch request to update password
-      }
+      // if (editable.password) {
+      //   // fetch request to update password
+      // }
       if (editable.birthday) {
         // fetch request to update birthday
       }
@@ -79,7 +79,7 @@ function Settings() {
         )}
         <br />
         <br />
-        <label>Password </label>
+        {/* <label>Password </label>
         {editable.password ? (
           <>
             <input
@@ -101,7 +101,7 @@ function Settings() {
           </>
         )}
         <br />
-        <br />
+        <br /> */}
         <label>Birthdate </label>
         {editable.birthday ? (
           <>
@@ -125,9 +125,9 @@ function Settings() {
         )}
         <br />
         <br />
-        {editable.username || editable.password || editable.birthday ? (
+        {/* {editable.username || editable.password || editable.birthday ? (
           <button type="submit">Save Changes</button>
-        ) : null}
+        ) : null} */}
         <button className="delete" onClick={deleteAccount}>DELETE ACCOUNT</button>
       </form>
     </>

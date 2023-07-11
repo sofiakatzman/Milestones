@@ -20,16 +20,15 @@ class Users(Resource):
         new_user = User(username=form_json['username'], birthday=form_json['birthday'])
         
         # Hashes our password and saves it to _password_hash
-        new_user.password_hash = form_json['password']
+        # new_user.password_hash = form_json['password']
 
         db.session.add(new_user)
         db.session.commit()
-        
+        session['user_id'] = new_user.id
         response = make_response(
             new_user.to_dict(),
             201
         )
-        session["username"] = new_user.username
         return response
 
 class Friends(Resource):
@@ -156,32 +155,32 @@ class Login(Resource):
         try:
             data = request.get_json()
             username = data.get('username')
-            password = data.get('password')
-            user = User.query.filter_by(username=username).first()
-            if user and user.authenticate(password):
+            # password = data.get('password')
+            user = User.query.filter_by(username==username).first()
+            if user: # and user.authenticate(password):
                 session['user_id'] = user.id
                 response = make_response(user.to_dict(), 200)
                 return response
             else:
-                abort(401, "Incorrect Username or Password")
+                abort(401, "Incorrect Username")
         except:
-            abort(401, "Incorrect Username or Password")
+            abort(401, "Incorrect Username")
 
 class Signup(Resource):
     def post(self):
         request_json = request.get_json()
 
         username = request_json.get('username')
-        password = request_json.get('password')
+        # password = request_json.get('password')
         birthday = request_json.get('birthday')
 
         user = User(
             username=username,
-            password=password,
+            # password=password,
             birthday=birthday
         )
 
-        user.password_hash = password
+        # user.password_hash = password
 
         try:
             db.session.add(user)

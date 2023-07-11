@@ -18,8 +18,8 @@ def seed():
     for i in range(10):
         new_user = User(
             birthday=fake.date_of_birth(minimum_age=18, maximum_age=90),
-            username=(fake.first_name() + fake.last_name()).lower(),
-            _password_hash="temporary"
+            username=(fake.first_name() + fake.last_name()).lower()
+            # _password_hash="temporary"
         )
         db.session.add(new_user)
         db.session.flush()  # Flush the session to obtain the generated user ID
