@@ -4,7 +4,7 @@ from config import db, app, session, api
 from models import User, Friend, Aspect, Milestone
 from sqlalchemy.exc import IntegrityError
 
-app.secret_key = b'@~xH\xf2\x10k\x07hp\x85\xa6N\xde\xd4\xcd'
+app.secret_key = b'\xb2k|\xca"e\xc9\xc8\x98\xb3\x1d\x973u\xab\xf6'
 
 @app.route('/')
 def index():
@@ -162,15 +162,10 @@ class Login(Resource):
                 session['user_id'] = user.id
                 response = make_response(user.to_dict(), 200)
                 return response
+            else:
+                abort(401, "Incorrect Username or Password")
         except:
             abort(401, "Incorrect Username or Password")
-
-class Logout(Resource):
-    def delete(self):
-        if session.get('user_id'):
-            session.pop('user_id', None)
-            return {}, 204
-        return {'error': '401 Unauthorized'}, 401
 
 class Signup(Resource):
     def post(self):
@@ -192,9 +187,16 @@ class Signup(Resource):
             db.session.add(user)
             db.session.commit()
             session['user_id'] = user.id
-            return user.to_dict(), 201
+            return make_response(user.to_dict(), 201)
         except IntegrityError:
             return {'error': '422 Unprocessable Entity'}, 422
+        
+class Logout(Resource):
+    def delete(self):
+        if session.get('user_id'):
+            session.pop('user_id', None)
+            return {}, 204
+        return {'error': '401 Unauthorized'}, 401
 
 # Resource endpoints
 api.add_resource(Milestones, '/milestones', endpoint='milestones')
