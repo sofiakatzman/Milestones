@@ -57,7 +57,7 @@ const NavBar = (props) => {
       <Navigation side={side} bgColor={bgColor} navExpanded={navExpanded}>
         <UnorderedList>
           {Array.isArray(props.children)
-            ? props.children.map((element) => <li>{element}</li>)
+            ? props.children.map((element) => <li key={Math.random()*2000}>{element}</li>)
             : props.children}
         </UnorderedList>
       </Navigation>
