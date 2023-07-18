@@ -20,7 +20,7 @@ class Users(Resource):
         new_user = User(username=form_json['username'], birthday=form_json['birthday'])
         
         # Hashes our password and saves it to _password_hash
-        # new_user.password_hash = form_json['password']
+        new_user.password_hash = form_json['password']
 
         db.session.add(new_user)
         db.session.commit()
@@ -153,30 +153,36 @@ def user(user_id):
 class Login(Resource):
     def post(self):
         try:
-            user = User.query.filter_by(username=request.get_json()['username']).first()
-            # if user.authenticate(request.get_json()['password']):
-            session['user_id'] = user.id
-            response_data = user.to_dict()  # Make sure to implement this method
-            return response_data, 201  # Adjust the status code as needed
-        except: 
+            request_json = request.get_json()
+            username = request_json['username']
+            password = request_json['password']
+            user = User.query.filter_by(username=username).first()
+            
+            if user and user.authenticate(password):
+                session['user_id'] = user.id
+                response = make_response(user.to_dict(), 200)
+                return response
+            else:
+                abort(401, "Incorrect username or password")
+        except:
             abort(401, "Incorrect username or password")
 
 
 class Signup(Resource):
     def post(self):
         request_json = request.get_json()
-
         username = request_json.get('username')
         # Check if the username already exists
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
             return {'error': 'Username already exists'}, 409
-
         birthday = request_json.get('birthday')
+        
         user = User(
             username=username,
             birthday=birthday
         )
+        user.password_hash = request_json['password']
 
         try:
             db.session.add(user)
