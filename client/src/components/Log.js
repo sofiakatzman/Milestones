@@ -1,41 +1,27 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Log({ updateUser, user, handleLogout }) {
-  // const navigate = useNavigate()
+function Log({updateUser, user}) {
+  const navigate = useNavigate()
 
-  const handleLogin = () => {
-    // Perform the login request to your backend API
-    // fetch('http://localhost:5000/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify("test")
-    // })
-    //   .then((response) => {
-    //     console.log("Hey sof you clicked this")
-    //     if (response.ok) {
-    //       return response.json()
-    //     } else {
-    //       throw new Error('Oops! That is not quite right!')
-    //     }
-    //   })
-    //   .then((data) => {
+  const handleLogout = () => {
+    fetch("http://127.0.0.1:5000/logout", {
+      method: 'DELETE'})
+    .then(res => {
+      if(res.ok){
+        updateUser(null)
+        navigate('/')
+      }
 
-    //     updateUser(data.user)
-    //     // navigate('/timeline')
-    //   })
-    //   .catch((error) => {
-    //     console.error(error)
-    //   })
+    })
+    
+    
   }
 
   return (
     <div className='log'>
-      {user && (
-        <button onClick={console.log("hi")}>login</button>
-      ) }
+      {user ? 
+        <button onClick={()=>navigate('/')}>login</button> : <button onClick={()=>handleLogout()}>logout</button> 
+       }
     </div>
   )
 }

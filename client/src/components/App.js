@@ -38,14 +38,15 @@ function App() {
 
   return (
     <div>
-      <Log updateUser={updateUser} />
       <Router>
+      <Log updateUser={updateUser} /> 
+      
         <Navigation />
         <Routes>
-          <Route path="/" element={<Home updatedUser={updateUser}/>} />
+          <Route path="/" element={<Home updateUser={updateUser}/>} />
           <Route path="/friends" element={<Friends user={user} />} />
           <Route path="/create" element={<Create />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings" element={<Settings user={user}/>} />
           <Route path="/timelines" element={<Milestones />} />
           <Route path="/timelines/:user_id" element={<FriendMilestones />} />
         </Routes>

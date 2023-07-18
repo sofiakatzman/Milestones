@@ -1,10 +1,10 @@
 import Authentication from "./Authentication"
 import Milestones from "./Milestones"
 
-function Home({updatedUser}){
+function Home({updateUser}){
     return (
         <>
-        <Authentication updateUser={updatedUser}/> 
+        <Authentication updateUser={updateUser}/> 
         </>
     )
 }

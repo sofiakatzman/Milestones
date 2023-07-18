@@ -12,8 +12,8 @@ function Authentication({ updateUser }) {
   }
 
   const handleSubmit = (values) => {
-    console.log(values)
-    fetch("http://localhost:5000/login", {
+    const url = signUp ? "http://localhost:5000/signup" : "http://localhost:5000/login"
+    fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,67 +24,41 @@ function Authentication({ updateUser }) {
         if (response.ok) {
           return response.json()
         } else {
-          throw new Error("Incorrect username!") // Provide a meaningful error message
+          throw new Error("Incorrect credentials!") // Provide a meaningful error message
         }
       })
       .then((data) => {
         updateUser(data)
-        // currently navigates to their timeline page but would like for the page to instead load 
+        // currently navigates to their timeline page but would like for the page to instead load the user's milestones ** 
         navigate(`/timelines/${data.id}`)
       })
       .catch((error) => {
         console.error(error)
+        console.log(error.response)
         // Handle the error, display an error message to the user, etc.
       })
   }
 
   const formSchema = yup.object().shape({
     username: yup.string().required("Please enter a username"),
-    // password: yup.string().required("Please enter a password"),
-    // birthday: yup.date().required("Please enter your birthdate"),
+    // birthday: yup.date().required("Please enter your birthdate"), * took this validation off because it wouldnt allow my login function to work 
   })
 
   const formik = useFormik({
     initialValues: {
       username: "",
       birthday: "",
-      // password: "",
     },
-    validationSchema:formSchema,
-    onSubmit:(values) =>{
-      fetch(signUp?'http://localhost:5000/users':'http://localhost:5000/login',{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body: JSON.stringify(values)
-      })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error("Incorrect username!") 
-        }
-      })
-      .then((data) => {
-        updateUser(data)
-        // currently navigates to their timeline page but would like for the page to instead load 
-        navigate(`/timelines/${data.id}`)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-    }
-})
+    validationSchema: formSchema,
+    onSubmit: handleSubmit,
+  })
 
   return (
     <>
       <div>
         <h2>{signUp ? "Already a member?" : "Not a member?"}</h2>
         <p>To fully enjoy this application, it is best you create an account.</p>
-        <button onClick={handleClick}>
-          {signUp ? "Log In!" : "Sign Up!"}
-        </button>
+        <button onClick={handleClick}>{signUp ? "Log In!" : "Sign Up!"}</button>
         <br />
         <br />
       </div>
@@ -98,18 +72,16 @@ function Authentication({ updateUser }) {
           onChange={formik.handleChange}
         />
         <br />
-        <br />
-        {/* <label>Password : </label>
+        <label>Password : </label>
         <input
           type="password"
           name="password"
           value={formik.values.password}
           onChange={formik.handleChange}
-        /> */}
+        />
+        <br />
         {signUp && (
           <>
-            <br />
-            <br />
             <label>Birthdate : </label>
             <input
               type="date"
@@ -117,10 +89,13 @@ function Authentication({ updateUser }) {
               value={formik.values.birthday}
               onChange={formik.handleChange}
             />
+            {formik.touched.birthday && formik.errors.birthday ? (
+              <div>{formik.errors.birthday}</div>
+            ) : null}
+            <br />
+            <br />
           </>
         )}
-        <br />
-        <br />
         <input type="submit" value={signUp ? "Sign Up!" : "Log In!"} />
       </form>
     </>

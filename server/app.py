@@ -153,49 +153,57 @@ def user(user_id):
 class Login(Resource):
     def post(self):
         try:
-            data = request.get_json()
-            username = data.get('username')
-            # password = data.get('password')
-            user = User.query.filter_by(username==username).first()
-            if user: # and user.authenticate(password):
-                session['user_id'] = user.id
-                response = make_response(user.to_dict(), 200)
-                return response
-            else:
-                abort(401, "Incorrect Username")
-        except:
-            abort(401, "Incorrect Username")
+            user = User.query.filter_by(username=request.get_json()['username']).first()
+            # if user.authenticate(request.get_json()['password']):
+            session['user_id'] = user.id
+            response_data = user.to_dict()  # Make sure to implement this method
+            return response_data, 201  # Adjust the status code as needed
+        except: 
+            abort(401, "Incorrect username or password")
+
 
 class Signup(Resource):
     def post(self):
         request_json = request.get_json()
 
         username = request_json.get('username')
-        # password = request_json.get('password')
-        birthday = request_json.get('birthday')
+        # Check if the username already exists
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return {'error': 'Username already exists'}, 409
 
+        birthday = request_json.get('birthday')
         user = User(
             username=username,
-            # password=password,
             birthday=birthday
         )
-
-        # user.password_hash = password
 
         try:
             db.session.add(user)
             db.session.commit()
             session['user_id'] = user.id
             return make_response(user.to_dict(), 201)
-        except IntegrityError:
+        except:
             return {'error': '422 Unprocessable Entity'}, 422
-        
+
+class AuthorizedSession(Resource):
+    def get(self):
+        try:
+            user = User.query.filter_by(id=session['user_id']).first()
+            response = make_response(
+                user.to_dict(),
+                200
+            )
+            return response
+        except:
+            abort(401, "Unauthorized")
+            
 class Logout(Resource):
     def delete(self):
-        if session.get('user_id'):
-            session.pop('user_id', None)
-            return {}, 204
-        return {'error': '401 Unauthorized'}, 401
+        session['user_id']=None 
+        response = make_response('', 204)
+        return response     
+    
 
 # Resource endpoints
 api.add_resource(Milestones, '/milestones', endpoint='milestones')
@@ -211,17 +219,7 @@ api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(Signup, '/signup')
 
-class AuthorizedSession(Resource):
-    def get(self):
-        try:
-            user = User.query.filter_by(id=session['user_id']).first()
-            response = make_response(
-                user.to_dict(),
-                200
-            )
-            return response
-        except:
-            abort(401, "Unauthorized")
+
 
 api.add_resource(AuthorizedSession, '/authorized')
 

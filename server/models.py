@@ -29,24 +29,24 @@ class User(db.Model, SerializerMixin):
     birthday = db.Column(db.String)
     username = db.Column(db.String)
     admin = db.Column(db.String, default=False)
-    # _password_hash = db.Column(db.String)
+    _password_hash = db.Column(db.String)
 
     milestones = db.relationship('Milestone', backref=db.backref('user'), cascade='all, delete-orphan')
     aspects = db.relationship('Aspect', secondary=user_aspects, backref=db.backref('users'), cascade='all')
 
-    serialize_rules = ('-admin', '-aspects') # '-_password_hash', 
+    serialize_rules = ('-admin', '-aspects')
     
-    # @hybrid_property
-    # def password_hash(self):
-    #     return AttributeError("Password hashes may not be viewed.")
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
     
-    # @password_hash.setter
-    # def password_hash(self, password):
-    #     password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
-    #     self._password_hash = password_hash.decode('utf-8')
+    @password_hash.setter
+    def password_hash(self, password):
+        password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
+        self._password_hash = password_hash.decode('utf-8')
 
-    # def authenticate(self, password):
-    #     return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
 
     def __repr__(self):
         return f'USER: ID: {self.id}, Username: {self.username}, Admin: {self.admin}'
@@ -60,7 +60,7 @@ class Milestone(db.Model, SerializerMixin):
     header = db.Column(db.String)
     subheader = db.Column(db.String)
     description = db.Column(db.String)
-    is_private = db.Column(db.Boolean)   
+    is_private = db.Column(db.Boolean, default=False)   
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     aspect_id = db.Column(db.Integer, db.ForeignKey('aspects.id'))
