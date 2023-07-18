@@ -91,6 +91,13 @@ def seed():
     # Commit changes to the session
     db.session.commit()
 
+    admin = User(username="admin", birthday="07/15/1994", admin=True)
+    admin.password_hash = 'cow'
+
+    db.session.add(admin)
+    db.session.commit()
+
+
 if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
