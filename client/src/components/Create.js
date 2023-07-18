@@ -16,7 +16,7 @@ function Create() {
       description: '',
       date: '',
       aspect_id: '',
-      is_private: '',
+      // is_private: '',
       user_id: '',
     },
     validationSchema: formSchema,
@@ -78,14 +78,14 @@ function Create() {
         value={formik.values.aspect_id} 
         onChange={formik.handleChange} />
       <br/>
-      <label>Private?</label> <br/> 
+      {/* <label>Private?</label> <br/> 
       <input
         type="checkbox"
         name="is_private"
         checked={formik.values.is_private}
         onChange={handleCheckboxChange}
       /> 
-      <br/>
+      <br/> */}
       <label>User ID</label> <br/>
       <input type="number" 
         name="user_id" 
