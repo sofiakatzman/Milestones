@@ -4,7 +4,6 @@ import { Navigate, useNavigate } from "react-router-dom"
 function Friends({user_id}) {
     const [friends, setFriends] = useState(null)
     const navigate = useNavigate()
-    console.log(user_id)
 
     useEffect(() => {
       fetch(`http://127.0.0.1:5000/friends`)

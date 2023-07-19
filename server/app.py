@@ -58,6 +58,7 @@ class Users(Resource):
 api.add_resource(Users, '/users/<int:user_id>', endpoint='users')
 
 class Friends(Resource):
+    
     def get(self):
         friends = [friend.to_dict() for friend in Friend.query.all()]
         return jsonify(friends)
@@ -93,6 +94,17 @@ class Friends(Resource):
 
         return jsonify({'message': 'Friendship created'}), 201
 
+api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')    
+
+class FriendsView(Resource):
+    def get(self):
+        return Friends().get()
+
+    def post(self):
+        return Friends().post()
+    
+api.add_resource(FriendsView, '/friends')
+
 class Aspects(Resource):
     def get(self):
         aspects = [aspect.to_dict() for aspect in Aspect.query.all()]
@@ -122,6 +134,7 @@ class Aspects(Resource):
         except IntegrityError:
             return {'error': '422 Unprocessable entity'}, 422
 
+
 class AspectView(Resource):
     def get(self):
         return Aspects().get()
@@ -129,35 +142,13 @@ class AspectView(Resource):
     def post(self):
         return Aspects().post()
 
+api.add_resource(AspectView, '/aspects')
+
 class Milestones(Resource):
     def get(self):
         milestones = [milestone.to_dict() for milestone in Milestone.query.all()]
         return jsonify(milestones)
 
-    def post(self):
-        request_json = request.get_json()
-        new_milestone = Milestone(
-            header=request_json.get('header'),
-            subheader=request_json.get('subheader'),
-            description=request_json.get('description'),
-            date=request_json.get('date'),
-            aspect_id=request_json.get('aspect_id'),
-            is_private=request_json.get('is_private'),
-            user_id=request_json.get('user_id')
-        )
-        try:
-            db.session.add(new_milestone)
-            db.session.commit()
-            
-            response_dict = new_milestone.to_dict()
-            response = make_response(
-                jsonify(response_dict), 
-                201
-            )
-            return response
-        except IntegrityError:
-            return {'error': '422 Unprocessable Entity'}, 422
-        
     def delete(self, milestone_id):
         milestone = Milestone.query.filter_by(id=milestone_id).first()
         if not milestone:
@@ -166,6 +157,40 @@ class Milestones(Resource):
         db.session.delete(milestone)
         db.session.commit()
         return {'message': 'Milestone deleted successfully'}, 204
+
+
+api.add_resource(Milestones, '/milestones/<int:milestone_id>', endpoint='milestones')
+@app.route('/milestones', methods=['POST'])
+def create_milestone():
+    request_json = request.get_json()
+    new_milestone = Milestone(
+        header=request_json.get('header'),
+        subheader=request_json.get('subheader'),
+        description=request_json.get('description'),
+        date=request_json.get('date'),
+        aspect_id=request_json.get('aspect_id'),
+        is_private=request_json.get('is_private'),
+        user_id=request_json.get('user_id')
+    )
+    try:
+        db.session.add(new_milestone)
+        db.session.commit()
+
+        response_dict = new_milestone.to_dict()
+        response = make_response(
+            jsonify(response_dict),
+            201
+        )
+        return response
+    except IntegrityError:
+        return {'error': '422 Unprocessable Entity'}, 422
+# do not think i need these? tbd. 
+# class MilestonesView(Resource):
+#     def get(self):
+#         return Milestones().get()
+
+#     def post(self):
+#         return Milestones().post()
     
 @app.route('/milestone/<user_id>')
 def user(user_id):
@@ -176,22 +201,6 @@ def user(user_id):
     else:
         return jsonify({'error': 'User not found'})
     
-class MilestonesView(Resource):
-    def get(self):
-        return Milestones().get()
-
-    def post(self):
-        return Milestones().post()
-
-class FriendsView(Resource):
-    def get(self):
-        return Friends().get()
-
-    def post(self):
-        return Friends().post()
-    
-
-
 class Login(Resource):
     def post(self):
         try:
@@ -209,6 +218,7 @@ class Login(Resource):
         except:
             abort(401, "Incorrect username or password")
 
+api.add_resource(Login, '/login')
 
 class Signup(Resource):
     def post(self):
@@ -234,6 +244,8 @@ class Signup(Resource):
         except:
             return {'error': '422 Unprocessable Entity'}, 422
 
+api.add_resource(Signup, '/signup')
+
 class AuthorizedSession(Resource):
     def get(self):
         try:
@@ -245,32 +257,33 @@ class AuthorizedSession(Resource):
             return response
         except:
             abort(401, "Unauthorized")
-            
+
+api.add_resource(AuthorizedSession, '/authorized')
+
 class Logout(Resource):
     def delete(self):
         session['user_id']=None 
         response = make_response('', 204)
         return response     
     
+api.add_resource(Logout, '/logout')
 
 # Resource endpoints
-api.add_resource(Milestones, '/milestones/<int:milestone_id>', endpoint='milestones')
-api.add_resource(Users, '/users/<int:user_id>', endpoint='users')
-
-api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')
 
 
-api.add_resource(AspectView, '/aspects')
-api.add_resource(FriendsView, '/friends')
+
+
+
+
+
 
 # Functional resource endpoints
-api.add_resource(Login, '/login')
-api.add_resource(Logout, '/logout')
-api.add_resource(Signup, '/signup')
 
 
 
-api.add_resource(AuthorizedSession, '/authorized')
+
+
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

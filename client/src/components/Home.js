@@ -6,7 +6,7 @@ function Home({updateUser, user_id}){
 
     return (
         <>
-        Hello! Welcome to your timeline. <br/> These are your current milestones...
+        hello! welcome to your timeline. <br/> <br/>
         <Milestones user_id={user_id}/>
         </>
     )

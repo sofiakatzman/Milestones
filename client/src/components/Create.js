@@ -19,7 +19,6 @@ function Create({ user_id }) {
       })
       .then((data) => {
         setAspects(data)
-        console.log(data)
       })
   }, []) // Empty dependency array to ensure the effect runs only once
 
@@ -36,7 +35,6 @@ function Create({ user_id }) {
       description: '',
       date: '',
       aspect_id: '',
-      // is_private: '',
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
@@ -51,7 +49,6 @@ function Create({ user_id }) {
       }).then((res) => {
         if (res.ok) {
           res.json().then((milestone) => {
-            console.log(milestone)
             navigate('/')
           })
         }
@@ -99,14 +96,7 @@ function Create({ user_id }) {
           ))}
         </select>
         <br />
-        {/* <label>Private?</label> <br/>
-        <input
-          type="checkbox"
-          name="is_private"
-          checked={formik.values.is_private}
-          onChange={handleCheckboxChange}
-        />
-        <br/> */}
+
         <p className="errors">{formik.errors.header}</p>
         <button type="submit">Submit</button>
       </form>

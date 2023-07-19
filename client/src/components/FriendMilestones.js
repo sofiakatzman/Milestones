@@ -13,7 +13,6 @@ function FriendMilestones() {
   const { user_id } = useParams()
 
   useEffect(() => {
-    console.log(user_id)
     // fetch for user milestones
     fetch(`http://127.0.0.1:5000/milestone/${user_id}`)
       .then((response) => {

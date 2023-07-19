@@ -41,7 +41,7 @@ body {
   .links {
     position: fixed;
     top: 40px;
-    right: 40px;
+    right: 20px;
     transition: opacity 0.3s ease;
     text-align: right; 
   }
@@ -337,3 +337,31 @@ input:checked + .love-heart .bottom {
   border-radius: 0px 0px 0px 5px;
 }
 */
+
+/* CSS for the filter buttons */
+.filter-button {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+  outline: none;
+}
+
+/* CSS for the name */
+.hide-hover {
+  visibility: hidden;
+  position: absolute;
+  bottom: -20px; /* Adjust this value to control the distance between the icon and the name */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+/* CSS to show the name when hovering over the button */
+.filter-button:hover .hide-hover {
+  visibility: visible;
+}

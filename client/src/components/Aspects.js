@@ -1,9 +1,11 @@
 import React from "react"
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useNavigate } from "react-router-dom"
 
 function Aspects(){
-    const formSchema = yup.object().shape({
+  const navigate = useNavigate()
+  const formSchema = yup.object().shape({
         name: yup.string().required('Must enter a header'),
         // Add validation for other fields if needed
       })
@@ -16,9 +18,7 @@ function Aspects(){
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
-            console.log(values)
-
-          fetch('http://127.0.0.1:5000/aspects', {
+            fetch('http://127.0.0.1:5000/aspects', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -27,8 +27,8 @@ function Aspects(){
           }).then((res) => {
             if (res.ok) {
               res.json().then((aspect) => {
-                console.log(aspect)
-                // navigate('/')
+                console.log(`aspect : ${aspect}, has been created. `)
+                navigate('/')
               })
             }
           })
@@ -37,36 +37,34 @@ function Aspects(){
     return(
         <>
         <h1>create new aspects</h1>
-
-        {/* 
-    
-    name = db.Column(db.String)
-    description = db.Column(db.String)
-    icon = db.Column(db.String) */}
     
         <form className="aspects-form" 
-      onSubmit={formik.handleSubmit}>
-      <label>Aspect Name</label> <br/>
-      <input type="text" 
+        onSubmit={formik.handleSubmit}>
+          
+        <label>Aspect Name</label> <br/>
+        <input type="text" 
         name="name" 
         value={formik.values.name} 
         onChange={formik.handleChange} />
-      <br/>
-      <label>Aspect Description</label> <br/>
-      <input type="text" 
-        name="description" 
-        value={formik.values.description} 
-        onChange={formik.handleChange} />
-      <br/>
-      <label>Aspect Icon</label> <br/>
-      <textarea type="text" 
-        name="icon" 
-        value={formik.values.icon} 
-        onChange={formik.handleChange} />
-      <br/>
-      <p className="errors">{formik.errors.header}</p>
-      <button type="submit">Submit</button>
-    </form>
+        <br/>
+
+        <label>Aspect Description</label> <br/>
+        <input type="text" 
+          name="description" 
+          value={formik.values.description} 
+          onChange={formik.handleChange} />
+        <br/>
+
+        <label>Aspect Icon</label> <br/>
+        <textarea type="text" 
+          name="icon" 
+          value={formik.values.icon} 
+          onChange={formik.handleChange} />
+        <br/>
+
+        <p className="errors">{formik.errors.header}</p>
+        <button type="submit">Submit</button>
+        </form>
 
         </>
     )

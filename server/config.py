@@ -9,10 +9,10 @@ from flask import Flask
 from flask_session import Session
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app, origins='http://localhost:4000')
 bcrypt = Bcrypt(app)
 
-app.secret_key = b'@~xH\xf2\x10k\x07hp\x85\xa6N\xde\xd4\xcd'
+app.secret_key = b'\xb2k|\xca"e\xc9\xc8\x98\xb3\x1d\x973u\xab\xf6'
 
 
 # Instantiate app, set attributes
