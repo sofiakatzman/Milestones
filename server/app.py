@@ -30,6 +30,32 @@ class Users(Resource):
             201
         )
         return response
+    
+    def delete(self, user_id):
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            abort(404, 'User not found')
+
+        db.session.delete(user)
+        db.session.commit()
+        response = make_response(
+            user.to_dict(), 
+            204
+        )
+        return response
+    
+    def patch(self, user_id):
+        form_json = request.get_json()
+        user = User.query.filter_by(id=user_id).first()
+        user.username = form_json['username']
+        db.session.commit()
+        response = make_response(
+            user.to_dict(), 
+            204
+        )
+        return response
+
+api.add_resource(Users, '/users/<int:user_id>', endpoint='users')
 
 class Friends(Resource):
     def get(self):
@@ -140,7 +166,16 @@ class Milestones(Resource):
         db.session.delete(milestone)
         db.session.commit()
         return {'message': 'Milestone deleted successfully'}, 204
-
+    
+@app.route('/milestone/<user_id>')
+def user(user_id):
+    milestones = Milestone.query.filter_by(user_id=user_id).all()
+    if milestones:
+        milestone_list = [milestone.to_dict() for milestone in milestones]
+        return jsonify(milestone_list)
+    else:
+        return jsonify({'error': 'User not found'})
+    
 class MilestonesView(Resource):
     def get(self):
         return Milestones().get()
@@ -155,14 +190,7 @@ class FriendsView(Resource):
     def post(self):
         return Friends().post()
     
-@app.route('/milestone/<user_id>')
-def user(user_id):
-    milestones = Milestone.query.filter_by(user_id=user_id).all()
-    if milestones:
-        milestone_list = [milestone.to_dict() for milestone in milestones]
-        return jsonify(milestone_list)
-    else:
-        return jsonify({'error': 'User not found'})
+
 
 class Login(Resource):
     def post(self):
@@ -227,7 +255,7 @@ class Logout(Resource):
 
 # Resource endpoints
 api.add_resource(Milestones, '/milestones/<int:milestone_id>', endpoint='milestones')
-api.add_resource(Users, '/users', endpoint='users')
+api.add_resource(Users, '/users/<int:user_id>', endpoint='users')
 
 api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')
 
