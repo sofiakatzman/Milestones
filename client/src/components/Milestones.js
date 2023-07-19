@@ -2,12 +2,12 @@ import { VerticalTimeline } from 'react-vertical-timeline-component'
 import TimelineComponent from "./Timeline"
 import { useEffect, useState } from "react"
 
-function Milestones() {
+function Milestones({user_id}) {
   const [data, setData] = useState(null)
   const [filteredData, setFilteredData] = useState(null)
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/milestones')
+    fetch(`http://127.0.0.1:5000/milestone/${user_id}`)
       .then(response => response.json())
       .then(data => {
         setData(data)
