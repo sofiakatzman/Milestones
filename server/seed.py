@@ -60,8 +60,8 @@ def seed():
             subheader=fake.text(max_nb_chars=30),
             description=fake.text(max_nb_chars=70),
             is_private=fake.pybool(),
-            user_id=randint(1, 10),
-            aspect_id=randint(1, 4)
+            user_id=randint(1, 11),
+            aspect_id=randint(1, 5)
         )
         db.session.add(new_milestone)
 
@@ -88,13 +88,27 @@ def seed():
         new_instance = user_aspects.insert().values(user_id=i, aspect_id=2)
         db.session.execute(new_instance)
 
-    # Commit changes to the session
-    db.session.commit()
 
+    # create admin user for testing and debugging
     admin = User(username="admin", birthday="07/15/1994", admin=True)
     admin.password_hash = 'cow'
 
+   
+    admin_friends = []
+    # Randomly select friends from all users
+    while len(admin_friends) < 5:
+        friend = users[randint(0, len(users)-1)]
+        if friend != user and friend not in admin_friends:
+            admin_friends.append(friend)
+
+    # Create friendship objects and add them to the session
+    for friend in admin_friends:
+        friendship = Friend(user_id=11, friend_id=friend.id)
+        db.session.add(friendship)
+
     db.session.add(admin)
+
+    
     db.session.commit()
 
 
