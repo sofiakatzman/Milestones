@@ -24,18 +24,17 @@ function Authentication({ updateUser }) {
         if (response.ok) {
           return response.json()
         } else {
-          throw new Error("Incorrect credentials!") // Provide a meaningful error message
+          throw new Error("Incorrect credentials!")
         }
       })
       .then((data) => {
         updateUser(data)
         // currently navigates to their timeline page but would like for the page to instead load the user's milestones ** 
-        navigate(`/timelines/${data.id}`)
+        navigate(`/`)
       })
       .catch((error) => {
         console.error(error)
         console.log(error.response)
-        // Handle the error, display an error message to the user, etc.
       })
   }
 
@@ -48,6 +47,7 @@ function Authentication({ updateUser }) {
     initialValues: {
       username: "",
       birthday: "",
+      password: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
