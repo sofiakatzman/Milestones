@@ -5,13 +5,17 @@ import { useParams } from "react-router-dom"
 
 function FriendMilestones() {
   const [friendData, setFriendData] = useState(null)
-  const { user_id } = useParams()
   const [error, setError] = useState(false)
   const [username, setUsername] = useState("")
   const [filteredData, setFilteredData] = useState(null)
+  const [aspects, setAspects] = useState(null)
+
+  const { user_id } = useParams()
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/timeline/${user_id}`)
+    console.log(user_id)
+    // fetch for user milestones
+    fetch(`http://127.0.0.1:5000/milestone/${user_id}`)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -25,7 +29,21 @@ function FriendMilestones() {
         setFilteredData(data)
       })
       .catch(() => setError(true))
-  }, [user_id])
+    // fetch for aspects
+    fetch(`http://127.0.0.1:5000/aspects`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error("No aspects found")
+        }
+      })
+      .then((data) => {
+        setAspects(data)
+        console.log(data)
+      })
+      .catch(() => setError(true))
+  }, [])
 
   const handleFilterOption = (option) => {
     if (option === 'all') {
@@ -39,37 +57,19 @@ function FriendMilestones() {
   }
 
   if (error) {
-    return <div>Error! User not found.</div>
+    return <div>No milestones yet!</div>
   }
 
   return (
     <>
       <div className="filters">
-        {/* Display filter choices as emojis and handle their selection */}
-        <button className="filter-button" onClick={() => handleFilterOption(1)}>
-          <span role="img" aria-label="education">✏️</span>
+        {aspects && aspects.map(aspect => {
+          return(
+          <button className="filter-button" key={aspect.id}onClick={() => handleFilterOption(aspect.id)}>
+          <span role="img" aria-label={aspect.name}>{aspect.icon}</span>
         </button>
-
-
-        <button className="filter-button" onClick={() => handleFilterOption(2)}>
-          <span role="img" aria-label="growth">🌱</span>
-        </button>
-
-        <button className="filter-button" onClick={() => handleFilterOption(3)}>
-          <span role="img" aria-label="achievements">🏆</span>
-        </button>
-
-        <button className="filter-button" onClick={() => handleFilterOption(4)}>
-          <span role="img" aria-label="life-changes">✈️</span>
-        </button>
-
-        <button className="filter-button" onClick={() => handleFilterOption(5)}>
-          <span role="img" aria-label="professional">💼</span>
-        </button>
-
-        <button className="filter-button" onClick={() => handleFilterOption("all")}>
-          <span role="img" aria-label="view-all">❌</span>
-        </button>
+          )
+        })}
       </div>
 
       <div>
