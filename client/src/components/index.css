@@ -1,342 +1,220 @@
 @import url(//fonts.googleapis.com/css?family=Open+Sans);
 
 body {
-    top: 50px;
-    margin: 40px;
-    font-family: 'Open Sans', sans-serif;
-    background-color: #f3f7e9;
-    color: #8a9e9b;
-    text-align: center;
-  }
-  
-  .title {
-    text-align: right;
-  }
-  
-  .navbar {
-    position: fixed;
-    top: 45px;
-    right: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
-  
-  h1.icon {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    align-self: flex-end;
-    font-size: 1.5rem; 
-    color: transparent;
-    text-shadow: 0 0 0 rgb(105, 134, 110);
-    margin-right: 0.5rem;
-    font-size: 1.2em;
-  }
-  
-  h1 {
-    animation: slideIn 0.5s ease-in-out;
-  }
-
-
-  .links {
-    position: fixed;
-    top: 40px;
-    right: 20px;
-    transition: opacity 0.3s ease;
-    text-align: right; 
-  }
-  
-  .links a {
-    font-size: 16px;
-    transition: font-size 0.3s ease;
-    text-align: justify;
-    white-space: nowrap;
-    color: #cee0dd; 
-    line-height: 3rem;
-    text-decoration: none;
-  }
-  
-  .links a:hover {
-    font-size: 25px;
-  }
-
-  
-  .icon:hover + .navbar .links,
-  .navbar:hover .links {
-    opacity: 1;
-  }
-
-  input.button {
-    --c:  #6e8f76;
-    color: #8c9e8a;
-    background: #f5f4ef;
-    background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
-    outline-offset: .1em;
-    transition: background-size .4s, background-position 0s .4s;
-    border-radius: 12px;
-  }
-
-  button {
-    --c:  #6e8f76;
-    color: #8c9e8a;
-    background: #f5f4ef;
-    background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
-    outline-offset: .1em;
-    transition: background-size .4s, background-position 0s .4s;
-    border-radius: 12px;
-  }
-  button:hover {
-    --_p: 100%;
-    transition: background-position .4s, background-size 0s;
-  }
-  button:active {
-    box-shadow: 0 0 9e9q inset #8a9e9b; 
-    background-color: var(--c);
-    color: #fff;
-  }
-  
-  button {
-    font-size: 1rem;
-    cursor: pointer;
-    padding: .1em .6em;
-    font-weight: bold;  
-    border: none;
-  }
-
-  button span[role="img"]{
-      color: transparent;
-      text-shadow: 0 0 0 rgb(105, 134, 110);
-      margin-right: 0.5rem;
-      font-size: 1.2em;
-  }
-
-
-  div.icon {
-    align-items: center;
-    justify-content: center;
-    display: inline-flex;
-    width: 60px;
-    height: 55px;
-    font-size: 2rem; 
-    /* make emojis solid color 
-    color: transparent;
-    text-shadow: 0 0 0 rgb(105, 134, 110);
-    margin-right: 0.5rem;
-    font-size: 1.2em; */
-
-  }
-
-  div.filters {
-    font-size: 2rem; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-  }
-
-  div.log {
-    position: fixed;
-    top: 20px;
-    right: 40px;
-  }
-  
-  .cards {
-    width: 700px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap:10px;
-    justify-items: center;
-    align-items: center;
-  }
-  
-  .card {
-    width: 200px;
-    height: 170px;
-    background: #fffeff;
-    border-radius: 15px;
-    box-shadow: 1px 5px 30px 0px #9694be6b;
-    animation: slideIn 0.5s ease-in-out; /* Add animation property */
-  }
-
-  .card:hover {
-    box-shadow: 0 0 0 1px #35613b; /* Add desired outline properties */
-  }
-  
-  .card .card-border-top {
-    width: 60%;
-    height: 3%;
-    background: #1e271b;
-    margin: auto;
-    border-radius: 0px 0px 15px 15px;
-  }
-  
-  .card span {
-    font-weight: 600;
-    color: rgb(46, 46, 46);
-    text-align: center;
-    display: block;
-    padding-top: 20px;
-    font-size: 16px;
-  }
-  
-  .card p {
-    font-weight: 400;
-    color: rgb(21, 24, 22);
-    display: block;
-    text-align: center;
-    padding-top: 3px;
-    font-size: 12px;
-  }
-  
-  .card img {
-    display: block;
-    margin: 10px auto;
-    width: 25px;
-    height: 25px;
-    padding-top: 17px;
-  }
-  
-  @keyframes slideIn {
-    0% {
-      transform: translateY(50%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-
-/* for card buttons 
-
-.card button {
- padding: 8px 25px;
- display: block;
- margin: auto;
- border-radius: 8px;
- border: none;
- margin-top: 30px;
- background: #6b64f3;
- color: white;
- font-weight: 600;
+  margin: 40px;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f3f7e9;
+  color: #8a9e9b;
 }
 
-.card button:hover {
- background: #534bf3;
-} */
-
-
-/* love switch code below for friendship*/
-/* .love-heart:before,
-#switch {
-  display: none;
+.title {
+  text-align: right;
 }
 
-.love-heart,
-.love-heart::after {
-  border-color: hsl(231deg 28% 86%);
-  border: 1px solid;
-  border-top-left-radius: 100px;
-  border-top-right-radius: 100px;
-  width: 10px;
-  height: 8px;
-  border-bottom: 0;
+.navbar {
+  position: fixed;
+  top: 45px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.round {
-  position: absolute;
-  z-index: 1;
-  width: 8px;
-  height: 8px;
-  background: hsl(0deg 0% 100%);
-  box-shadow: rgb(0 0 0 / 24%) 0px 0px 4px 0px;
-  border-radius: 100%;
-  left: 0;
-  bottom: -1px;
-  transition: all .5s ease;
-  animation: check-animation2 .5s forwards;
+p, h3, h4, h5 {
+  text-align: center;
 }
 
-input:checked + label .round {
-  transform: translate(0px, 0px);
-  animation: check-animation .5s forwards;
-  background-color: hsl(0deg 0% 100%);
-}
-
-@keyframes check-animation {
-  0% {
-    transform: translate(0px, 0px);
-  }
-
-  50% {
-    transform: translate(0px, 7px);
-  }
-
-  100% {
-    transform: translate(7px, 7px);
-  }
-}
-
-@keyframes check-animation2 {
-  0% {
-    transform: translate(7px, 7px);
-  }
-
-  50% {
-    transform: translate(0px, 7px);
-  }
-
-  100% {
-    transform: translate(0px, 0px);
-  }
-}
-
-.love-heart {
-  box-sizing: border-box;
-  position: relative;
-  transform: rotate(-45deg) translate(-50%, -33px) scale(4);
-  display: block;
-  border-color: hsl(231deg 28% 86%);
+button {
+  text-align: center;
+  background-color: white;
+  border: none;
+  text-decoration: none;
+  color: #007bff;
   cursor: pointer;
-  top: -10;
-  left: 40px; 
-} 
-
-input:checked + .love-heart,
-input:checked + .love-heart::after,
-input:checked + .love-heart .bottom {
-  border-color: hsl(347deg 81% 61%);
-  box-shadow: inset 6px -5px 0px 2px hsl(347deg 99% 72%);
+  text-decoration: none;
+  font-size: 14px;
 }
 
-.love-heart::after,
-.love-heart .bottom {
-  content: "";
+h1.icon {
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  align-self: flex-end;
+  font-size: 1.2em;
+  color: transparent;
+  text-shadow: 0 0 0 rgb(105, 134, 110);
+  margin-right: 0.5rem;
+}
+
+h1 {
+  animation: slideIn 0.5s ease-in-out;
+  text-align: center;
+}
+
+form {
+  text-align: center;
+}
+
+input, textarea {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.links {
+  position: fixed;
+  top: 40px;
+  right: 20px;
+  transition: opacity 0.3s ease;
+  text-align: right;
+}
+
+.links a {
+  font-size: 16px;
+  transition: font-size 0.3s ease;
+  text-align: justify;
+  white-space: nowrap;
+  color: #cee0dd;
+  line-height: 3rem;
+  text-decoration: none; 
+}
+
+.links a:hover {
+  font-size: 25px;
+}
+
+.icon:hover + .navbar .links,
+.navbar:hover .links {
+  opacity: 1;
+}
+
+input.button, button {
+  --c:  #6e8f76;
+  color: #8c9e8a;
+  background: #f5f4ef;
+  background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
+  outline-offset: .1em;
+  transition: background-size .4s, background-position 0s .4s;
+  border-radius: 12px;
+}
+
+button:hover {
+  --_p: 100%;
+  transition: background-position .4s, background-size 0s;
+}
+
+button:active {
+  box-shadow: 0 0 9e9q inset #8a9e9b; 
+  background-color: var(--c);
+  color: #fff;
+}
+
+button {
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+}
+
+button span[role="img"]{
+  color: transparent;
+  text-shadow: 0 0 0 rgb(105, 134, 110);
+  margin-right: 0.5rem;
+  font-size: 1.2em;
+}
+
+div.icon {
+  align-items: center;
+  justify-content: center;
+  display: inline-flex;
+  width: 60px;
+  height: 55px;
+  font-size: 2rem;
+}
+
+div.filters {
+  font-size: 2rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.log {
+  position: fixed;
+  top: 20px;
+  right: 40px;
+}
+
+div.log-switch {
+  display: flex;
+  justify-content: center;
+}
+
+.cards {
+  width: 700px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  justify-items: center;
+  align-items: center;
+}
+
+.card {
+  width: 200px;
+  height: 170px;
+  background: #fffeff;
+  border-radius: 15px;
+  top: 10px;
+  box-shadow: 1px 5px 30px 0px #9694be6b;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 0 0 1px #35613b;
+}
+
+.card .card-border-top {
+  width: 60%;
+  height: 3%;
+  background: #1e271b;
+  margin: auto;
+  border-radius: 0px 0px 15px 15px;
+}
+
+.card span {
+  font-weight: 600;
+  color: rgb(46, 46, 46);
+  text-align: center;
   display: block;
-  box-sizing: border-box;
-  position: absolute;
-  border-color: hsl(231deg 28% 86%);
+  padding-top: 20px;
+  font-size: 16px;
 }
 
-.love-heart::after {
-  right: -9px;
-  transform: rotate(90deg);
-  top: 7px;
+.card p {
+  font-weight: 400;
+  color: rgb(21, 24, 22);
+  display: block;
+  text-align: center;
+  padding-top: 3px;
+  font-size: 12px;
 }
 
-.love-heart .bottom {
-  width: 11px;
-  height: 11px;
-  border-left: 1px solid;
-  border-bottom: 1px solid;
-  border-color: hsl(231deg 28% 86%);
-  left: -1px;
-  top: 5px;
-  border-radius: 0px 0px 0px 5px;
+.card img {
+  display: block;
+  margin: 10px auto;
+  width: 25px;
+  height: 25px;
+  padding-top: 17px;
 }
-*/
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 /* CSS for the filter buttons */
 .filter-button {
@@ -364,4 +242,36 @@ input:checked + .love-heart .bottom {
 /* CSS to show the name when hovering over the button */
 .filter-button:hover .hide-hover {
   visibility: visible;
+}
+
+/* css for login/signup form */
+.auth-form {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Additional styling for the form elements */
+.auth-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.auth-form input {
+  width: 80%;
+  padding: 8px;
+  margin-bottom: 10px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-form input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer
 }

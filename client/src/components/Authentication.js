@@ -55,15 +55,11 @@ function Authentication({ updateUser }) {
 
   return (
     <>
-      <div>
-        <h2>{signUp ? "Already a member?" : "Not a member?"}</h2>
-        <p>To fully enjoy this application, it is best you create an account.</p>
-        <button onClick={handleClick}>{signUp ? "Log In!" : "Sign Up!"}</button>
+        <br /><h4>{signUp ? "Enter your credentials to sign up!" : "Enter your credentials to log in!"}</h4>
         <br />
-        <br />
-      </div>
 
-      <form onSubmit={formik.handleSubmit}>
+
+      <form className="auth-form" onSubmit={formik.handleSubmit}>
         <label>Username : </label>
         <input
           type="text"
@@ -95,9 +91,14 @@ function Authentication({ updateUser }) {
             <br />
             <br />
           </>
-        )}
+        )} 
         <input type="submit" value={signUp ? "Sign Up!" : "Log In!"} />
-      </form>
+      </form> <br/>
+      <div className="log-switch">
+      <h5>{signUp ? "Already a member?" : "Not a member?"}</h5>
+      <button onClick={handleClick}>{signUp ? "Log In!" : "Sign Up!"}</button>
+      </div>
+      
     </>
   )
 }

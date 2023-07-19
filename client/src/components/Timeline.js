@@ -17,13 +17,15 @@ function TimelineComponent({ data, canDelete, handleDelete}) {
           contentArrowStyle={{ borderRight: '15px solid white' }}
           date={data.date}
           iconStyle={{ background: 'white', color: 'white' }}
-          icon={<Icon type={data.aspect_id} />}
+          icon={<Icon type={data.aspect_id} 
+          />}
         >
           {canDelete && <button onClick={()=> handleDelete(data.id)}>x</button>}
 
           <h3 className="vertical-timeline-element-title">{data.header}</h3>
           <h4 className="vertical-timeline-element-subtitle">{data.subheader}</h4>
           <p>{data.description}</p>
+          <br/>
         </VerticalTimelineElement>
      }
     </>
