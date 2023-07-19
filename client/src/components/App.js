@@ -16,6 +16,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [user_id, setUserID] = useState(0)
 
+  //checks if user is authorized 
   useEffect(()=>{
     fetch('http://localhost:5000/authorized')
     .then(res => {
@@ -30,13 +31,14 @@ function App() {
     })
   },[])
   
+  //adds user.id to state so that user data doesnt always need to be passed down 
   const updateUser = (update) => {
     setUser(update)
     if (update!= null){
       setUserID(update.id)
     }
   }
-
+  //only displays the authentication page if user is not logged in 
   if(!user)
     return(
       <>
@@ -55,8 +57,8 @@ function App() {
           <Route path="/friends" element={<Friends user_id={user_id}/>} />
           <Route path="/create" element={<Create user_id={user_id}/>} />
           <Route path="/aspects" element={<Aspects />} />
-          <Route path="/settings" element={<Settings user={user}/>} />
-          <Route path="/timelines" element={<Milestones user={user} />} />
+          <Route path="/settings" element={<Settings user={user} updateUser={updateUser}/>} />
+          <Route path="/timelines" element={<Milestones updateUser={updateUser} user={user} />} />
           <Route path="/timelines/:user_id" element={<FriendMilestones user={user}/>} />
         </Routes>
       </Router>
@@ -65,3 +67,4 @@ function App() {
 }
 
 export default App
+

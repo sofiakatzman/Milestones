@@ -3,7 +3,7 @@ import TimelineComponent from "./Timeline"
 import { useEffect, useState } from "react"
 import {useNavigate } from "react-router-dom"
 
-function Milestones({user_id}) {
+function Milestones({user_id, updateUser}) {
   const [data, setData] = useState(null)
   const [filteredData, setFilteredData] = useState(null)
   const [aspects, setAspects] = useState(null)
@@ -16,8 +16,10 @@ function Milestones({user_id}) {
     fetch(`http://127.0.0.1:5000/milestone/${user_id}`)
       .then(response => response.json())
       .then(data => {
-        setData(data)
-        setFilteredData(data)
+        const sortedData = [...data]
+        sortedData.sort((a, b) => new Date(a.date) - new Date(b.date))
+        setData(sortedData)
+        setFilteredData(sortedData)
       })
 
     //fetch for all aspects 
@@ -44,12 +46,6 @@ function Milestones({user_id}) {
       )
       setFilteredData(filteredMilestones)
     }
-  }
-
-  const updateData = (milestoneID) => {
-    
-    console.log("HAHA")
-    // navigate("/")
   }
 
   const handleDelete = (milestoneID) => {
