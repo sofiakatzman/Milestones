@@ -1,8 +1,10 @@
 import React from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useNavigate } from "react-router-dom"
 
-function Create() {
+function Create({user_id}) {
+  let navigate = useNavigate()
   const formSchema = yup.object().shape({
     header: yup.string().required('Must enter a header'),
     aspect_id: yup.number().positive(),
@@ -17,10 +19,10 @@ function Create() {
       date: '',
       aspect_id: '',
       // is_private: '',
-      user_id: '',
     },
     validationSchema: formSchema,
-    onSubmit: (values) => { 
+    onSubmit: (values) => {
+      values.user_id = user_id 
       console.log(values);
       fetch('http://127.0.0.1:5000/milestones', {
         method: 'POST',
@@ -32,16 +34,17 @@ function Create() {
         if (res.ok) {
           res.json().then((milestone) => {
             console.log(milestone)
+            navigate('/')
           });
         }
       });
     },
   });
 
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target
-    formik.setFieldValue(name, checked)
-  };
+  // const handleCheckboxChange = (event) => {
+  //   const { name, checked } = event.target
+  //   formik.setFieldValue(name, checked)
+  // };
   
   return (
     <>
@@ -86,12 +89,6 @@ function Create() {
         onChange={handleCheckboxChange}
       /> 
       <br/> */}
-      <label>User ID</label> <br/>
-      <input type="number" 
-        name="user_id" 
-        value={formik.values.user_id} 
-        onChange={formik.handleChange} />
-      <br/>
       <p className="errors">{formik.errors.header}</p>
       <button type="submit">Submit</button>
     </form></>
