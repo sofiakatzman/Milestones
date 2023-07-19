@@ -23,9 +23,11 @@ function FriendMilestones() {
         }
       })
       .then((data) => {
-        setUsername(data[0].user.username)
-        setFriendData(data)
-        setFilteredData(data)
+        const sortedData = [...data]
+        sortedData.sort((a, b) => new Date(a.date) - new Date(b.date))
+        setUsername(sortedData[0].user.username)
+        setFriendData(sortedData)
+        setFilteredData(sortedData)
       })
       .catch(() => setError(true))
     // fetch for database aspects
