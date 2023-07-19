@@ -4,7 +4,7 @@ import * as yup from 'yup'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Settings({user, updatedUser}) {
+function Settings({user, updateUser}) {
   const navigate = useNavigate()
   const [editable, setEditable] = useState({
     username: false,
@@ -50,11 +50,30 @@ function Settings({user, updatedUser}) {
   }
 
   const deleteAccount = (userID) => {
-    //add css to this button so its red and an erro
+    fetch(`http://localhost:5000/users/${userID}`, {
+        method: "DELETE"
+      })
+        .then((response) => {
+          if (response.status === 204){
+            console.log(`User ${user.id} has been deleted.`)
+            fetch("http://127.0.0.1:5000/logout", {
+              method: 'DELETE'})
+            .then(res => {
+              if (res.status === 204){
+                updateUser(null)
+                navigate('/')
+              }})
+          } else {
+            console.error("Failed to delete user.")
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting user:", error)
+        })
     
   }
 
-  const editUsername = (userID, updatedUser) => {
+  const editUsername = (userID, updateUser) => {
     fetch(`http://localhost:5000/users/${userID}`, { 
 
     }).then(r=> r.json()).then(res=> console.log(res)) 
@@ -63,7 +82,6 @@ function Settings({user, updatedUser}) {
   return (
     <>
       <h1>edit user settings</h1>
-      {/* <h3>Hello, {user.username}</h3> */}
       <form onSubmit={formik.handleSubmit}>
         <label>username : {user.username} </label> 
         {editable.username ? (
@@ -91,8 +109,9 @@ function Settings({user, updatedUser}) {
         {editable.username ? (
           <button type="submit">Save Changes</button> 
         ) : null}<br/>
-        <button className="delete" onClick={()=>deleteAccount(user.id)}>DELETE ACCOUNT</button>
+        
       </form>
+      <button className="delete" onClick={()=>deleteAccount(user.id)}>DELETE ACCOUNT</button>
     </>
   )
 }
