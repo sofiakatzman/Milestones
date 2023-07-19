@@ -51,14 +51,19 @@ class Friends(Resource):
         if not friend:
             abort(404, 'Friend user not found')
 
-        # Check if the friendship already exists
-        if Friend.query.filter_by(user=user, friend=friend).first():
-            abort(400, 'Friendship already exists')
+        # Check if the friendship already exists # if so => delete the friendship 
+        friendship_check = Friend.query.filter_by(user=user, friend=friend).first()
+        if friendship_check:
+            db.session.remove(friendship)
+            db.session.commit()
 
-        # Create the friendship
-        friendship = Friend(user=user, friend=friend)
-        db.session.add(friendship)
-        db.session.commit()
+            return jsonify({'message': 'Friendship deleted'}), 201
+            
+        # Otherwise, create the friendship
+        else: 
+            friendship = Friend(user=user, friend=friend)
+            db.session.add(friendship)
+            db.session.commit()
 
         return jsonify({'message': 'Friendship created'}), 201
 
@@ -141,7 +146,7 @@ class FriendsView(Resource):
     def post(self):
         return Friends().post()
     
-@app.route('/timeline/<user_id>')
+@app.route('/milestone/<user_id>')
 def user(user_id):
     milestones = Milestone.query.filter_by(user_id=user_id).all()
     if milestones:
