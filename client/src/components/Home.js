@@ -1,10 +1,13 @@
 import Authentication from "./Authentication"
+import FriendMilestones from "./FriendMilestones"
 import Milestones from "./Milestones"
 
-function Home({updateUser}){
+function Home({updateUser, user_id}){
+
     return (
         <>
-        <Authentication updateUser={updateUser}/> 
+        Hello! Welcome to your timeline. <br/> These are your current milestones...
+        <Milestones user_id={user_id}/>
         </>
     )
 }
