@@ -131,6 +131,15 @@ class Milestones(Resource):
             return response
         except IntegrityError:
             return {'error': '422 Unprocessable Entity'}, 422
+        
+    def delete(self, milestone_id):
+        milestone = Milestone.query.filter_by(id=milestone_id).first()
+        if not milestone:
+            abort(404, 'Milestone not found')
+
+        db.session.delete(milestone)
+        db.session.commit()
+        return {'message': 'Milestone deleted successfully'}, 204
 
 class MilestonesView(Resource):
     def get(self):
@@ -217,10 +226,11 @@ class Logout(Resource):
     
 
 # Resource endpoints
-api.add_resource(Milestones, '/milestones', endpoint='milestones')
+api.add_resource(Milestones, '/milestones/<int:milestone_id>', endpoint='milestones')
 api.add_resource(Users, '/users', endpoint='users')
 
 api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')
+
 
 api.add_resource(AspectView, '/aspects')
 api.add_resource(FriendsView, '/friends')
