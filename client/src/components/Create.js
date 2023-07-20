@@ -8,7 +8,7 @@ function Create({ user_id }) {
   const [aspects, setAspects] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/aspects')
+    fetch('/aspects')
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -39,7 +39,7 @@ function Create({ user_id }) {
     onSubmit: (values) => {
       values.user_id = user_id;
       console.log(values);
-      fetch('http://127.0.0.1:5000/milestones', {
+      fetch('/milestones', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

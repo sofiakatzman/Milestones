@@ -22,7 +22,7 @@ function Settings({user, updateUser}) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch(`http://localhost:5000/users/${user.id}`, {
+      fetch(`/users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -52,13 +52,13 @@ function Settings({user, updateUser}) {
   }
 
   const deleteAccount = (userID) => {
-    fetch(`http://localhost:5000/users/${userID}`, {
+    fetch(`/users/${userID}`, {
         method: "DELETE"
       })
         .then((response) => {
           if (response.status === 204){
             console.log(`User ${user.id} has been deleted.`)
-            fetch("http://127.0.0.1:5000/logout", {
+            fetch("/logout", {
               method: 'DELETE'})
             .then(res => {
               if (res.status === 204){

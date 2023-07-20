@@ -14,7 +14,7 @@ function FriendMilestones() {
 
   useEffect(() => {
     // fetch for user milestones
-    fetch(`http://127.0.0.1:5000/milestone/${user_id}`)
+    fetch(`/milestone/${user_id}`)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -31,7 +31,7 @@ function FriendMilestones() {
       })
       .catch(() => setError(true))
     // fetch for database aspects
-    fetch(`http://127.0.0.1:5000/aspects`)
+    fetch(`/aspects`)
       .then((response) => {
         if (response.ok) {
           return response.json()

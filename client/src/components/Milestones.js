@@ -13,7 +13,7 @@ function Milestones({user_id, updateUser}) {
 
   useEffect(() => {
     //fetch user milestones 
-    fetch(`http://127.0.0.1:5000/milestone/${user_id}`)
+    fetch(`/milestone/${user_id}`)
       .then(response => response.json())
       .then(data => {
         const sortedData = [...data]
@@ -23,7 +23,7 @@ function Milestones({user_id, updateUser}) {
       })
 
     //fetch for all aspects 
-    fetch(`http://127.0.0.1:5000/aspects`)
+    fetch(`/aspects`)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -49,7 +49,7 @@ function Milestones({user_id, updateUser}) {
   }
 
   const handleDelete = (milestoneID) => {
-    fetch(`http://127.0.0.1:5000/milestones/${milestoneID}`, {
+    fetch(`/milestones/${milestoneID}`, {
       method: "DELETE",
     })
       .then((response) => {
