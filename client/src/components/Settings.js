@@ -6,32 +6,34 @@ import { useNavigate } from 'react-router-dom'
 
 function Settings({user, updateUser}) {
   const navigate = useNavigate()
+  const [username, setUsername] = useState(user.username)
+
   const [editable, setEditable] = useState({
     username: false,
-    birthday: false,
-    // password: false,
   })
 
-  // const formSchema = yup.object().shape({
-  //   username: yup.string().required('Please enter a username'),
-  // })
+  const formSchema = yup.object().shape({
+    username: yup.string().required('Please enter a new username if you would like to change yours.'),
+  })
 
   const formik = useFormik({
     initialValues: {
-      username: user.username, // Initialize with the current username
+      username: username, 
     },
-    // ... your other formik configurations ...
+    validationSchema: formSchema,
     onSubmit: (values) => {
       fetch(`http://localhost:5000/users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: values.username }), // Use formik.values.username
+        body: JSON.stringify({ username: values.username }), 
       })
         .then((response) => {
           if (response.ok) {
             console.log(`User ${user.id} has been updated.`)
+            setUsername(values.username)
+            // navigate('/')
           } else {
             console.error("Failed to update user.")
           }
@@ -73,45 +75,45 @@ function Settings({user, updateUser}) {
     
   }
 
-  const editUsername = (userID, updateUser) => {
-    fetch(`http://localhost:5000/users/${userID}`, { 
-
-    }).then(r=> r.json()).then(res=> console.log(res)) 
-  }
-
   return (
     <>
       <h1>edit user settings</h1>
-      <form onSubmit={formik.handleSubmit}>
-        <label>username : {user.username} </label> 
+      <form className="auth-form" onSubmit={formik.handleSubmit}>
+        <label>current username : {username} </label> 
         {editable.username ? (
           <>
             <input
               type="text"
               name="username"
+              placeholder="new username"
               value={formik.values.username}
               onChange={formik.handleChange}
             />
-            <button type="button" onClick={() => toggleEditable('username')}>
-              Cancel 
+            <br/><button type="button" onClick={() => toggleEditable('username')}>
+              cancel 
             </button>
           </>
         ) : (
           <>
-            <span>{formik.values.username}</span>
+            <span>{formik.values.username}</span><br/>
             <button type="button" onClick={() => toggleEditable('username')}>
-              Edit
+              edit
             </button>
           </>
         )}
-        <br />
-        <br />
+
         {editable.username ? (
-          <button type="submit">Save Changes</button> 
-        ) : null}<br/>
-        
+          <button type="submit">save changes</button> 
+        ) : null}<br/><br/>
+         <button type="button" className="delete-account" onClick={()=>deleteAccount(user.id)}>DELETE ACCOUNT</button><br/><br/>
       </form>
-      <button className="delete" onClick={()=>deleteAccount(user.id)}>DELETE ACCOUNT</button>
+      <div className="errors">
+          <ul>
+            {Object.values(formik.errors).map((error, index) => (
+              <h6 key={index} style={{ color: 'red' }}>{error}</h6>
+            ))}
+          </ul>
+        </div>
     </>
   )
 }

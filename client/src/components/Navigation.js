@@ -12,9 +12,9 @@ function Navigation() {
       <div className="links"> 
         <Link to="/">home</Link><br />
         <Link to="/friends">friends</Link><br />
-        <Link to="/create">new</Link><br />
-        <Link to="/aspects">aspects</Link> <br/>
-        <Link to="/settings">settings</Link><br />
+        <Link to="/create">new milestone</Link><br />
+        <Link to="/aspects">new aspects</Link> <br/>
+        <Link to="/settings">user settings</Link><br />
         </div>
     </NavBar></React.StrictMode> </>
   ) 

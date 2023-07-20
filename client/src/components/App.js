@@ -18,7 +18,7 @@ function App() {
 
   //checks if user is authorized 
   useEffect(()=>{
-    fetch('http://localhost:5000/authorized')
+    fetch('/authorized')
     .then(res => {
       if(res.ok){
         res.json().then(user => {
@@ -42,13 +42,17 @@ function App() {
   if(!user)
     return(
       <>
+    
       <Router>
         <Authentication updateUser={updateUser} />
       </Router>
+        <img className="title-bg" src="https://i.ibb.co/3FssgfK/milestones-logo-green.png" alt="milestones-logo"/>
       </>
   )
   return (
+
     <div>
+      
       <Router>
       <Log updateUser={updateUser} /> 
         <Navigation />

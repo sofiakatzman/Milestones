@@ -72,43 +72,45 @@ function Milestones({user_id, updateUser}) {
 
   return (
     <>
-      <div className="filters">
-        {aspects &&
-          aspects.map((aspect) => {
-            return (
-              <button
-                className="filter-button"
-                key={aspect.id}
-                onClick={() => handleFilterOption(aspect.id)}
-              >
-                <span role="img" aria-label={aspect.name}>
-                  {aspect.icon}
-                </span>
-                <h6 className="hide-hover">{aspect.name.toLowerCase()}</h6>
-              </button>
-            )
-          })}
-        <button
-          className="filter-button"
-          onClick={() => handleFilterOption("all")}
-        >
-          <span role="img" aria-label="remove-filter">
-            ❌
-          </span>
-          <h6 className="hide-hover">clear filter</h6>
-        </button>
-      </div>
+            <h1>your milestones</h1>
+
+
       <div>
-        <h1>welcome home</h1>
-        <p>These are your milestones!</p>
         {filteredData && filteredData.length > 0 ? (
-          <VerticalTimeline>
+         <>
+            <div className="filters">
+                    {aspects &&
+                      aspects.map((aspect) => {
+                        return (
+                          <button
+                            className="filter-button"
+                            key={aspect.id}
+                            onClick={() => handleFilterOption(aspect.id)}
+                          >
+                            <span role="img" aria-label={aspect.name}>
+                              {aspect.icon}
+                            </span>
+                            <h6 className="hide-hover">{aspect.name.toLowerCase()}</h6>
+                          </button>
+                        )
+                      })}
+                    <button
+                      className="filter-button"
+                      onClick={() => handleFilterOption("all")}
+                    >
+                      <span role="img" aria-label="remove-filter">
+                        ❌
+                      </span>
+                      <h6 className="hide-hover">clear filter</h6>
+                    </button>
+                  </div>  <VerticalTimeline>
             {filteredData.map((item) => (
+ 
               <TimelineComponent key={item.id} data={item} canDelete={true} handleDelete={handleDelete} />
             ))}
-          </VerticalTimeline>
+          </VerticalTimeline></>
         ) : (
-          <h3>Sorry! No milestones under that filter -- try a different one!</h3>
+          <h4>Sorry! No milestones to show. </h4>
         )}
       </div>
       </>)

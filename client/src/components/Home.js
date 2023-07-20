@@ -2,7 +2,7 @@ import Authentication from "./Authentication"
 import FriendMilestones from "./FriendMilestones"
 import Milestones from "./Milestones"
 
-function Home({updateUser, user_id}){
+function Home({user_id}){
 
     return (
         <>

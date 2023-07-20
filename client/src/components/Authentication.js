@@ -12,7 +12,7 @@ function Authentication({ updateUser }) {
   }
 
   const handleSubmit = (values) => {
-    const url = signUp ? "http://localhost:5000/signup" : "http://localhost:5000/login"
+    const url = signUp ? "/signup" : "/login"
     fetch(url, {
       method: "POST",
       headers: {
@@ -29,7 +29,6 @@ function Authentication({ updateUser }) {
       })
       .then((data) => {
         updateUser(data)
-        // currently navigates to their timeline page but would like for the page to instead load the user's milestones ** 
         navigate(`/`)
       })
       .catch((error) => {
@@ -39,7 +38,8 @@ function Authentication({ updateUser }) {
   }
 
   const formSchema = yup.object().shape({
-    username: yup.string().required("Please enter a username"),
+    username: yup.string().required("Please enter a username."),
+    password: yup.string().required("Please enter a password.")
     // birthday: yup.date().required("Please enter your birthdate"), * took this validation off because it wouldnt allow my login function to work 
   })
 
@@ -55,30 +55,26 @@ function Authentication({ updateUser }) {
 
   return (
     <>
-        <br /><h4>{signUp ? "Enter your credentials to sign up!" : "Enter your credentials to log in!"}</h4>
-        <br />
-
-
-      <form className="auth-form" onSubmit={formik.handleSubmit}>
-        <label>Username : </label>
+      <form className="auth-form" onSubmit={formik.handleSubmit}> 
+     <h4>{signUp ? "Enter your credentials to sign up!" : "Enter your credentials to log in!"}</h4><br />
         <input
           type="text"
           name="username"
+          placeholder="username" 
           value={formik.values.username}
           onChange={formik.handleChange}
         />
-        <br />
-        <label>Password : </label>
+        <br /><br />
         <input
           type="password"
           name="password"
+          placeholder="password" 
           value={formik.values.password}
           onChange={formik.handleChange}
         />
-        <br />
+        <br /><br />
         {signUp && (
           <>
-            <label>Birthdate : </label>
             <input
               type="date"
               name="birthday"
@@ -93,12 +89,19 @@ function Authentication({ updateUser }) {
           </>
         )} 
         <input type="submit" value={signUp ? "Sign Up!" : "Log In!"} />
-      </form> <br/>
-      <div className="log-switch">
-      <h5>{signUp ? "Already a member?" : "Not a member?"}</h5>
-      <button onClick={handleClick}>{signUp ? "Log In!" : "Sign Up!"}</button>
-      </div>
       
+      <h5>{signUp ? "Already a member?" : "Not a member?"}</h5>
+      <button type="button" onClick={handleClick}>{signUp ? "Log In!" : "Sign Up!"}</button> <br/><br/>
+      </form> 
+      {formik.errors && (
+        <div className="errors">
+          <ul>
+            {Object.values(formik.errors).map((error, index) => (
+              <h6 key={index} style={{ color: 'red' }}>{error}</h6>
+            ))}
+          </ul>
+        </div>
+      )}
     </>
   )
 }

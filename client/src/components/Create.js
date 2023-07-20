@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import { useFormik } from 'formik'
-import * as yup from 'yup'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 function Create({ user_id }) {
-  let navigate = useNavigate()
-  const [aspects, setAspects] = useState([]) // Step 1: State variable to store aspects
+  let navigate = useNavigate();
+  const [aspects, setAspects] = useState([]);
 
   useEffect(() => {
-    // Step 2: Fetch aspects from the server and update the state variable
     fetch('http://127.0.0.1:5000/aspects')
       .then((response) => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         } else {
-          throw new Error('No aspects found')
+          throw new Error('No aspects found');
         }
       })
       .then((data) => {
-        setAspects(data)
-      })
-  }, []) // Empty dependency array to ensure the effect runs only once
+        setAspects(data);
+      });
+  }, []);
 
   const formSchema = yup.object().shape({
-    header: yup.string().required('Must enter a header'),
-    aspect_id: yup.number().positive(),
-    // Add validation for other fields if needed
-  })
+    header: yup.string().required('You must enter a header.'),
+    date: yup.date().required('You must enter a date.'),  
+    aspect_id: yup.number().required('You must select an aspect.'), 
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -38,8 +37,8 @@ function Create({ user_id }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      values.user_id = user_id
-      console.log(values)
+      values.user_id = user_id;
+      console.log(values);
       fetch('http://127.0.0.1:5000/milestones', {
         method: 'POST',
         headers: {
@@ -49,59 +48,92 @@ function Create({ user_id }) {
       }).then((res) => {
         if (res.ok) {
           res.json().then((milestone) => {
-            navigate('/')
-          })
+            navigate('/');
+          });
         }
-      })
+      });
     },
-  })
+  });
 
   return (
     <>
-      <h1>create a new milestone</h1>
-      <form className="create-milestone-form" onSubmit={formik.handleSubmit}>
-        <label>Header</label> <br />
-        <input type="text" name="header" value={formik.values.header} onChange={formik.handleChange} />
+      <h1>new milestone</h1>
+      
+      <form className="auth-form" onSubmit={formik.handleSubmit}>
+      
+      
         <br />
-        <label>Subheader</label> <br />
         <input
           type="text"
+          className="form-input"
+          name="header"
+          placeholder="Header"
+          value={formik.values.header}
+          onChange={formik.handleChange}
+        />
+        <br />
+        <br />
+        <input
+          type="text"
+          className="form-input"
           name="subheader"
+          placeholder="Subheader"
           value={formik.values.subheader}
           onChange={formik.handleChange}
         />
         <br />
-        <label>Description</label> <br />
-        <textarea
+        <br />
+        <input
           type="text"
+          className="form-input"
           name="description"
+          placeholder="Description"
           value={formik.values.description}
           onChange={formik.handleChange}
         />
         <br />
-        <label>Date</label> <br />
-        <input type="date" name="date" value={formik.values.date} onChange={formik.handleChange} />
         <br />
-        <label>Aspect</label> <br />
-        <select // Step 3: Dropdown list for the "Aspect" field
+        <input
+          type="date"
+          className="form-input"
+          placeholder="Date"
+          name="date"
+          value={formik.values.date}
+          onChange={formik.handleChange}
+        />
+        <br />
+        <br />
+        <select
           name="aspect_id"
+          className="form-input"
           value={formik.values.aspect_id}
           onChange={formik.handleChange}
         >
-          <option value="">--select aspect--</option>
+          <option value="">aspect</option>
           {aspects.map((aspect) => (
             <option key={aspect.id} value={aspect.id}>
               {aspect.name.toLowerCase()}
             </option>
           ))}
         </select>
-        <br />
-
-        <p className="errors">{formik.errors.header}</p>
+        <br /><br/>
+       
         <button type="submit">Submit</button>
+        <br />
+        <br />
+  
       </form>
+      {formik.errors && (
+        <div className="errors">
+          <ul>
+            {Object.values(formik.errors).map((error, index) => (
+              <h6 key={index} style={{ color: 'red' }}>{error}</h6>
+            ))}
+          </ul>
+        </div>
+      )}
     </>
-  )
+  );
 }
 
-export default Create
+export default Create;

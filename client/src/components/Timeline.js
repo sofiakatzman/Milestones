@@ -24,7 +24,7 @@ function TimelineComponent({ data, canDelete, handleDelete}) {
 
           <h3 className="vertical-timeline-element-title">{data.header}</h3>
           <h4 className="vertical-timeline-element-subtitle">{data.subheader}</h4>
-          <p>{data.description}</p>
+          <h5 className="vertical-timeline-element-description">{data.description}</h5>
           <br/>
         </VerticalTimelineElement>
      }

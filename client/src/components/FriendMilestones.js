@@ -58,50 +58,52 @@ function FriendMilestones() {
   }
 
   if (error) {
-    return <div>No milestones yet!</div>
+    return <div>That user doesn't exist yet, or doesn't currently have any milestones! Sorry! </div>
   }
 
   return (
     <>
-      <div className="filters">
-        {aspects &&
-          aspects.map((aspect) => {
-            return (
-              <button
-                className="filter-button"
-                key={aspect.id}
-                onClick={() => handleFilterOption(aspect.id)}
-              >
-                <span role="img" aria-label={aspect.name}>
-                  {aspect.icon}
-                </span>
-                <h6 className="hide-hover">{aspect.name.toLowerCase()}</h6>
-              </button>
-            );
-          })}
-        <button
-          className="filter-button"
-          onClick={() => handleFilterOption("all")}
-        >
-          <span role="img" aria-label="remove-filter">
-            ❌
-          </span>
-          <h6 className="hide-hover">clear filter</h6>
-        </button>
-      </div>
-      <div>
-        <h1>{username.toLowerCase()}</h1>
-        <p>This is {username}'s timeline. Take a look!</p>
-        {filteredData && filteredData.length > 0 ? (
-          <VerticalTimeline>
-            {filteredData.map((item) => (
-              <TimelineComponent key={item.id} data={item} />
-            ))}
-          </VerticalTimeline>
-        ) : (
-          <h3>Sorry! No milestones under that filter -- try a different one!</h3>
-        )}
-      </div>
+      <h1>{username.toLowerCase()}</h1>
+      <p>This is {username}'s timeline. Take a look!</p>
+      {filteredData && filteredData.length > 0 ? (
+        <>
+          <div className="filters">
+            {aspects &&
+              aspects.map((aspect) => {
+                return (
+                  <button
+                    className="filter-button"
+                    key={aspect.id}
+                    onClick={() => handleFilterOption(aspect.id)}
+                  >
+                    <span role="img" aria-label={aspect.name}>
+                      {aspect.icon}
+                    </span>
+                    <h6 className="hide-hover">{aspect.name.toLowerCase()}</h6>
+                  </button>
+                )
+              })}
+            <button
+              className="filter-button"
+              onClick={() => handleFilterOption("all")}
+            >
+              <span role="img" aria-label="remove-filter">
+                ❌
+              </span>
+              <h6 className="hide-hover">clear filter</h6>
+            </button>
+          </div>
+          <div>
+            <VerticalTimeline>
+              {filteredData.map((item) => (
+                <TimelineComponent key={item.id} data={item} />
+              ))}
+            </VerticalTimeline>
+          </div>
+        </>
+      ) : (
+        <h3>Sorry! No milestones under that filter -- try a different one!</h3>
+      )}
     </>
   )
 }
