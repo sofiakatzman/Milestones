@@ -1,10 +1,10 @@
-from flask import request, jsonify, make_response, abort
+from config import db, app, api
+from flask import request, jsonify, make_response, abort, session
 from flask_restful import Resource
-from config import db, app, session, api
 from models import User, Friend, Aspect, Milestone
 from sqlalchemy.exc import IntegrityError
+import ipdb 
 
-app.secret_key = b'\xb2k|\xca"e\xc9\xc8\x98\xb3\x1d\x973u\xab\xf6'
 
 @app.route('/')
 def index():
@@ -286,4 +286,4 @@ api.add_resource(Logout, '/logout')
 
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=5000, debug=True)
