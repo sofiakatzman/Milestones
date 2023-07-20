@@ -26,9 +26,9 @@ def seed():
 
         new_milestone = Milestone(
             date=fake.date_this_century(),
-            header=fake.text(max_nb_chars=20),
-            subheader=fake.text(max_nb_chars=30),
-            description=fake.text(max_nb_chars=70),
+            header=fake.text(max_nb_chars=50),
+            subheader=fake.text(max_nb_chars=200),
+            description=fake.text(max_nb_chars=800),
             is_private=fake.pybool(),
             user_id=new_user.id,
             aspect_id=randint(1, 5)
