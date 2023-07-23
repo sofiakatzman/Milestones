@@ -6,6 +6,7 @@ import * as yup from "yup"
 function Authentication({ updateUser }) {
   const [signUp, setSignUp] = useState(false)
   const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleClick = () => {
     setSignUp((prevState) => !prevState)
@@ -24,7 +25,7 @@ function Authentication({ updateUser }) {
         if (response.ok) {
           return response.json()
         } else {
-          throw new Error("Incorrect credentials!")
+          throw new Error("Invalid credentials")
         }
       })
       .then((data) => {
@@ -33,14 +34,15 @@ function Authentication({ updateUser }) {
       })
       .catch((error) => {
         console.error(error)
+        setErrorMessage("Invalid credentials. Please check your username and password.")
         console.log(error.response)
       })
   }
 
   const formSchema = yup.object().shape({
     username: yup.string().required("Please enter a username."),
-    password: yup.string().required("Please enter a password.")
-    // birthday: yup.date().required("Please enter your birthdate"), * took this validation off because it wouldnt allow my login function to work 
+    password: yup.string().required("Please enter a password."),
+    // birthday: yup.date().required("Please enter your birthdate"), * took this validation off because it wouldn't allow my login function to work
   })
 
   const formik = useFormik({
@@ -55,24 +57,27 @@ function Authentication({ updateUser }) {
 
   return (
     <>
-      <form className="auth-form" onSubmit={formik.handleSubmit}> 
-     <h4>{signUp ? "Enter your credentials to sign up!" : "Enter your credentials to log in!"}</h4><br />
+      <form className="auth-form" onSubmit={formik.handleSubmit}>
+        <h4>{signUp ? "Enter your credentials to sign up!" : "Enter your credentials to log in!"}</h4>
+        <br />
         <input
           type="text"
           name="username"
-          placeholder="username" 
+          placeholder="username"
           value={formik.values.username}
           onChange={formik.handleChange}
         />
-        <br /><br />
+        <br />
+        <br />
         <input
           type="password"
           name="password"
-          placeholder="password" 
+          placeholder="password"
           value={formik.values.password}
           onChange={formik.handleChange}
         />
-        <br /><br />
+        <br />
+        <br />
         {signUp && (
           <>
             <input
@@ -87,17 +92,28 @@ function Authentication({ updateUser }) {
             <br />
             <br />
           </>
-        )} 
+        )}
         <input type="submit" value={signUp ? "Sign Up!" : "Log In!"} />
-      
-      <h5>{signUp ? "Already a member?" : "Not a member?"}</h5>
-      <button type="button" onClick={handleClick}>{signUp ? "Log In!" : "Sign Up!"}</button> <br/><br/>
-      </form> 
+
+        <h5>{signUp ? "Already a member?" : "Not a member?"}</h5>
+        <button type="button" onClick={handleClick}>
+          {signUp ? "Log In!" : "Sign Up!"}
+        </button>
+        <br />
+        <br />
+      </form>
+      {errorMessage && (
+        <div className="errors">
+          <h6 style={{ color: "red" }}>{errorMessage}</h6>
+        </div>
+      )}
       {formik.errors && (
         <div className="errors">
           <ul>
             {Object.values(formik.errors).map((error, index) => (
-              <h6 key={index} style={{ color: 'red' }}>{error}</h6>
+              <h6 key={index} style={{ color: "red" }}>
+                {error}
+              </h6>
             ))}
           </ul>
         </div>

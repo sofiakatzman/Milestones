@@ -8,7 +8,7 @@ function Aspects(){
   const formSchema = yup.object().shape({
         name: yup.string().required('You must enter a name.'),
         description: yup.string().required('You must enter a description.'),
-        logo: yup.string().required('You must enter a logo.'),
+        // logo: yup.string().required('You must enter a logo.'),
         // Add validation for other fields if needed
       })
     
