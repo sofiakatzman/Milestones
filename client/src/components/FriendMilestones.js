@@ -102,7 +102,7 @@ function FriendMilestones() {
           </div>
         </>
       ) : (
-        <h3>Sorry! No milestones under that filter -- try a different one!</h3>
+        <h3>Sorry! No milestones to show.</h3>
       )}
     </>
   )
