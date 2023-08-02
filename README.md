@@ -31,7 +31,7 @@ Nacivage to it's directory and follow the below commands on your terminal:
 1. Clone this repository to your local machine and navigate to its directory.
 2. `cd server` and then run `pipenv install` to install all the necessary backend package dependencies.
 3. Run `pipenv shell` to enter the virtual environment.
-4. Run `flask run` to start the flask server. 
+4. Run `gunicorn -b 127.0.0.1:5000 --worker-class=geventwebsocket.gunicorn.workers.GeventWebSocketWorker app:app` to start the flask and websocket server. 
 5. In a new terminal, from the root directory, navigate to the client folder by entering `cd client`
 6. Run `npm install; npm start` to install your front end dependencies and begin your local React server. 
 

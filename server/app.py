@@ -1,9 +1,11 @@
-from config import db, app, api
+from config import db, app, api, socketio
 from flask import request, jsonify, make_response, abort, session
+from flask_socketio import emit
 from flask_restful import Resource
 from models import User, Friend, Aspect, Milestone
 from sqlalchemy.exc import IntegrityError
 import ipdb 
+import logging
 
 
 @app.route('/')
@@ -160,6 +162,14 @@ class Milestones(Resource):
 
 
 api.add_resource(Milestones, '/milestones/<int:milestone_id>', endpoint='milestones')
+
+@socketio.on('new_milestone')
+# this function is called when a new_milestone event is received -> from create_milestone
+def handle_new_milestone(data):
+    emit('new_milestone', data)
+    logging.debug(f'Handle_new_milestone event with data: {data}')
+
+
 @app.route('/milestones', methods=['POST'])
 def create_milestone():
     request_json = request.get_json()
@@ -181,16 +191,17 @@ def create_milestone():
             jsonify(response_dict),
             201
         )
+        
+        # Emit the 'new_milestone' event to WebSocket server
+        socketio.emit('new_milestone', response_dict, namespace='/')
+        logging.debug(f'Emitted new_milestone event with data: {response_dict}')
+
+        
+
         return response
+    
     except IntegrityError:
         return {'error': '422 Unprocessable Entity'}, 422
-# do not think i need these? tbd. 
-# class MilestonesView(Resource):
-#     def get(self):
-#         return Milestones().get()
-
-#     def post(self):
-#         return Milestones().post()
     
 @app.route('/milestone/<user_id>')
 def user(user_id):
@@ -200,6 +211,11 @@ def user(user_id):
         return jsonify(milestone_list)
     else:
         return jsonify({'error': 'User not found'})
+    
+@app.route('/milestones', methods=['GET'])
+def get_all_milestones():
+    milestones = [milestone.to_dict() for milestone in Milestone.query.all()]
+    return jsonify(milestones)
     
 class Login(Resource):
     def post(self):
@@ -268,22 +284,6 @@ class Logout(Resource):
     
 api.add_resource(Logout, '/logout')
 
-# Resource endpoints
-
-
-
-
-
-
-
-
-# Functional resource endpoints
-
-
-
-
-
-
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=False)
