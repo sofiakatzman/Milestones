@@ -41,7 +41,6 @@ function FriendMilestones() {
       })
       .then((data) => {
         setAspects(data)
-        console.log(data)
       })
       .catch(() => setError(true))
   }, [])

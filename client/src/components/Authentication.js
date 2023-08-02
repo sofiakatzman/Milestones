@@ -1,12 +1,15 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { useFormik } from "formik"
 import { useNavigate } from "react-router-dom"
 import * as yup from "yup"
 
-function Authentication({ updateUser }) {
+import UserContext from './UserContext'
+
+function Authentication() {
   const [signUp, setSignUp] = useState(false)
   const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState("")
+  const {updateUser } = useContext(UserContext)
 
   const handleClick = () => {
     setSignUp((prevState) => !prevState)

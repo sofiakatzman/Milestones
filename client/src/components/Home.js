@@ -1,8 +1,10 @@
-import Authentication from "./Authentication"
-import FriendMilestones from "./FriendMilestones"
 import Milestones from "./Milestones"
+import UserContext from './UserContext'
+import { useContext } from "react"
 
-function Home({user_id}){
+function Home(){
+    const {user} = useContext(UserContext)
+    const user_id = user.id
 
     return (
         <>

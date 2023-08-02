@@ -1,31 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { useNavigate } from 'react-router-dom'
+import UserContext from './UserContext'
 
-function Create({ user_id }) {
-  let navigate = useNavigate();
-  const [aspects, setAspects] = useState([]);
+function Create() {
+  let navigate = useNavigate()
+  const [aspects, setAspects] = useState([])
+  const {user} = useContext(UserContext)
+  const user_id = user.id
 
   useEffect(() => {
     fetch('/aspects')
       .then((response) => {
         if (response.ok) {
-          return response.json();
+          return response.json()
         } else {
-          throw new Error('No aspects found');
+          throw new Error('No aspects found')
         }
       })
       .then((data) => {
-        setAspects(data);
-      });
-  }, []);
+        setAspects(data)
+      })
+  }, [])
 
   const formSchema = yup.object().shape({
     header: yup.string().required('You must enter a header.'),
     date: yup.date().required('You must enter a date.'),  
     aspect_id: yup.number().required('You must select an aspect.'), 
-  });
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -37,8 +40,8 @@ function Create({ user_id }) {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      values.user_id = user_id;
-      console.log(values);
+      values.user_id = user_id
+      console.log(values)
       fetch('/milestones', {
         method: 'POST',
         headers: {
@@ -48,12 +51,12 @@ function Create({ user_id }) {
       }).then((res) => {
         if (res.ok) {
           res.json().then((milestone) => {
-            navigate('/');
-          });
+            navigate('/')
+          })
         }
-      });
+      })
     },
-  });
+  })
 
   return (
     <>
@@ -133,7 +136,7 @@ function Create({ user_id }) {
         </div>
       )}
     </>
-  );
+  )
 }
 
-export default Create;
+export default Create

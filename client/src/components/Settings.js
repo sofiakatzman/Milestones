@@ -1,13 +1,14 @@
 import React from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import UserContext from './UserContext'
 
-function Settings({user, updateUser}) {
+function Settings() {
   const navigate = useNavigate()
-  const [username, setUsername] = useState(user.username)
-
+  const { user, updateUser } = useContext(UserContext)
+  const [username, setUsername] = useState(user ? user.username : '')
   const [editable, setEditable] = useState({
     username: false,
   })
@@ -33,6 +34,11 @@ function Settings({user, updateUser}) {
           if (response.ok) {
             console.log(`User ${user.id} has been updated.`)
             setUsername(values.username)
+            user.username = values.username
+            updateUser(user)
+            setEditable({
+              username: false,
+            })
             // navigate('/')
           } else {
             console.error("Failed to update user.")

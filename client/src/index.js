@@ -1,8 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './components/App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './components/App'
+import { UserProvider } from './components/UserContext'
+import { createRoot } from "react-dom/client"
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById("root"))
 root.render(
-     <App />
-);
+  <UserProvider>
+    <App />
+  </UserProvider>
+)

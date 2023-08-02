@@ -1,13 +1,16 @@
 import { VerticalTimeline } from 'react-vertical-timeline-component'
 import TimelineComponent from "./Timeline"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import {useNavigate } from "react-router-dom"
+import UserContext from './UserContext'
 
-function Milestones({user_id, updateUser}) {
+function Milestones() {
   const [data, setData] = useState(null)
   const [filteredData, setFilteredData] = useState(null)
   const [aspects, setAspects] = useState(null)
   const [error, setError] = useState(null)
+  const {user} = useContext(UserContext)
+  const user_id = user.id
 
   const navigate = useNavigate()
 
@@ -68,11 +71,9 @@ function Milestones({user_id, updateUser}) {
       })
   }
 
-
-
-  return (
+   return (
     <>
-            <h1>your milestones</h1>
+            <h1>welcome, {user.username}</h1>
 
 
       <div>

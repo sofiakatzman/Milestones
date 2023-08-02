@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useState, useEffect, useContext } from "react"
+import { useNavigate } from "react-router-dom"
+import UserContext from './UserContext'
 
-function Friends({user_id}) {
+function Friends() {
     const [friends, setFriends] = useState(null)
     const navigate = useNavigate()
+    const { user } = useContext(UserContext)
+    const user_id = user.id
 
     useEffect(() => {
       fetch(`http://127.0.0.1:5000/friends`)
@@ -17,8 +20,7 @@ function Friends({user_id}) {
 
     if (!friends) {
       return (<>
-        <h1>friends</h1>
-        <br />
+        <h1>friends</h1><br />
         <h4>You haven't added any friends yet...</h4>
         </>
       )
