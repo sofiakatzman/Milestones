@@ -10,7 +10,7 @@ import Log from './Log'
 import FriendMilestones from './FriendMilestones'
 import Authentication from './Authentication'
 import Aspects from './Aspects'
-import './index.css'
+import '../index.css'
 import UserContext from './UserContext'
 
 function App() {
