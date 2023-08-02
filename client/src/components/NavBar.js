@@ -1,6 +1,5 @@
 // this component was not created by me. This was to fix a premade navigation bar npm package that was missing an import
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime"
-import { useState } from 'react'
 import styled from 'styled-components'
 
 const NavBar = (props) => {
@@ -17,6 +16,7 @@ const NavBar = (props) => {
   
   const toggleHamburger = () => {
     props.setNavExpanded(!props.navExpanded)
+    props.handleBlur(!props.navExpanded)
   }
   
   return (
@@ -134,12 +134,14 @@ const Navigation = styled.nav`
   align-items: center;
   justify-items: center;
   padding: 0px 0.5rem;
-  background-color: #47514f;
-  min-width: 20%;
+  background-color: #8a9e9b32;
+  max-width: 20%;
+  min-width: 15%;
   width: fit-content;
 
-  @media (min-width: 768px) {
-    min-width: 13%;
+  @media (min-width: 400) {
+    min-width: 20%;
+    max-width: none;
   }
 `;
 

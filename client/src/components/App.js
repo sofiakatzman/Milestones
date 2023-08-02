@@ -1,20 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navigation from './Navigation'
 import Home from './Home'
 import Friends from './Friends'
+import Aspects from './Aspects'
 import Create from './Create'
 import Settings from './Settings'
 import Milestones from './Milestones'
-import Log from './Log'
 import FriendMilestones from './FriendMilestones'
 import Authentication from './Authentication'
-import Aspects from './Aspects'
 import '../index.css'
 import UserContext from './UserContext'
+import Log from './Log'
 
 function App() {
-  const { user, updateUser } = useContext(UserContext)
+  const { user } = useContext(UserContext)
+  const [blur, setBlur] = useState(false)
+
+  const handleBlur = (isBlurred) => {
+    setBlur(isBlurred)
+  }
 
   // Only displays the authentication page if user is not logged in
   if (!user) {
@@ -33,10 +38,11 @@ function App() {
   }
 
   return (
-    <div>
+    <div >
       <Router>
-        <Log updateUser={updateUser} />
-        <Navigation />
+        
+        <Navigation handleBlur={handleBlur}/>
+        <div className={blur ? 'blur-active' : ''}>
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/friends" element={<Friends/>}/>
@@ -45,7 +51,9 @@ function App() {
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/timelines" element={<Milestones/>}/>
           <Route path="/timelines/:user_id" element={<FriendMilestones/>} />
+          <Route path="/user/logout" element={<Log />} />
         </Routes>
+        </div>
       </Router>
     </div>
   )

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-function Log({updateUser, user}) {
+function Log({updateUser, user, handleBlur}) {
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -9,19 +9,15 @@ function Log({updateUser, user}) {
     .then(res => {
       if(res.ok){
         updateUser(null)
+        handleBlur(false)
         navigate('/')
       }
-
     })
-    
-    
   }
 
   return (
     <div className='log'>
-      {user ? 
-        <button onClick={()=>navigate('/')}>login</button> : <button onClick={()=>handleLogout()}>logout</button> 
-       }
+            <button className="logout" onClick={()=>handleLogout()}>logout</button>  
     </div>
   )
 }

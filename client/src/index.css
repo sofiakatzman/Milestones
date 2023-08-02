@@ -3,7 +3,9 @@
 body {
   margin: 40px;
   font-family: 'Open Sans', sans-serif;
-  background-color: #f3f7e9;
+  background-color: #f0f7e9b1;
+  /* background-color: #f3f7e961; */
+  /* background-color: #8a9e9b32; */
   color: #8a9e9b;
 }
 
@@ -68,7 +70,7 @@ input, textarea {
 
 .links {
   position: fixed;
-  top: 40px;
+  top: 60px;
   right: 20px;
   transition: opacity 0.3s ease;
   text-align: right;
@@ -79,13 +81,20 @@ input, textarea {
   transition: font-size 0.3s ease;
   text-align: justify;
   white-space: nowrap;
-  color: #cee0dd;
+  color: #303433;
   line-height: 3rem;
   text-decoration: none; 
 }
 
 .links a:hover {
-  font-size: 25px;
+  font-size: 20px;
+}
+
+.greeting {
+  position: fixed;
+  top: -3px;
+  right: 60px;
+
 }
 
 .icon:hover  .navbar .links,
@@ -120,6 +129,15 @@ button {
   border: none;
 }
 
+button.logout {
+  font-size: 1rem;
+  background-color: #8a9e9b77;
+  color: white;
+  padding: .5rem;
+  cursor: pointer;
+  border: none;
+}
+
 button span[role="img"]{
   color: transparent;
   text-shadow: 0 0 0 rgb(105, 134, 110);
@@ -145,8 +163,8 @@ div.filters {
 
 div.log {
   position: fixed;
-  top: 20px;
-  right: 40px;
+  top: 320px;
+  right: 20px;
 }
 
 div.log-switch {
@@ -330,4 +348,9 @@ button.delete-account {
   padding: 10px 20px; 
   border-radius: 5px; 
   cursor: pointer; 
+}
+
+div.blur-active * {
+  filter: blur(5px); /* Adjust the blur amount as needed */
+  pointer-events: none;
 }
