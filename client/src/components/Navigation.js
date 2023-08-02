@@ -4,6 +4,7 @@ import UserContext from './UserContext'
 import NavBar from './NavBar'
 import Log from './Log'
 
+
 function Navigation({ handleBlur }) {
   const [navExpanded, setNavExpanded] = useState(false)
   const {updateUser, user} = useContext(UserContext)
@@ -20,10 +21,12 @@ function Navigation({ handleBlur }) {
     <h4 className="greeting">hello, {user.username}</h4>
       <div className="links"> 
         <Link onClick={hideOnClick} to="/">home</Link> <br/>
+        <Link onClick={hideOnClick} to="/feed">feed</Link> <br/>
         <Link onClick={hideOnClick} to="/friends">friends</Link> <br/>
         <Link onClick={hideOnClick} to="/create">new milestone</Link> <br/>
         <Link onClick={hideOnClick} to="/aspects">new aspects</Link> <br/>
         <Link onClick={hideOnClick} to="/settings">user settings</Link> <br/>
+
         
         </div>
 

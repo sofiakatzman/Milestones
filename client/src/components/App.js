@@ -12,6 +12,8 @@ import Authentication from './Authentication'
 import '../index.css'
 import UserContext from './UserContext'
 import Log from './Log'
+import LiveFeed from './LiveFeed'
+
 
 function App() {
   const { user } = useContext(UserContext)
@@ -45,6 +47,7 @@ function App() {
         <div className={blur ? 'blur-active' : ''}>
         <Routes>
           <Route path="/" element={<Home/>}/>
+          <Route path="feed" element={<LiveFeed />}/>
           <Route path="/friends" element={<Friends/>}/>
           <Route path="/create" element={<Create/>}/>
           <Route path="/aspects" element={<Aspects/>}/>
