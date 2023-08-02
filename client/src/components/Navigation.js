@@ -1,22 +1,25 @@
 import { Link } from 'react-router-dom' 
-import Log from './Log'
-import ReactDOM from 'react-dom/client'
 import NavBar from './NavBar'
-import React from 'react';
+import {React, useState} from 'react'
 
 function Navigation() {
+  const [navExpanded, setNavExpanded] = useState(false)
+
+  const hideOnClick = ()=> {
+    setNavExpanded(!navExpanded)
+  }
   return (
     <>
-     <React.StrictMode>
-    <NavBar side='right' bgColor='black' burgerSize={30} hamColorClosed='black' hamColorOpen='white'> 
+ 
+    <NavBar side='right' bgColor='black' burgerSize={30} hamColorClosed='black' hamColorOpen='white' navExpanded={navExpanded} setNavExpanded={setNavExpanded}> 
       <div className="links"> 
-        <Link to="/">home</Link><br />
-        <Link to="/friends">friends</Link><br />
-        <Link to="/create">new milestone</Link><br />
-        <Link to="/aspects">new aspects</Link> <br/>
-        <Link to="/settings">user settings</Link><br />
+        <Link onClick={hideOnClick} to="/">home</Link><br />
+        <Link onClick={hideOnClick} to="/friends">friends</Link><br />
+        <Link onClick={hideOnClick} to="/create">new milestone</Link><br />
+        <Link onClick={hideOnClick} to="/aspects">new aspects</Link> <br/>
+        <Link onClick={hideOnClick} to="/settings">user settings</Link><br />
         </div>
-    </NavBar></React.StrictMode> </>
+    </NavBar> </>
   ) 
 }
 

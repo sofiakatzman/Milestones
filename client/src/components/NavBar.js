@@ -1,60 +1,61 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState } from 'react';
-import styled from 'styled-components';
+// this component was not created by me. This was to fix a premade navigation bar npm package that was missing an import
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime"
+import { useState } from 'react'
+import styled from 'styled-components'
 
 const NavBar = (props) => {
   // if user did not enter side, or entered invalid string, default to left
-  const side = (props.side !== 'left' && props.side !== 'right') ? 'left' : props.side;
-  const bgColor = props.bgColor || 'black';
-  const hamColorClosed = props.hamColorClosed || 'black';
-  const hamColorOpen = props.hamColorOpen || 'white';
-  let burgerSize = props.burgerSize || DEFAULT_BURGER_SIZE;
+  const side = (props.side !== 'left' && props.side !== 'right') ? 'left' : props.side
+  const bgColor = props.bgColor || 'black'
+  const hamColorClosed = props.hamColorClosed || 'black'
+  const hamColorOpen = props.hamColorOpen || 'white'
+  let burgerSize = props.burgerSize || DEFAULT_BURGER_SIZE
   if (burgerSize > MAX_BURGER_SIZE)
-    burgerSize = MAX_BURGER_SIZE;
+    burgerSize = MAX_BURGER_SIZE
   if (burgerSize < MIN_BURGER_SIZE)
-    burgerSize = MIN_BURGER_SIZE;
-  const [navExpanded, setNavExpanded] = useState(false);
+    burgerSize = MIN_BURGER_SIZE
+  
   const toggleHamburger = () => {
-    setNavExpanded(!navExpanded);
-  };
+    props.setNavExpanded(!props.navExpanded)
+  }
   
   return (
     <_Fragment>
       <BurgerBox side={side}>
         <svg onClick={toggleHamburger} viewBox="0 0 100 100" width={`${burgerSize}`}>
           <rect
-            fill={navExpanded ? hamColorOpen : hamColorClosed}
-            stroke={navExpanded ? hamColorOpen : hamColorClosed}
+            fill={props.navExpanded ? hamColorOpen : hamColorClosed}
+            stroke={props.navExpanded ? hamColorOpen : hamColorClosed}
             width="80"
             height="8"
             x="10"
             rx="2"
-            style={navExpanded ? styleRect1AfterClick : styleRect1BeforeClick}
+            style={props.navExpanded ? styleRect1AfterClick : styleRect1BeforeClick}
           />
           <rect
-            fill={navExpanded ? hamColorOpen : hamColorClosed}
-            stroke={navExpanded ? hamColorOpen : hamColorClosed}
+            fill={props.navExpanded ? hamColorOpen : hamColorClosed}
+            stroke={props.navExpanded ? hamColorOpen : hamColorClosed}
             width="80"
             height="8"
             x="10"
             y="45"
             rx="2"
-            style={navExpanded ? styleRect2AfterClick : styleRect2BeforeClick}
+            style={props.navExpanded ? styleRect2AfterClick : styleRect2BeforeClick}
           />
           <rect
-            fill={navExpanded ? hamColorOpen : hamColorClosed}
-            stroke={navExpanded ? hamColorOpen : hamColorClosed}
+            fill={props.navExpanded ? hamColorOpen : hamColorClosed}
+            stroke={props.navExpanded ? hamColorOpen : hamColorClosed}
             width="80"
             height="8"
             x="10"
             y="65"
             rx="2"
-            style={navExpanded ? styleRect3AfterClick : styleRect3BeforeClick}
+            style={props.navExpanded ? styleRect3AfterClick : styleRect3BeforeClick}
           />
         </svg>
       </BurgerBox>
 
-      <Navigation side={side} bgColor={bgColor} navExpanded={navExpanded}>
+      <Navigation side={side} bgColor={bgColor} navExpanded={props.navExpanded}>
         <UnorderedList>
           {Array.isArray(props.children)
             ? props.children.map((element) => <li key={Math.random()*2000}>{element}</li>)
@@ -62,12 +63,12 @@ const NavBar = (props) => {
         </UnorderedList>
       </Navigation>
     </_Fragment>
-  );
-};
+  )
+}
 
-const DEFAULT_BURGER_SIZE = 35;
-const MIN_BURGER_SIZE = 20;
-const MAX_BURGER_SIZE = 50;
+const DEFAULT_BURGER_SIZE = 35
+const MIN_BURGER_SIZE = 20
+const MAX_BURGER_SIZE = 50
 
 const styleRect1BeforeClick = {
   y: 25,
