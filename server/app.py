@@ -7,7 +7,6 @@ from sqlalchemy.exc import IntegrityError
 import ipdb 
 import logging
 
-
 @app.route('/')
 def index():
     return '<h1>Milestone Database</h1>'
@@ -60,9 +59,14 @@ class Users(Resource):
 api.add_resource(Users, '/users/<int:user_id>', endpoint='users')
 
 class Friends(Resource):
-    
-    def get(self):
-        friends = [friend.to_dict() for friend in Friend.query.all()]
+    def get(self, user_id):
+        # Get the logged-in user
+        user = User.query.get(user_id)
+        if not user:
+            abort(404, 'User not found')
+
+        # Fetch the friends of the logged-in user
+        friends = [{"friend_id" : friend.friend_id} for friend in user.friends]
         return jsonify(friends)
     
     def post(self, user_id):
@@ -72,30 +76,60 @@ class Friends(Resource):
             abort(404, 'User not found')
 
         # Get the friend user ID from the request data
-        data = request.get_json()
-        friend_id = data.get('friend_id')
+        form_data = request.get_json()
+        friend_id = form_data.get('friend_id')
 
         # Get the friend user
         friend = User.query.get(friend_id)
         if not friend:
             abort(404, 'Friend user not found')
 
-        # Check if the friendship already exists # if so => delete the friendship 
+        # Check if the friendship already exists, if so => delete the friendship
         friendship_check = Friend.query.filter_by(user=user, friend=friend).first()
         if friendship_check:
-            db.session.remove(friendship)
+            db.session.delete(friendship_check)
             db.session.commit()
 
-            return jsonify({'message': 'Friendship deleted'}), 201
-            
+            print('Friendship deleted')
+            return {'message': 'Friendship deleted'}, 200
+
         # Otherwise, create the friendship
         else: 
             friendship = Friend(user=user, friend=friend)
             db.session.add(friendship)
             db.session.commit()
 
-        return jsonify({'message': 'Friendship created'}), 201
+            print('Friendship created')
+            return {'message': 'Friendship created'}, 201
 
+    
+    def delete(self, user_id):
+        # Get the logged-in user
+        user = User.query.get(user_id)
+        if not user:
+            abort(404, 'User not found')
+
+        # Get the friend user ID from the request data
+        form_data = request.get_json()
+        friend_id = form_data.get('friend_id')
+
+        # Get the friend user
+        friend = User.query.get(friend_id)
+        if not friend:
+            abort(404, 'Friend user not found')
+
+        # Check if the friendship exists
+        friendship_check = Friend.query.filter_by(user=user, friend=friend).first()
+        if friendship_check:
+            # Delete the friendship
+            db.session.delete(friendship_check)
+            db.session.commit()
+
+            return {'message': 'Friendship deleted'}, 200
+        else:
+            # If the friendship does not exist, return an error
+            abort(404, 'Friendship not found')
+    
 api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')    
 
 class FriendsView(Resource):
@@ -136,7 +170,6 @@ class Aspects(Resource):
         except IntegrityError:
             return {'error': '422 Unprocessable entity'}, 422
 
-
 class AspectView(Resource):
     def get(self):
         return Aspects().get()
@@ -160,15 +193,12 @@ class Milestones(Resource):
         db.session.commit()
         return {'message': 'Milestone deleted successfully'}, 204
 
-
 api.add_resource(Milestones, '/milestones/<int:milestone_id>', endpoint='milestones')
 
 @socketio.on('new_milestone')
 # this function is called when a new_milestone event is received -> from create_milestone
 def handle_new_milestone(data):
     emit('new_milestone', data)
-    logging.debug(f'Handle_new_milestone event with data: {data}')
-
 
 @app.route('/milestones', methods=['POST'])
 def create_milestone():
@@ -193,10 +223,7 @@ def create_milestone():
         )
         
         # Emit the 'new_milestone' event to WebSocket server
-        socketio.emit('new_milestone', response_dict, namespace='/')
-        logging.debug(f'Emitted new_milestone event with data: {response_dict}')
-
-        
+        socketio.emit('new_milestone', response_dict, namespace='/')     
 
         return response
     

@@ -17,7 +17,7 @@ class Friend(db.Model, SerializerMixin):
 
     friend = db.relationship('User', foreign_keys=[friend_id])
 
-    serialize_rules = ('-friend.milestones', '-friend_id' )
+    serialize_rules = ('-user', '-friend')
 
     def __repr__(self):
         return f'FRIEND: User ID: {self.user_id}, Friend ID: {self.friend_id}'  
@@ -33,8 +33,9 @@ class User(db.Model, SerializerMixin):
 
     milestones = db.relationship('Milestone', backref=db.backref('user'), cascade='all, delete-orphan')
     aspects = db.relationship('Aspect', secondary=user_aspects, backref=db.backref('users'), cascade='all')
+    friends = db.relationship('Friend', backref='user', foreign_keys='Friend.user_id', lazy='dynamic')
 
-    serialize_rules = ('-admin', '-aspects', '-_password_hash','-milestones.user')
+    serialize_rules = ('-admin', '-aspects', '-_password_hash', '-friends', '-milestones.user')
     
     @hybrid_property
     def password_hash(self):
