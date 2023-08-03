@@ -9,10 +9,10 @@ function Friends() {
     const user_id = user.id
 
     useEffect(() => {
-      fetch(`http://127.0.0.1:5000/friends`)
+      fetch(`/users/${user_id}/friends`) // Update the API endpoint to fetch user-specific data
         .then((r) => r.json())
         .then((data) => setFriends(data))
-    }, [])
+    }, [user_id])
   
     const handleFriendClick = (friendID) => {
         navigate(`/timelines/${friendID}`)
@@ -31,22 +31,17 @@ function Friends() {
         <h1>friends</h1>
         <br />
         <div className="cards">
-          {friends.map((friend) => {
-            if (friend.user_id === user_id) {
-              return (
-                <div
-                  className="card"
-                  key={friend.friend.username}
-                  onClick={() => handleFriendClick(friend.friend.id)}
-                >
-                  <img src="https://www.nicepng.com/png/full/12-120709_png-file-human-icon-png.png" alt="friend avatar" />
-                  <span>{friend.friend.username}</span>
-                  <p className="birthday">{friend.friend.birthday}</p>
-                </div>
-              )
-            }
-            return null
-          })}
+          {friends.map((friend) => (
+            <div
+              className="card"
+              key={friend.username}
+              onClick={() => handleFriendClick(friend.friend_id)}
+            >
+              <img src="https://www.nicepng.com/png/full/12-120709_png-file-human-icon-png.png" alt="friend avatar" />
+              <span>{friend.username}</span>
+              <p className="birthday">{friend.birthday}</p>
+            </div>
+          ))}
         </div>
       </>
     )
