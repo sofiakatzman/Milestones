@@ -33,14 +33,26 @@ function App() {
     })
     socket.on('new_milestone', (data) => {
       console.log('Received new milestone:', data)
-      setBroadcast((prevBroadcast) => [...prevBroadcast, data])
-
-      // Handle the new milestone data here and update your component state.
+      setBroadcast((prevBroadcast) => [data, ...prevBroadcast])
     })
     // return () => {
     //   socket.disconnect()
     // }
   }, [])
+
+  const [milestones, setMilestones] = useState([]);
+
+  useEffect(() => {
+    // Fetch all previous milestones only once during the initial rendering
+    fetch('/milestones')
+      .then((r) => r.json())
+      .then((data) => {
+        // Sort the milestones based on their milestone_id in descending order
+        const sortedData = data.sort((a, b) => b.id - a.id);
+        setMilestones(sortedData);
+      });
+  }, []);
+
 
   // Only displays the authentication page if user is not logged in
   if (!user) {
@@ -65,7 +77,7 @@ function App() {
         <div className={blur ? 'blur-active' : ''}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="feed" element={<LiveFeed broadcast={broadcast} setBroadcast={setBroadcast} />} />
+            <Route path="feed" element={<LiveFeed broadcast={broadcast} setBroadcast={setBroadcast} milestones={milestones}/>} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/create" element={<Create />} />
             <Route path="/aspects" element={<Aspects />} />
