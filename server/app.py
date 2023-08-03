@@ -66,7 +66,11 @@ class Friends(Resource):
             abort(404, 'User not found')
 
         # Fetch the friends of the logged-in user
-        friends = [{"friend_id" : friend.friend_id} for friend in user.friends]
+        friends = [{"friend_id": friend.friend.id, 
+                    "username": friend.friend.username, 
+                    "birthday": friend.friend.birthday} 
+                    
+                    for friend in user.friends]
         return jsonify(friends)
     
     def post(self, user_id):
