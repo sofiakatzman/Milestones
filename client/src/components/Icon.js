@@ -19,12 +19,12 @@ function Icon({ type }) {
 
   }, [])
   
-    const selectedType = aspects.find(item => item.id === type);
-    const icon = selectedType ? selectedType.icon : "";
+    const selectedType = aspects.find(item => item.id === type)
+    const icon = selectedType ? selectedType.icon : ""
   
     return (
       <div className="icon">{icon}</div>
-    );
+    )
   }
   
-  export default Icon;
+  export default Icon
