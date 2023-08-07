@@ -1,37 +1,73 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 function LiveFeed({ broadcast, milestones }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [expandedMilestone, setExpandedMilestone] = useState(null);
+
+  const handleMilestoneHover = (milestone) => {
+    setExpandedMilestone(milestone);
+  };
+
+  const handleMilestoneLeave = () => {
+    setExpandedMilestone(null);
+  };
 
   return (
-    <div>
+    <div className="live-feed-container">
       <h1>Live Feed</h1>
-      <p>New Updates since Last Visit: {broadcast.length}</p>
-      <p>_________________________</p>
-      {broadcast.map((milestone, index) => (
-        <div key={index}>
-          <p>
-            <i>
+      <div className="feed-info">
+        <p className="feed-info">New Updates since Last Visit: {broadcast.length}</p>
+        <hr className="divider" />
+      </div>
+      <div className="milestone-list">
+        {broadcast.map((milestone, index) => (
+          <div
+            key={index}
+            className={`milestone-item ${expandedMilestone === milestone ? 'expanded' : ''}`}
+            onMouseEnter={() => handleMilestoneHover(milestone)}
+            onMouseLeave={handleMilestoneLeave}
+          >
+            <p>
               <b onClick={() => navigate(`/timelines/${milestone.user_id}`)}>{milestone.user.username}</b>
-            </i> created a new milestone: {milestone.header}
-          </p>
-        </div>
-      ))} <p>_________________________</p>
-      <p>Milestone History: {milestones.length}</p>
-
-      {milestones.map((milestone, index) => (
-              <div key={index}>
-                <p>
-                  <i>
-                    <b onClick={() => navigate(`/timelines/${milestone.user_id}`)}>{milestone.user.username}</b>
-                  </i> created a new milestone: {milestone.header}
-                </p>
+              <i>created a new milestone:</i> <br />{milestone.header}
+            </p>
+            {expandedMilestone === milestone && (
+              <div className="milestone-details">
+                <p>{milestone.subheader}</p>
+                <p>{milestone.description}</p>
               </div>
-            ))}
-      
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="feed-info">
+        <p className="feed-info">Milestone History: {milestones.length}</p>
+        <hr className="divider" />
+      </div>
+      <div className="milestone-list">
+        {milestones.map((milestone, index) => (
+          <div
+            key={index}
+            className={`milestone-item ${expandedMilestone === milestone ? 'expanded' : ''}`}
+            onMouseEnter={() => handleMilestoneHover(milestone)}
+            onMouseLeave={handleMilestoneLeave}
+          >
+            <p>
+              <b onClick={() => navigate(`/timelines/${milestone.user_id}`)}>{milestone.user.username}</b>
+              <i>created a new milestone:</i> <br />"{milestone.header}"
+            </p>
+            {expandedMilestone === milestone && (
+              <div className="milestone-details">
+                <p>{milestone.subheader}</p>
+                <p>{milestone.description}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
 
-export default LiveFeed
+export default LiveFeed;
