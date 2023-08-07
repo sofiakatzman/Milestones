@@ -9,7 +9,7 @@ function Authentication() {
   const [signUp, setSignUp] = useState(false)
   const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState("")
-  const {updateUser } = useContext(UserContext)
+  const {updateUser} = useContext(UserContext)
 
   const handleClick = () => {
     setSignUp((prevState) => !prevState)
