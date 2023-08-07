@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom"
 import UserContext from './UserContext'
 
 function Milestones() {
-  const [data, setData] = useState(null)
-  const [filteredData, setFilteredData] = useState(null)
+  const [data, setData] = useState([])
+  const [filteredData, setFilteredData] = useState([])
   const [aspects, setAspects] = useState(null)
   const [error, setError] = useState(null)
   const { user } = useContext(UserContext)
