@@ -1,7 +1,7 @@
 import { VerticalTimeline } from 'react-vertical-timeline-component'
 import TimelineComponent from "./Timeline"
 import { useEffect, useState, useContext } from "react"
-import {useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import UserContext from './UserContext'
 
 function Milestones() {
@@ -9,13 +9,13 @@ function Milestones() {
   const [filteredData, setFilteredData] = useState(null)
   const [aspects, setAspects] = useState(null)
   const [error, setError] = useState(null)
-  const {user} = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const user_id = user.id
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    //fetch user milestones 
+    //fetch user milestones
     fetch(`/milestone/${user_id}`)
       .then(response => response.json())
       .then(data => {
@@ -25,7 +25,7 @@ function Milestones() {
         setFilteredData(sortedData)
       })
 
-    //fetch for all aspects 
+    //fetch for all aspects
     fetch(`/aspects`)
       .then((response) => {
         if (response.ok) {
@@ -58,7 +58,7 @@ function Milestones() {
       .then((response) => {
         if (response.status === 204) {
           console.log("Milestone deleted successfully!")
-          // filter out the deleted milestone 
+          // filter out the deleted milestone
           const deleted = data.filter((milestone) => milestone.id !== milestoneID)
           setFilteredData(deleted)
           setData(deleted)
@@ -71,50 +71,50 @@ function Milestones() {
       })
   }
 
-   return (
+  return (
     <>
-            <h1>welcome, {user.username}</h1>
-
+      <h1>welcome, {user.username}</h1>
 
       <div>
+        <div className="filters">
+          {aspects &&
+            aspects.map((aspect) => {
+              return (
+                <button
+                  className="filter-button"
+                  key={aspect.id}
+                  onClick={() => handleFilterOption(aspect.id)}
+                >
+                  <span role="img" aria-label={aspect.name}>
+                    {aspect.icon}
+                  </span>
+                  <h6 className="hide-hover">{aspect.name.toLowerCase()}</h6>
+                </button>
+              )
+            })}
+          <button
+            className="filter-button"
+            onClick={() => handleFilterOption("all")}
+          >
+            <span role="img" aria-label="remove-filter">
+              ❌
+            </span>
+            <h6 className="hide-hover">clear filter</h6>
+          </button>
+        </div>
+
         {filteredData && filteredData.length > 0 ? (
-         <>
-            <div className="filters">
-                    {aspects &&
-                      aspects.map((aspect) => {
-                        return (
-                          <button
-                            className="filter-button"
-                            key={aspect.id}
-                            onClick={() => handleFilterOption(aspect.id)}
-                          >
-                            <span role="img" aria-label={aspect.name}>
-                              {aspect.icon}
-                            </span>
-                            <h6 className="hide-hover">{aspect.name.toLowerCase()}</h6>
-                          </button>
-                        )
-                      })}
-                    <button
-                      className="filter-button"
-                      onClick={() => handleFilterOption("all")}
-                    >
-                      <span role="img" aria-label="remove-filter">
-                        ❌
-                      </span>
-                      <h6 className="hide-hover">clear filter</h6>
-                    </button>
-                  </div>  <VerticalTimeline>
+          <VerticalTimeline>
             {filteredData.map((item) => (
- 
               <TimelineComponent key={item.id} data={item} canDelete={true} handleDelete={handleDelete} />
             ))}
-          </VerticalTimeline></>
+          </VerticalTimeline>
         ) : (
           <h4>Sorry! No milestones to show. </h4>
         )}
       </div>
-      </>)
+    </>
+  )
 }
 
 export default Milestones
