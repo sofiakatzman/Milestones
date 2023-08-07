@@ -8,8 +8,6 @@ function Aspects(){
   const formSchema = yup.object().shape({
         name: yup.string().required('You must enter a name.'),
         description: yup.string().required('You must enter a description.'),
-        // logo: yup.string().required('You must enter a logo.'),
-        // Add validation for other fields if needed
       })
     
       const formik = useFormik({
@@ -40,13 +38,13 @@ function Aspects(){
         <>
         <h1>new aspect</h1>
         <form className="auth-form " 
-        onSubmit={formik.handleSubmit}>
+          onSubmit={formik.handleSubmit}>
         <br/><br/>
         <input type="text" 
-        name="name" 
-        placeholder="name"
-        value={formik.values.name} 
-        onChange={formik.handleChange} />
+          name="name" 
+          placeholder="name"
+          value={formik.values.name} 
+          onChange={formik.handleChange} />
         <br/><br/>
         <input type="text" 
           name="description" 
@@ -64,14 +62,14 @@ function Aspects(){
         <p className="errors">{formik.errors.header}</p>
         <button type="submit">Submit</button><br/><br/>
         </form>
-        {formik.errors && (
-        <div className="errors">
-          <ul>
-            {Object.values(formik.errors).map((error, index) => (
-              <h6 key={index} style={{ color: 'red' }}>{error}</h6>
-            ))}
-          </ul>
-        </div>
+          {formik.errors && (
+            <div className="errors">
+              <ul>
+                {Object.values(formik.errors).map((error, index) => (
+                  <h6 key={index} style={{ color: 'red' }}>{error}</h6>
+                ))}
+              </ul>
+            </div>
       )}
 
         </>

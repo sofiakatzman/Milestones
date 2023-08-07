@@ -107,11 +107,9 @@ function FriendMilestones() {
             }
           })
           .then((data) => {
-            // Optionally, you can show a success message or update the UI here
             console.log('Friend deleted successfully', data)
           })
           .catch((error) => {
-            // Handle any errors that occur during the request
             console.error('Error deleting friend', error)
           })
     }
