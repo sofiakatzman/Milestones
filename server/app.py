@@ -247,6 +247,31 @@ def user(user_id):
 def get_all_milestones():
     milestones = [milestone.to_dict() for milestone in Milestone.query.all()]
     return jsonify(milestones)
+
+class MilestonesById(Resource):
+    def patch(self, milestone_id):
+        form_json = request.get_json()
+
+        milestone = Milestone.query.get(milestone_id)
+        if not milestone:
+            return {'message': 'Milestone not found'}, 404
+
+        # Update the milestone fields with the provided data
+        fields_to_update = {
+            'header': form_json.get('header', milestone.header),
+            'subheader': form_json.get('subheader', milestone.subheader),
+            'description': form_json.get('description', milestone.description),
+            'date': form_json.get('date', milestone.date),
+            'aspect_id': form_json.get('aspect_id', milestone.aspect_id)
+        }
+
+        for field, value in fields_to_update.items():
+            setattr(milestone, field, value)
+
+        db.session.commit()
+        return {'message': 'Milestone updated successfully'}, 200
+
+api.add_resource(MilestonesById, '/milestones/<int:milestone_id>') 
     
 class Login(Resource):
     def post(self):
