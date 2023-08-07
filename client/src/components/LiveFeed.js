@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 function LiveFeed({ broadcast, milestones }) {
@@ -17,7 +17,7 @@ function LiveFeed({ broadcast, milestones }) {
     <div className="live-feed-container">
       <h1>Live Feed</h1>
       <div className="feed-info">
-        <p className="feed-info">New Updates since Last Visit: {broadcast.length}</p>
+        <p className="feed-info">New Updates: {broadcast.length}</p>
         <hr className="divider" />
       </div>
       <div className="milestone-list">
@@ -30,7 +30,7 @@ function LiveFeed({ broadcast, milestones }) {
           >
             <p>
               <b onClick={() => navigate(`/timelines/${milestone.user_id}`)}>{milestone.user.username}</b>
-              <i>created a new milestone:</i> <br />{milestone.header}
+              <i> created a new milestone:</i> <br />{milestone.header}
             </p>
             {expandedMilestone === milestone && (
               <div className="milestone-details">
@@ -55,7 +55,7 @@ function LiveFeed({ broadcast, milestones }) {
           >
             <p>
               <b onClick={() => navigate(`/timelines/${milestone.user_id}`)}>{milestone.user.username}</b>
-              <i>created a new milestone:</i> <br />"{milestone.header}"
+              <i> created a new milestone:</i> <br />"{milestone.header}"
             </p>
             {expandedMilestone === milestone && (
               <div className="milestone-details">
