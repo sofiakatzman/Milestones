@@ -1,32 +1,20 @@
 # Milestones
 ## Description
-"Milestones" is a presents a timeline of personal events, offering various filters like "professional," "achievement," and "personal" to categorize different aspects of one's life. It serves as a platform for individuals to showcase their story through significant milestones such as career accomplishments, educational pursuits, life-changing experiences like relocations or marriages, and more. 
+Welcome to "Milestones" - the platform that empowers individuals to share their unique stories by highlighting important moments in their lives. Whether it's a career achievement, an educational pursuit, a life-changing event like moving to a new place or getting married, "Milestones" provides a captivating and meaningful way for people to showcase and celebrate their journey and significant accomplishments.
 
-Users can: 
-- Create an account
-- Create milestones 
-- Delete milestones 
-- Create milestone aspects 
-- Edit their username 
-- Delete their account 
-- View other's timelines * 
+Our platform allows users to create visually appealing presentations of their milestones, making it easy to share their experiences with friends, family, and the wider community. Not only can you share your own achievements, but you can also connect with others who have similar milestones or find inspiration from those with intriguing stories.
 
-* Admin account features 'friends view'. Credentials can be found in "Installation"
-New users will not have this ability until next update.
+Join us on "Milestones" and become a part of a supportive and inspiring community where everyone's unique journey is celebrated and cherished. Start sharing your milestones today and forge connections with like-minded individuals who share your passions and experiences!
 
-
-
-Coming Soon: 
-- Users can selectively share specific filters, allowing friends, recruiters and others to gain insights into their unique journey and understand who they are on a deeper level.
-- Users can add other users as friends.
-- User updates for friends are displayed on home page. 
+## Coming Soon
+- Users can create "private milestones" which will only be shared with friends.
+- User profiles can be viewed by non-logged in users, but only public milestones will be displayed.
 - Users can customize their milestones page for when friends visit.
-- Users can choose to view timelines in ascending or descending order. 
-- User profiles can be view by non-logged in users, but only public milestones will be displayed. 
+- Users can choose to view timelines in ascending or descending order.
 
 ## Installation
 To view this project, please clone this repository locally. 
-Nacivage to it's directory and follow the below commands on your terminal: 
+Navigate to it's directory and follow the below commands on your terminal: 
 
 1. Clone this repository to your local machine and navigate to its directory.
 2. `cd server` and then run `pipenv install` to install all the necessary backend package dependencies.
@@ -35,17 +23,15 @@ Nacivage to it's directory and follow the below commands on your terminal:
 5. In a new terminal, from the root directory, navigate to the client folder by entering `cd client`
 6. Run `npm install; npm start` to install your front end dependencies and begin your local React server. 
 
-From here, you are able to visit: local... and use Milestones on your browser!
+From here, you are able to visit: `http://localhost:4000/` and use Milestones on your browser!
 
-For full access and preview of new features, please use the admin account. 
+For full access, please use the admin account. 
 
 Username: admin
 Password: cow 
 
 ## Usage Visuals
-You can view a video walkthrough [here](https://youtu.be/iv43I4S-bUc) 
-
-## Acknowledgement
+You can view a video walkthrough [here](https://youtu.be/23grUYcH2Qw) 
 
 ## Support
 For any questions or support, please reach out to katzmansof@gmail.com.
