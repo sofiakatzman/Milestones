@@ -23,7 +23,7 @@ const NavBar = (props) => {
     <_Fragment>
       <BurgerBox side={side}>
         <svg onClick={toggleHamburger} viewBox="0 0 100 100" width={`${burgerSize}`}>
-          <rect
+          <rect className="hamburger"
             fill={props.navExpanded ? hamColorOpen : hamColorClosed}
             stroke={props.navExpanded ? hamColorOpen : hamColorClosed}
             width="80"
@@ -32,7 +32,7 @@ const NavBar = (props) => {
             rx="2"
             style={props.navExpanded ? styleRect1AfterClick : styleRect1BeforeClick}
           />
-          <rect
+          <rect className="hamburger"
             fill={props.navExpanded ? hamColorOpen : hamColorClosed}
             stroke={props.navExpanded ? hamColorOpen : hamColorClosed}
             width="80"
@@ -42,7 +42,7 @@ const NavBar = (props) => {
             rx="2"
             style={props.navExpanded ? styleRect2AfterClick : styleRect2BeforeClick}
           />
-          <rect
+          <rect className="hamburger"
             fill={props.navExpanded ? hamColorOpen : hamColorClosed}
             stroke={props.navExpanded ? hamColorOpen : hamColorClosed}
             width="80"
@@ -134,7 +134,7 @@ const Navigation = styled.nav`
   align-items: center;
   justify-items: center;
   padding: 0px 0.5rem;
-  background-color: #8a9e9b32;
+  background-color: transparent;
   max-width: 20%;
   min-width: 15%;
   width: fit-content;
