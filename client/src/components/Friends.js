@@ -3,33 +3,26 @@ import { useNavigate } from "react-router-dom"
 import UserContext from './UserContext'
 
 function Friends() {
-    const [friends, setFriends] = useState(null)
-    const navigate = useNavigate()
-    const { user } = useContext(UserContext)
-    const user_id = user.id
+  const [friends, setFriends] = useState(null)
+  const navigate = useNavigate()
+  const { user } = useContext(UserContext)
+  const user_id = user.id
 
-    useEffect(() => {
-      fetch(`/users/${user_id}/friends`) // Update the API endpoint to fetch user-specific data
-        .then((r) => r.json())
-        .then((data) => setFriends(data))
-    }, [user_id])
-  
-    const handleFriendClick = (friendID) => {
-        navigate(`/timelines/${friendID}`)
-    }
+  useEffect(() => {
+    fetch(`/users/${user_id}/friends`)
+      .then((r) => r.json())
+      .then((data) => setFriends(data))
+  }, [user_id])
 
-    if (!friends) {
-      return (<>
-        <h1>friends</h1><br />
-        <h4>You haven't added any friends yet...</h4>
-        </>
-      )
-    }
-  
-    return (
-      <>
-        <h1>friends</h1>
-        <br />
+  const handleFriendClick = (friendID) => {
+    navigate(`/timelines/${friendID}`)
+  }
+
+  return (
+    <>
+      <h1>friends</h1>
+      <br />
+      {friends && friends.length > 0 ? (
         <div className="cards">
           {friends.map((friend) => (
             <div
@@ -43,8 +36,11 @@ function Friends() {
             </div>
           ))}
         </div>
-      </>
-    )
-  }
+      ) : (
+        <h4>You haven't added any friends yet...</h4>
+      )}
+    </>
+  )
+}
 
-  export default Friends
+export default Friends
