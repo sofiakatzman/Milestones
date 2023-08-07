@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom'
+import { useContext } from "react"
+import UserContext from './UserContext'
 
-function Log({updateUser, user, handleBlur}) {
+function Log({handleBlur}) {
   const navigate = useNavigate()
+  const {updateUser} = useContext(UserContext)
 
   const handleLogout = () => {
     fetch("http://127.0.0.1:5000/logout", {
