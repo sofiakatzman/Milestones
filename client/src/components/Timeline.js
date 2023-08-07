@@ -3,13 +3,14 @@ import 'react-vertical-timeline-component/style.min.css'
 import Icon from './Icon'
 
 
-function TimelineComponent({ data, canDelete, handleDelete}) {
+function TimelineComponent({ data, canDelete, handleDelete, handleEdit}) {
+  
 
   
   return (
-    // this component needs logic to handle deleting a milestone from the page 
     <>
       {data &&
+        
           <VerticalTimelineElement 
           key={data.id}
           className={data.aspect_id.toString()}
@@ -20,12 +21,16 @@ function TimelineComponent({ data, canDelete, handleDelete}) {
           icon={<Icon type={data.aspect_id} 
           />}
         >
-          {canDelete && <button onClick={()=> handleDelete(data.id)}>x</button>}
-
+          
+          <br/>
           <h3 className="vertical-timeline-element-title">{data.header}</h3>
           <h4 className="vertical-timeline-element-subtitle">{data.subheader}</h4>
           <h5 className="vertical-timeline-element-description">{data.description}</h5>
           <br/>
+          <div className="edit-delete-buttons">
+            {canDelete && <button onClick={()=> handleEdit(data.id)}>edit</button>}
+            {canDelete && <button onClick={()=> handleDelete(data.id)}>x</button>}
+          </div>
         </VerticalTimelineElement>
      }
     </>

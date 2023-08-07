@@ -71,11 +71,18 @@ function Milestones() {
       })
   }
 
+  const handleEdit = (milestoneId) => {
+    navigate(`/edit/milestone/${milestoneId}`)
+  }
+
+
+
   return (
     <>
       <h1>welcome, {user.username}</h1>
 
       <div>
+        {/* display filters */}
         <div className="filters">
           {aspects &&
             aspects.map((aspect) => {
@@ -103,10 +110,11 @@ function Milestones() {
           </button>
         </div>
 
+        {/* display milestones */}
         {filteredData && filteredData.length > 0 ? (
           <VerticalTimeline>
             {filteredData.map((item) => (
-              <TimelineComponent key={item.id} data={item} canDelete={true} handleDelete={handleDelete} />
+              <TimelineComponent key={item.id} data={item} canDelete={true} handleDelete={handleDelete} handleEdit={handleEdit} />
             ))}
           </VerticalTimeline>
         ) : (

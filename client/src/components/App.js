@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import io from 'socket.io-client'
 import Navigation from './Navigation'
 import Home from './Home'
 import Friends from './Friends'
@@ -9,11 +10,11 @@ import Settings from './Settings'
 import Milestones from './Milestones'
 import FriendMilestones from './FriendMilestones'
 import Authentication from './Authentication'
-import '../index.css'
 import UserContext from './UserContext'
 import Log from './Log'
 import LiveFeed from './LiveFeed'
-import io from 'socket.io-client'
+import EditMilestone from './EditMilestone'
+import '../index.css'
 
 const socket = io('/')
 
@@ -35,10 +36,11 @@ function App() {
       console.log('Received new milestone:', data)
       setBroadcast((prevBroadcast) => [data, ...prevBroadcast])
     })
-    // return () => {
-    //   socket.disconnect()
-    // }
-  }, [])
+    }, [])
+
+    const exitSocket = () => {
+      socket.disconnect()
+    }
 
   const [milestones, setMilestones] = useState([]);
 
@@ -83,8 +85,9 @@ function App() {
             <Route path="/aspects" element={<Aspects />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/timelines" element={<Milestones />} />
+            <Route path="/edit/milestone/:milestoneId" element={<EditMilestone />} />
             <Route path="/timelines/:user_id" element={<FriendMilestones />} />
-            <Route path="/user/logout" element={<Log />} />
+            <Route path="/user/logout" element={<Log exitSocket={exitSocket}/>} />
           </Routes>
         </div>
       </Router>
