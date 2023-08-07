@@ -1,10 +1,12 @@
 :root {
   --mint-green-lightest: #dfe1d1bd; /*/ background color /*/
-  --mint-green-light: #34193b19; /*/ buttons and cards color /*/
   --mint-green-darkest: #3b643d; /*/ button text /*/
   --dark-green-main: #1a4d197d; /*/ main dark green /*/
   --dark-green-main-darkest: #203b19be;
+  --dark-green-main-transparent: #405d391a;
   --dark-purple: #34193b8d;
+  --transparent-purple: #34193b1b;
+  --transparent-purple-2: #34193b0d; /*/ buttons and cards color /*/
 }
 
 body {
@@ -89,7 +91,7 @@ input, textarea {
   transition: font-size 0.3s ease;
   text-align: justify;
   white-space: nowrap;
-  color: var(--dark-green-main-darkest);
+  color: var(--dark-purple);
   line-height: 3rem;
   text-decoration: none; 
 }
@@ -102,6 +104,7 @@ input, textarea {
   position: fixed;
   top: -3px;
   right: 60px;
+  color: var(--dark-purple)
 }
 
 .icon:hover .navbar .links,
@@ -112,7 +115,7 @@ input, textarea {
 input.button, button {
   --c: var(--mint-green-dark);
   color: var(--mint-green-darkest);
-  background: var(--mint-green-light);
+  background: var(--transparent-purple);
   background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
   outline-offset: .1em;
   transition: background-size .4s, background-position 0s .4s;
@@ -138,7 +141,7 @@ button {
 
 button.logout {
   font-size: 1rem;
-  background-color: var(--dark-green-main);
+  background-color: var(--dark-purple);
   color: white;
   padding: .5rem;
   cursor: pointer;
@@ -427,7 +430,7 @@ div.blur-active * {
   margin: 0 auto;
   padding: 20px;
   border-radius: 8px;
-  background-color: var(--mint-green-light);
+  background-color: var(--dark-green-main-transparent);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -488,4 +491,8 @@ p.feed-info{
   display: flex;
   justify-content: space-between;
   gap: 5px; 
+}
+
+rect.hamburger {
+  fill: #34193b8d;
 }
