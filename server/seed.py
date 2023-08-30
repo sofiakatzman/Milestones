@@ -14,6 +14,24 @@ def seed():
     Aspect.query.delete()
     User.query.delete()
 
+    # # Seed aspects
+    aspects = [
+        [1, "education", "school and other educational pursuits and accomplishments", "✏️"],
+        [2, "self growth", "self-improvement pursuits and accomplishments", "🌱"],
+        [3, "achievements", "personal goal completion", "🏆"],
+        [4, "life change", "relocation or life changes", "✈️"],
+        [5, "professional", "career changes or promotions", "💼"]
+    ]
+
+    for aspect in aspects:
+        new_aspect = Aspect(
+            id=aspect[0],
+            name=aspect[1],
+            description=aspect[2],
+            icon=aspect[3],
+        )
+        db.session.add(new_aspect)
+
     # Create mock user data
     for i in range(10):
         new_user = User(
@@ -65,23 +83,7 @@ def seed():
         )
         db.session.add(new_milestone)
 
-    # # Seed aspects
-    # aspects = [
-    #     ["1", "education", "school and other educational pursuits and accomplishments", "✏️"],
-    #     ["2", "self growth", "self-improvement pursuits and accomplishments", "🌱"],
-    #     ["3", "achievements", "personal goal completion", "🏆"],
-    #     ["4", "life change", "relocation or life changes", "✈️"],
-    #     ["5", "professional", "career changes or promotions", "💼"]
-    # ]
-
-    # for aspect in aspects:
-    #     new_aspect = Aspect(
-    #         id=aspect[0],
-    #         name=aspect[1],
-    #         description=aspect[2],
-    #         icon=aspect[3],
-    #     )
-    #     db.session.add(new_aspect)
+    
 
     # Create instances of UserAspect
     for i in range(1, 50):
