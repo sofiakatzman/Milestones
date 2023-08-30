@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 import Navigation from './Navigation'
 import Home from './Home'
 import Friends from './Friends'
@@ -16,7 +16,7 @@ import LiveFeed from './LiveFeed'
 import EditMilestone from './EditMilestone'
 import '../index.css'
 
-const socket = io('/')
+// const socket = io('/')
 
 function App() {
   const { user } = useContext(UserContext)
@@ -27,19 +27,19 @@ function App() {
     setBlur(isBlurred)
   }
 
-  useEffect(() => {
-    const socket = io('/')
-    socket.on('connect', () => {
-      console.log('Connected to server!')
-    })
-    socket.on('new_milestone', (data) => {
-      console.log('Received new milestone:', data)
-      setBroadcast((prevBroadcast) => [data, ...prevBroadcast])
-    })
-    }, [])
+  // useEffect(() => {
+  //   const socket = io('/')
+  //   socket.on('connect', () => {
+  //     console.log('Connected to server!')
+  //   })
+  //   socket.on('new_milestone', (data) => {
+  //     console.log('Received new milestone:', data)
+  //     setBroadcast((prevBroadcast) => [data, ...prevBroadcast])
+  //   })
+  //   }, [])
 
     const exitSocket = () => {
-      socket.disconnect()
+      // socket.disconnect()
     }
 
   const [milestones, setMilestones] = useState([]);
