@@ -1,6 +1,6 @@
-from config import db, app, api, socketio
+from config import db, app, api #, socketio
 from flask import request, jsonify, make_response, abort, session, render_template
-from flask_socketio import emit
+# from flask_socketio import emit
 from flask_restful import Resource
 from models import User, Friend, Aspect, Milestone
 from sqlalchemy.exc import IntegrityError
@@ -200,10 +200,10 @@ class Milestones(Resource):
 
 api.add_resource(Milestones, '/api/milestones/<int:milestone_id>', endpoint='milestones')
 
-@socketio.on('new_milestone')
-# this function is called when a new_milestone event is received -> from create_milestone
-def handle_new_milestone(data):
-    emit('new_milestone', data)
+# @socketio.on('new_milestone')
+# # this function is called when a new_milestone event is received -> from create_milestone
+# def handle_new_milestone(data):
+#     emit('new_milestone', data)
 
 @app.route('/api/milestones', methods=['POST'])
 def create_milestone():
@@ -228,7 +228,7 @@ def create_milestone():
         )
         
         # Emit the 'new_milestone' event to WebSocket server
-        socketio.emit('new_milestone', response_dict, namespace='/')     
+        # socketio.emit('new_milestone', response_dict, namespace='/')     
 
         return response
     
@@ -358,4 +358,5 @@ api.add_resource(Logout, '/api/logout')
 def index(id=0):
     return render_template("index.html")
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=8000, debug=False)
+    # socketio.run(app, host='0.0.0.0', port=8000, debug=False)
+    app.run(port=5555)
