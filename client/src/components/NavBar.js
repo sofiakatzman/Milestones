@@ -1,5 +1,5 @@
 // this component was not created by me. This was to fix a premade navigation bar npm package that was missing an import
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime"
+import {Fragment as FRAGMENT } from "react/jsx-runtime"
 import styled from 'styled-components'
 
 const NavBar = (props) => {
@@ -20,7 +20,7 @@ const NavBar = (props) => {
   }
   
   return (
-    <_Fragment>
+    <FRAGMENT>
       <BurgerBox side={side}>
         <svg onClick={toggleHamburger} viewBox="0 0 100 100" width={`${burgerSize}`}>
           <rect className="hamburger"
@@ -62,7 +62,7 @@ const NavBar = (props) => {
             : props.children}
         </UnorderedList>
       </Navigation>
-    </_Fragment>
+    </FRAGMENT>
   )
 }
 
