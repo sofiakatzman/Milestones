@@ -44,4 +44,4 @@ api = Api(app)
 CORS(app)
 
 #Instantiate SocketIO server
-socketio = SocketIO(app, cors_allowed_origins="*")
+# socketio = SocketIO(app, cors_allowed_origins="*")
