@@ -23,7 +23,7 @@ function Settings() {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch(`/users/${user.id}`, {
+      fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -58,13 +58,13 @@ function Settings() {
   }
 
   const deleteAccount = (userID) => {
-    fetch(`/users/${userID}`, {
+    fetch(`/api/users/${userID}`, {
         method: "DELETE"
       })
         .then((response) => {
           if (response.status === 204){
             console.log(`User ${user.id} has been deleted.`)
-            fetch("/logout", {
+            fetch("/api/logout", {
               method: 'DELETE'})
             .then(res => {
               if (res.status === 204){

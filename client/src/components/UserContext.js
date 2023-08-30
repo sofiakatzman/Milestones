@@ -6,7 +6,7 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    fetch('/authorized')
+    fetch('/api/authorized')
       .then(res => {
         if (res.ok) {
           return res.json()

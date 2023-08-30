@@ -9,13 +9,13 @@ function Friends() {
   const user_id = user.id
 
   useEffect(() => {
-    fetch(`/users/${user_id}/friends`)
+    fetch(`/api/users/${user_id}/friends`)
       .then((r) => r.json())
       .then((data) => setFriends(data))
   }, [user_id])
 
   const handleFriendClick = (friendID) => {
-    navigate(`/timelines/${friendID}`)
+    navigate(`/api/timelines/${friendID}`)
   }
 
   return (

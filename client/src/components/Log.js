@@ -7,7 +7,7 @@ function Log({handleBlur}) {
   const {updateUser} = useContext(UserContext)
 
   const handleLogout = () => {
-    fetch("http://127.0.0.1:5000/logout", {
+    fetch("/api/logout", {
       method: 'DELETE'})
     .then(res => {
       if(res.ok){

@@ -1,15 +1,16 @@
 from config import db, app, api, socketio
-from flask import request, jsonify, make_response, abort, session
+from flask import request, jsonify, make_response, abort, session, render_template
 from flask_socketio import emit
 from flask_restful import Resource
 from models import User, Friend, Aspect, Milestone
 from sqlalchemy.exc import IntegrityError
 import ipdb 
 import logging
+from dotenv import load_dotenv
 
-@app.route('/')
-def index():
-    return '<h1>Milestone Database</h1>'
+# @app.route('/')
+# def index():
+#     return '<h1>Milestone Database</h1>'
 
 class Users(Resource):
     def get(self):
@@ -56,7 +57,7 @@ class Users(Resource):
         )
         return response
 
-api.add_resource(Users, '/users/<int:user_id>', endpoint='users')
+api.add_resource(Users, '/api/users/<int:user_id>', endpoint='users')
 
 class Friends(Resource):
     def get(self, user_id):
@@ -134,7 +135,7 @@ class Friends(Resource):
             # If the friendship does not exist, return an error
             abort(404, 'Friendship not found')
     
-api.add_resource(Friends, '/users/<int:user_id>/friends', endpoint='friends')    
+api.add_resource(Friends, '/api/users/<int:user_id>/friends', endpoint='friends')    
 
 class FriendsView(Resource):
     def get(self):
@@ -143,7 +144,7 @@ class FriendsView(Resource):
     def post(self):
         return Friends().post()
     
-api.add_resource(FriendsView, '/friends')
+api.add_resource(FriendsView, '/api/friends')
 
 class Aspects(Resource):
     def get(self):
@@ -181,7 +182,7 @@ class AspectView(Resource):
     def post(self):
         return Aspects().post()
 
-api.add_resource(AspectView, '/aspects')
+api.add_resource(AspectView, '/api/aspects')
 
 class Milestones(Resource):
     def get(self):
@@ -197,14 +198,14 @@ class Milestones(Resource):
         db.session.commit()
         return {'message': 'Milestone deleted successfully'}, 204
 
-api.add_resource(Milestones, '/milestones/<int:milestone_id>', endpoint='milestones')
+api.add_resource(Milestones, '/api/milestones/<int:milestone_id>', endpoint='milestones')
 
 @socketio.on('new_milestone')
 # this function is called when a new_milestone event is received -> from create_milestone
 def handle_new_milestone(data):
     emit('new_milestone', data)
 
-@app.route('/milestones', methods=['POST'])
+@app.route('/api/milestones', methods=['POST'])
 def create_milestone():
     request_json = request.get_json()
     new_milestone = Milestone(
@@ -234,7 +235,7 @@ def create_milestone():
     except IntegrityError:
         return {'error': '422 Unprocessable Entity'}, 422
     
-@app.route('/milestone/<user_id>')
+@app.route('/api/milestone/<user_id>')
 def user(user_id):
     milestones = Milestone.query.filter_by(user_id=user_id).all()
     if milestones:
@@ -243,7 +244,7 @@ def user(user_id):
     else:
         return jsonify({'error': 'User not found'})
     
-@app.route('/milestones', methods=['GET'])
+@app.route('/api/milestones', methods=['GET'])
 def get_all_milestones():
     milestones = [milestone.to_dict() for milestone in Milestone.query.all()]
     return jsonify(milestones)
@@ -271,7 +272,7 @@ class MilestonesById(Resource):
         db.session.commit()
         return {'message': 'Milestone updated successfully'}, 200
 
-api.add_resource(MilestonesById, '/milestones/<int:milestone_id>') 
+api.add_resource(MilestonesById, '/api/milestones/<int:milestone_id>') 
     
 class Login(Resource):
     def post(self):
@@ -290,7 +291,7 @@ class Login(Resource):
         except:
             abort(401, "Incorrect username or password")
 
-api.add_resource(Login, '/login')
+api.add_resource(Login, '/api/login')
 
 class Signup(Resource):
     def post(self):
@@ -316,7 +317,7 @@ class Signup(Resource):
         except:
             return {'error': '422 Unprocessable Entity'}, 422
 
-api.add_resource(Signup, '/signup')
+api.add_resource(Signup, '/api/signup')
 
 class AuthorizedSession(Resource):
     def get(self):
@@ -330,7 +331,7 @@ class AuthorizedSession(Resource):
         except:
             abort(401, "Unauthorized")
 
-api.add_resource(AuthorizedSession, '/authorized')
+api.add_resource(AuthorizedSession, '/api/authorized')
 
 class Logout(Resource):
     def delete(self):
@@ -338,8 +339,23 @@ class Logout(Resource):
         response = make_response('', 204)
         return response     
     
-api.add_resource(Logout, '/logout')
+api.add_resource(Logout, '/api/logout')
 
+# react front end routes 
+@app.route('/')
+@app.route('/feed')
+@app.route('/friends')
+@app.route('/create')
+@app.route('/aspects')
+@app.route('/settings')
+@app.route('/timelines')
+@app.route('/edit/milestone/:milestoneId')
+@app.route('/timelines/:user_id')
+@app.route('/user/logout')
 
+@app.route('/')
+@app.route('/<int:id>')
+def index(id=0):
+    return render_template("index.html")
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=False)
+    socketio.run(app, host='0.0.0.0', port=8000, debug=False)

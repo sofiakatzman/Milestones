@@ -5,7 +5,7 @@ function Icon({ type }) {
   const [aspects, setAspects] = useState([])
 
   useEffect(() => {
-    fetch(`/aspects`)
+    fetch(`/api/aspects`)
           .then((response) => {
             if (response.ok) {
               return response.json()

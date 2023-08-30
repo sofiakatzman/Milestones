@@ -16,7 +16,7 @@ function Milestones() {
 
   useEffect(() => {
     //fetch user milestones
-    fetch(`/milestone/${user_id}`)
+    fetch(`/api/milestone/${user_id}`)
       .then(response => response.json())
       .then(data => {
         const sortedData = [...data]
@@ -26,7 +26,7 @@ function Milestones() {
       })
 
     //fetch for all aspects
-    fetch(`/aspects`)
+    fetch(`/api/aspects`)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -52,7 +52,7 @@ function Milestones() {
   }
 
   const handleDelete = (milestoneID) => {
-    fetch(`/milestones/${milestoneID}`, {
+    fetch(`/api/milestones/${milestoneID}`, {
       method: "DELETE",
     })
       .then((response) => {

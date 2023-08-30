@@ -1,3 +1,8 @@
+# Standard library imports
+from dotenv import load_dotenv
+import os
+load_dotenv()
+# Remote library imports
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -6,16 +11,21 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
 from flask_socketio import SocketIO
+import psycopg2
 
-app = Flask(__name__)
-
-app.secret_key = b'\xb2k|\xca"e\xc9\xc8\x98\xb3\x1d\x973u\xab\xf6'
+# Local imports
 
 # Instantiate app, set attributes
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app = Flask(
+    __name__,
+    static_url_path="",
+    static_folder="../client/build",
+    template_folder="../client/build",
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
+app.secret_key = os.environ.get("SESSION_KEY")
 
 # Define metadata, instantiate db
 metadata = MetaData(naming_convention={
@@ -25,11 +35,13 @@ db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
 
+# Instantiate Bcrypt
+bcrypt = Bcrypt(app)
+# Instantiate REST API
+api = Api(app)
+
 # Instantiate CORS
 CORS(app)
 
-
-bcrypt = Bcrypt(app)
-
-api = Api(app)
+#Instantiate SocketIO server
 socketio = SocketIO(app, cors_allowed_origins="*")

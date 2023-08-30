@@ -15,7 +15,7 @@ function EditMilestone() {
 
   // Fetch all the milestones from the backend on component mount
   useEffect(() => {
-    fetch('/milestones')
+    fetch('/api/milestones')
       .then((response) => response.json())
       .then((data) => {
         const milestone = data.find((milestone) => milestone.id === parseInt(milestoneId))

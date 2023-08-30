@@ -11,7 +11,7 @@ function Create() {
   const user_id = user.id
 
   useEffect(() => {
-    fetch('/aspects')
+    fetch('/api/aspects')
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -42,7 +42,7 @@ function Create() {
     onSubmit: (values) => {
       values.user_id = user_id
       console.log(values)
-      fetch('/milestones', {
+      fetch('/api/milestones', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

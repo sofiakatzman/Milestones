@@ -18,7 +18,7 @@ function Aspects(){
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
-            fetch('/aspects', {
+            fetch('/api/aspects', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

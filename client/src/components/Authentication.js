@@ -16,7 +16,7 @@ function Authentication() {
   }
 
   const handleSubmit = (values) => {
-    const url = signUp ? "/signup" : "/login"
+    const url = signUp ? "/api/signup" : "/api/login"
     fetch(url, {
       method: "POST",
       headers: {

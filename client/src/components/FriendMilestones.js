@@ -18,7 +18,7 @@ function FriendMilestones() {
 
   useEffect(() => {
     // fetch for user milestones
-    fetch(`/milestone/${user_id}`)
+    fetch(`/api/milestone/${user_id}`)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -35,7 +35,7 @@ function FriendMilestones() {
       })
       .catch(() => setError(true))
     // fetch for database aspects
-    fetch(`/aspects`)
+    fetch(`/api/aspects`)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -51,7 +51,7 @@ function FriendMilestones() {
 
   useEffect(() => {
     // Check if the logged-in user and the user whose profile you are viewing are friends
-      fetch(`/users/${user.id}/friends`)
+      fetch(`/api/users/${user.id}/friends`)
         .then((response) => {
           if (response.ok) {
             return response.json()
@@ -83,7 +83,7 @@ function FriendMilestones() {
       setIsFriend(!isFriend)
       if (!isFriend) {
         console.log('Add friend action')
-        fetch(`/users/${user.id}/friends`, {
+        fetch(`/api/users/${user.id}/friends`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ function FriendMilestones() {
         })
       } else {
         console.log('Delete friend action')
-        fetch(`/users/${user.id}/friends`, {
+        fetch(`/api/users/${user.id}/friends`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

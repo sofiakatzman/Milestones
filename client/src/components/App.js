@@ -46,7 +46,7 @@ function App() {
 
   useEffect(() => {
     // Fetch all previous milestones only once during the initial rendering
-    fetch('/milestones')
+    fetch('/api/milestones')
       .then((r) => r.json())
       .then((data) => {
         // Sort the milestones based on their milestone_id in descending order
