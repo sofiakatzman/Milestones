@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
-import * as yup from 'yup'
 import UserContext from './UserContext'
 
 function EditMilestone() {
@@ -12,35 +11,6 @@ function EditMilestone() {
   const [editingMilestone, setEditingMilestone] = useState()
   const [error, setError] = useState(null)
   const [authorized, setAuthorized] = useState(false)
-
-  // Fetch all the milestones from the backend on component mount
-  useEffect(() => {
-    fetch('/api/milestones')
-      .then((response) => response.json())
-      .then((data) => {
-        const milestone = data.find((milestone) => milestone.id === parseInt(milestoneId))
-        if (milestone.user_id == user.id){
-          setEditingMilestone(milestone)
-          console.log(milestone)
-        }
-        
-        formik.setValues({
-          header: milestone.header,
-          subheader: milestone.subheader,
-          description: milestone.description,
-          date: milestone.date,
-          aspect_id: milestone.aspect_id,
-        })
-        if (user_id === milestone.user_id) {
-          setAuthorized(true)
-        } else {
-          setError('You are not authorized to edit this milestone.')
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching milestones:', error)
-      })
-  }, [milestoneId, user_id])
 
   const formik = useFormik({
     initialValues: {
@@ -76,6 +46,38 @@ function EditMilestone() {
     },
   })
 
+
+  // Fetch all the milestones from the backend on component mount
+  useEffect(() => {
+    fetch('/api/milestones')
+      .then((response) => response.json())
+      .then((data) => {
+        const milestone = data.find((milestone) => milestone.id === parseInt(milestoneId))
+        if (milestone.user_id === user.id){
+          setEditingMilestone(milestone)
+          console.log(milestone)
+          console.log(editingMilestone)
+        }
+        
+        formik.setValues({
+          header: milestone.header,
+          subheader: milestone.subheader,
+          description: milestone.description,
+          date: milestone.date,
+          aspect_id: milestone.aspect_id,
+        })
+        if (user_id === milestone.user_id) {
+          setAuthorized(true)
+        } else {
+          setError('You are not authorized to edit this milestone.')
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching milestones:', error)
+      })
+  }, [milestoneId, user.id, formik, editingMilestone, user_id])
+
+ 
   return (
     <>
       {authorized ? (

@@ -11,7 +11,6 @@ function FriendMilestones() {
   const [filteredData, setFilteredData] = useState(null)
   const [aspects, setAspects] = useState(null)
   const [isFriend, setIsFriend] = useState(false)
-  const [friendMessage, setFriendMessage] = useState(false)
 
   const { user_id } = useParams()
   const { user } = useContext(UserContext)
@@ -47,7 +46,7 @@ function FriendMilestones() {
         setAspects(data)
       })
       .catch(() => setError(true))
-  }, [])
+  }, [user_id])
 
   useEffect(() => {
     // Check if the logged-in user and the user whose profile you are viewing are friends

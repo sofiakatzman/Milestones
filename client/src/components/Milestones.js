@@ -13,6 +13,7 @@ function Milestones() {
   const user_id = user.id
 
   const navigate = useNavigate()
+  console.log(error)
 
   useEffect(() => {
     //fetch user milestones
@@ -38,7 +39,7 @@ function Milestones() {
         setAspects(data)
       })
       .catch(() => setError(true))
-  }, [])
+  }, [user_id])
 
   const handleFilterOption = (option) => {
     if (option === 'all') {
