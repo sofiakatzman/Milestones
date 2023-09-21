@@ -5,6 +5,7 @@
   --dark-green-main-darkest: #203b19be;
   --dark-green-main-transparent: #405d391a;
   --dark-purple: #34193b8d;
+  --darkest-purple: #1612178d;
   --transparent-purple: #34193b1b;
   --transparent-purple-2: #34193b0d; /*/ buttons and cards color /*/
 }
@@ -84,6 +85,7 @@ input, textarea {
   right: 20px;
   transition: opacity 0.3s ease;
   text-align: right;
+  font-weight: bold;
 }
 
 .links a {
@@ -102,9 +104,10 @@ input, textarea {
 
 .greeting {
   position: fixed;
-  top: -3px;
-  right: 60px;
-  color: var(--dark-purple)
+  font-size: larger;
+  top: -8px;
+  right: 70px;
+  color: var(--darkest-purple)
 }
 
 .icon:hover .navbar .links,
@@ -146,6 +149,10 @@ button.logout {
   padding: .5rem;
   cursor: pointer;
   border: none;
+}
+
+button.logout:hover {
+  background-color: var(--darkest-purple);
 }
 
 button span[role="img"] {

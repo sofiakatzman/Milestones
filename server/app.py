@@ -263,7 +263,7 @@ class MilestonesById(Resource):
             'subheader': form_json.get('subheader', milestone.subheader),
             'description': form_json.get('description', milestone.description),
             'date': form_json.get('date', milestone.date),
-            'aspect_id': form_json.get('aspect_id', milestone.aspect_id)
+            # 'aspect_id': form_json.get('aspect_id', milestone.aspect_id)
         }
 
         for field, value in fields_to_update.items():

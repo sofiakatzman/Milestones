@@ -1,89 +1,99 @@
-import { VerticalTimeline } from 'react-vertical-timeline-component'
-import TimelineComponent from "./Timeline"
-import { useEffect, useState, useContext } from "react"
-import { useNavigate } from "react-router-dom"
-import UserContext from './UserContext'
+import React, { useEffect, useContext, useState } from 'react';
+import { VerticalTimeline } from 'react-vertical-timeline-component';
+import TimelineComponent from './Timeline';
+import { useNavigate } from 'react-router-dom';
+import UserContext from './UserContext';
 
 function Milestones() {
-  const [data, setData] = useState([])
-  const [filteredData, setFilteredData] = useState([])
-  const [aspects, setAspects] = useState(null)
-  const [error, setError] = useState(null)
-  const { user } = useContext(UserContext)
-  const user_id = user.id
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [aspects, setAspects] = useState(null);
+  const [error, setError] = useState(null);
+  const [sortBy, setSortBy] = useState('asc'); // Default sorting order is ascending
+  const { user } = useContext(UserContext);
+  const user_id = user.id;
 
-  const navigate = useNavigate()
-  console.log(error)
+  const navigate = useNavigate();
 
   useEffect(() => {
-    //fetch user milestones
+    // Fetch user milestones
     fetch(`/api/milestone/${user_id}`)
-      .then(response => response.json())
-      .then(data => {
-        const sortedData = [...data]
-        sortedData.sort((a, b) => new Date(a.date) - new Date(b.date))
-        setData(sortedData)
-        setFilteredData(sortedData)
-      })
+      .then((response) => response.json())
+      .then((data) => {
+        const sortedData = [...data];
 
-    //fetch for all aspects
+        // Sort the data based on the current sorting order
+        sortedData.sort((a, b) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return sortBy === 'asc' ? dateA - dateB : dateB - dateA;
+        });
+
+        setData(sortedData);
+        setFilteredData(sortedData);
+      });
+
+    // Fetch all aspects
     fetch(`/api/aspects`)
       .then((response) => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         } else {
-          throw new Error("No aspects found")
+          throw new Error('No aspects found');
         }
       })
       .then((data) => {
-        setAspects(data)
+        setAspects(data);
       })
-      .catch(() => setError(true))
-  }, [user_id])
+      .catch(() => setError(true));
+  }, [user_id, sortBy]); // Include sortBy in the dependency array
 
   const handleFilterOption = (option) => {
     if (option === 'all') {
-      setFilteredData(data)
+      setFilteredData(data);
     } else {
       const filteredMilestones = data.filter(
         (milestone) => milestone.aspect_id === option
-      )
-      setFilteredData(filteredMilestones)
+      );
+      setFilteredData(filteredMilestones);
     }
-  }
+  };
 
   const handleDelete = (milestoneID) => {
     fetch(`/api/milestones/${milestoneID}`, {
-      method: "DELETE",
+      method: 'DELETE',
     })
       .then((response) => {
         if (response.status === 204) {
-          console.log("Milestone deleted successfully!")
-          // filter out the deleted milestone
-          const deleted = data.filter((milestone) => milestone.id !== milestoneID)
-          setFilteredData(deleted)
-          setData(deleted)
+          console.log('Milestone deleted successfully!');
+          // Filter out the deleted milestone
+          const deleted = data.filter((milestone) => milestone.id !== milestoneID);
+          setFilteredData(deleted);
+          setData(deleted);
         } else {
-          console.error("Failed to delete milestone.")
+          console.error('Failed to delete milestone.');
         }
       })
       .catch((error) => {
-        console.error("Error deleting milestone:", error)
-      })
-  }
+        console.error('Error deleting milestone:', error);
+      });
+  };
 
   const handleEdit = (milestoneId) => {
-    navigate(`/edit/milestone/${milestoneId}`)
-  }
+    navigate(`/edit/milestone/${milestoneId}`);
+  };
 
-
+  const toggleSortOrder = () => {
+    // Toggle the sorting order between 'asc' and 'desc'
+    setSortBy(sortBy === 'asc' ? 'desc' : 'asc');
+  };
 
   return (
     <>
       <h1>welcome, {user.username}</h1>
 
       <div>
-        {/* display filters */}
+        {/* Display filters */}
         <div className="filters">
           {aspects &&
             aspects.map((aspect) => {
@@ -98,11 +108,11 @@ function Milestones() {
                   </span>
                   <h6 className="hide-hover">{aspect.name.toLowerCase()}</h6>
                 </button>
-              )
+              );
             })}
           <button
             className="filter-button"
-            onClick={() => handleFilterOption("all")}
+            onClick={() => handleFilterOption('all')}
           >
             <span role="img" aria-label="remove-filter">
               ❌
@@ -111,11 +121,24 @@ function Milestones() {
           </button>
         </div>
 
-        {/* display milestones */}
+        {/* Sort By button */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button onClick={toggleSortOrder} className="sort-button">
+            {sortBy === 'asc' ? '▲' : '▼'} sort by date
+          </button>
+        </div>
+
+        {/* Display milestones */}
         {filteredData && filteredData.length > 0 ? (
           <VerticalTimeline>
             {filteredData.map((item) => (
-              <TimelineComponent key={item.id} data={item} canDelete={true} handleDelete={handleDelete} handleEdit={handleEdit} />
+              <TimelineComponent
+                key={item.id}
+                data={item}
+                canDelete={true}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+              />
             ))}
           </VerticalTimeline>
         ) : (
@@ -123,7 +146,7 @@ function Milestones() {
         )}
       </div>
     </>
-  )
+  );
 }
 
-export default Milestones
+export default Milestones;
