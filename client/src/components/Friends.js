@@ -15,7 +15,7 @@ function Friends() {
   }, [user_id])
 
   const handleFriendClick = (friendID) => {
-    navigate(`/api/timelines/${friendID}`)
+    navigate(`/timelines/${friendID}`)
   }
 
   return (

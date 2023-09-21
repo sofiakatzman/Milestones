@@ -342,21 +342,19 @@ class Logout(Resource):
 api.add_resource(Logout, '/api/logout')
 
 # react front end routes 
-@app.route('/')
-@app.route('/feed')
-@app.route('/friends')
-@app.route('/create')
-@app.route('/aspects')
-@app.route('/settings')
-@app.route('/timelines')
-@app.route('/edit/milestone/:milestoneId')
-@app.route('/timelines/:user_id')
-@app.route('/user/logout')
+# @app.route('/feed')
+# @app.route('/friends')
+# @app.route('/create')
+# @app.route('/aspects')
+# @app.route('/settings')
+# @app.route('/timelines')
+# @app.route('/edit/milestone/:milestoneId')
+# @app.route('/timelines/:user_id')
+# @app.route('/user/logout')
 
-@app.route('/')
-@app.route('/<int:id>')
-def index(id=0):
-    return render_template("index.html")
+# @app.route('/')
+# @app.route('/<int:id>')
+# def index(id=0):
+#     return render_template("index.html")
 if __name__ == '__main__':
-    # socketio.run(app, host='0.0.0.0', port=8000, debug=False)
     app.run(port=5555)
